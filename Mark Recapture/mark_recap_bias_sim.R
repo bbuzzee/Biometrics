@@ -5,7 +5,7 @@ library(tidyverse)
 
 
 
-mark_fish <- function(N, bias = "random", bias_amt = c(.7,.4)){
+mark_fish <- function(N, bias = "random", bias_amt = c(.5,.2)){
   
   # if bias criteria is met, the fish is tagged with probability bias[1], else prob is bias[2]
   # N is size of the entire fish population
@@ -29,11 +29,11 @@ mark_fish <- function(N, bias = "random", bias_amt = c(.7,.4)){
   # if all fish have equal probability of being captured
   if (bias == "random"){
   
-    # size is the number of trials, so below is N bernoulli outcomes
-    fish_pop$tagged <- rbinom(n = N, size = 1, p = .2)
+    # size is the number of trials, so below is N iid bernoulli outcomes
+    fish_pop$tagged <- rbinom(n = N, size = 1, p = bias_amt[2])
   
     
-  # if which half of the lake the fish is in influcnces prob of getting captured
+  # if which half of the lake the fish is in changes capture prob
   } else if (bias == "geo_bias") {
     
     num_true <- sum(fish_pop$y >= .5)
@@ -43,7 +43,7 @@ mark_fish <- function(N, bias = "random", bias_amt = c(.7,.4)){
                               yes = rbinom(n = num_true, size = 1,p = bias_amt[1]),
                               no = rbinom(n = num_false, size = 1, p = bias_amt[2]))
     
-  # if size influences prob of capture
+  # if size influences capture prob
   } else if (bias == "size_bias"){
     
     num_true <- sum(fish_pop$length >= 375)
@@ -61,18 +61,18 @@ mark_fish <- function(N, bias = "random", bias_amt = c(.7,.4)){
 
 
 
-recap_fish <- function(marked_pop, bias = "random", bias_amt = c(.7,.4)){
+recap_fish <- function(marked_pop, bias = "random", bias_amt = c(.5,.2)){
   
   N <- length(marked_pop$y)
   
   if (bias == "random"){
     
-    marked_pop$recap <- rbinom(n = N, size = 1, p = .2)
+    marked_pop$recap <- rbinom(n = N, size = 1, bias_amt[2])
     
     
   } else if (bias == "geo_bias") {
     
-    # make a function to wrap these three lines -----==================================
+    # ============= make a function to wrap these three lines ===============
     num_true <- sum(marked_pop$y >= .5)
     num_false <- N-num_true
     
@@ -80,8 +80,6 @@ recap_fish <- function(marked_pop, bias = "random", bias_amt = c(.7,.4)){
                                yes = rbinom(n = num_true, size = 1, p = bias_amt[1]),
                                no = rbinom(n = num_false, size = 1, p = bias_amt[2]))
     
-    # big fish have .6 chance of getting tagged
-    # small fish .1
     
   } else if (bias == "size_bias"){
     
@@ -108,7 +106,7 @@ run_sim <- function(num_sims = 1000,
                     pop_size_per_sim = 1000,
                     event1bias = "random",
                     event2bias = "random",
-                    bias_amt = c(.7,.4)){
+                    bias_amt = c(.5,.2)){
   
   
   ests <- matrix(nrow = num_sims, ncol = 2)
