@@ -49,7 +49,7 @@ mark_fish <- function(N, bias = "random", bias_amt = c(.5,.2)){
     num_true <- sum(fish_pop$length >= 375)
     num_false <- N-num_true
     
-    fish_pop$tagged <- ifelse(test = fish_pop$length >= 400,
+    fish_pop$tagged <- ifelse(test = fish_pop$length >= 375,
                               yes = rbinom(n = num_true, size = 1, p = bias_amt[1]),
                               no = rbinom(n = num_false ,size = 1, p = bias_amt[2]))
   }
@@ -83,10 +83,10 @@ recap_fish <- function(marked_pop, bias = "random", bias_amt = c(.5,.2)){
     
   } else if (bias == "size_bias"){
     
-    num_true <- sum(marked_pop$length >= 350)
+    num_true <- sum(marked_pop$length >= 375)
     num_false <- N-num_true
     
-    marked_pop$recap <- ifelse(test = marked_pop$length >= 350,
+    marked_pop$recap <- ifelse(test = marked_pop$length >= 375,
                                yes = rbinom(n = num_true, size = 1, bias_amt[1]),
                                no = rbinom(n = num_false, size = 1, bias_amt[2]))
     
