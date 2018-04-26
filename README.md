@@ -1,2 +1,2 @@
 # Biometrics
-Rep for fisheries related R code
+Repo for fisheries related R code
