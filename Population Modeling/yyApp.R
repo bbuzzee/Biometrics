@@ -11,7 +11,7 @@ library(shiny)
 library(plotly)
 library(tidyverse)
 
-# Define UI for application that draws a histogram
+
 ui <- fluidPage(
    
    # Application title
@@ -20,7 +20,7 @@ ui <- fluidPage(
 
      plotOutput("distPlot"),
    
-   # Sidebar with a slider input for number of bins 
+   # create three rows of input widgets  
 
         fluidRow(
           
@@ -31,9 +31,9 @@ ui <- fluidPage(
                                      "Exponential" = 2)),
          numericInput(inputId = "K",
                       label = "Carrying Capacity",
-                      value = 10000),
+                      value = 5000),
          
-         textInput(inputId = "n", "Intial abundances (comma sep)", "500,300,175,50"),
+         textInput(inputId = "n", "Intial abundances (comma sep)", "1000,0,40,10"),
          
          numericInput(inputId = "num_yy",
                       label = "Number of Age 1 YY males stocked each year",
@@ -153,7 +153,7 @@ server <- function(input, output) {
       
       
       # if there are more successful males than females, 90% of the age class will mate with a YY male
-      age_p <- ifelse(nYY/n < 1, nYY/n, 1)
+      age_p <- ifelse(nYY/n < .99, nYY/n, 1)
       
       # the number of females that emerge next year will be reduced by
       # the percent of females that paired with YY males
@@ -202,7 +202,7 @@ server <- function(input, output) {
       n <- sup_mat%*%n 
       
       # of the ones that survive, remove some
-      n <- n - H%*%n
+       n <- n - H%*%n
       
       # after removing some, add YY stock
       # Fish released are Myy supermales, producing only xy males
@@ -246,13 +246,15 @@ server <- function(input, output) {
        # create A matrix
        n <- as.numeric(unlist(strsplit(input$n, ",")))
        A <- diag(length(n))
+       diag(A) <- 0
+       
        A[2,1] <- input$s1
        A[3,2] <- input$s2
        A[4,3] <- input$s3
        A[4,4] <- input$s4
        
        A[1,] <- c(input$f1, input$f2, input$f3, input$f4)
-       diag(A) <- 0
+       
        
        # create H matrix 
        
@@ -269,13 +271,14 @@ server <- function(input, output) {
        
        n <- as.numeric(unlist(strsplit(input$n, ",")))
        A <- diag(length(n))
+       diag(A) <- 0
        A[2,1] <- input$s1
        A[3,2] <- input$s2
        A[4,3] <- input$s3
        A[4,4] <- input$s4
        
        A[1,] <- c(input$f1, input$f2, input$f3, input$f4)
-       diag(A) <- 0
+       
        
        # create H matrix 
        
@@ -314,3 +317,18 @@ shinyApp(ui = ui, server = server)
 # 
 # diag(A)
 # A
+
+
+# N <- NULL
+# K <- 5000
+# n <- c(200,100,100,900)
+# sup_mat <- diag(c(.25,.6,.6,.6))
+# I <- diag(length(n))
+# 
+# for(i in 1:30){
+#   N[i] <- sum(n)
+#   n <- n + ((K-N[i])/K)*(sup_mat - I)%*%n
+# }
+
+
+
