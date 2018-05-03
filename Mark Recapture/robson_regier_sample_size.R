@@ -30,6 +30,8 @@ sample_size <- function(alpha, p, N){
   # 4. Return to Step 2 until the smallest values of M and C that satisfy the eq. in line 2 are found
   #============================================
   
+  # NOTE: to simplify the guessing and checking, we will assume M = C
+  # in the phyper() parameterization, this means m = k
 
   check_prec <- function(guess){
     # function returns true or false 
