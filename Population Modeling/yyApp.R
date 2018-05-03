@@ -15,7 +15,7 @@ library(tidyverse)
 ui <- fluidPage(
    
    # Application title
-   titlePanel("Population Modeling"),
+   titlePanel("Pike Population Modeling"),
    
 
      plotOutput("distPlot"),
@@ -33,12 +33,8 @@ ui <- fluidPage(
                       label = "Carrying Capacity",
                       value = 5000),
          
-         textInput(inputId = "n", "Intial abundances (comma sep)", "1000,50,40,10"),
-         
-         numericInput(inputId = "num_yy",
-                      label = "Number of Age 1 YY males stocked each year",
-                      value = 100)
-         
+         textInput(inputId = "n", "Intial age class abundances (comma sep)", "1000,50,40,10")
+        
          
          ),
          
@@ -78,6 +74,10 @@ ui <- fluidPage(
          ),
          
          column(3,
+                
+                numericInput(inputId = "num_yy",
+                             label = "Number of Age 1 YY males stocked each year",
+                             value = 100),
                 
                 sliderInput(inputId = "materate",
                             label = "% of YY's that succesfuly mate with their age",
@@ -168,7 +168,8 @@ server <- function(input, output) {
       
     }
     
-    return(list(age_vec = out, pop_size = N))
+    #list(age_vec = out, pop_size = N)
+    return(data.frame(pop_size = N))
   }
   
 
@@ -227,8 +228,9 @@ server <- function(input, output) {
       
     }
     
-    
-    return(list(age_vec = out, pop_size = N))
+    # for objects w/ differing number of rows output a list
+    # list(age_vec = out, pop_size = N)
+    return(data.frame(pop_size = N))
   }
   
    
@@ -263,15 +265,27 @@ server <- function(input, output) {
        
        nYY <- c(input$num_yy,0,0,0)
        
-       x <- leslie_log(n=n, A=A, H=H, nYY = nYY, pYY = input$materate, K = input$K)
+       z <- leslie_log(n=n, A=A, H=H, nYY = nYY, pYY = input$materate, K = input$K)
+       xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size < .5)), no = NaN)
        
-       plot(x$pop_size, ylab = "Population Size", xlab = "Years", type = "l")
+       z %>% ggplot(aes(x = 1:length(pop_size),y=pop_size)) + geom_line(size = 1.05) +
+         geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Population Size") +
+         scale_color_manual(name = "Extirpation", values = "red") +
+         theme(legend.position = c(.9,.9)) 
+       
+      
+       
        
      }else{
        
+       # following lines are repeated twice - take out of if statement
+       # diag elements should be zero
+       
+       # create A matrix
        n <- as.numeric(unlist(strsplit(input$n, ",")))
        A <- diag(length(n))
        diag(A) <- 0
+       
        A[2,1] <- input$s1
        A[3,2] <- input$s2
        A[4,3] <- input$s3
@@ -286,10 +300,17 @@ server <- function(input, output) {
        diag(H) <- c(0, rep(input$hrate, times = length(n)-1))
        
        nYY <- c(input$num_yy,0,0,0)
-
-       z <- leslie_exp(n=n, A=A, H=H, nYY = nYY, pYY = input$materate, K = input$K)
+      
        
-       plot(z$pop_size, ylab = "Population Size", xlab = "Years", type = "l")
+       z <- leslie_exp(n=n, A=A, H=H, nYY = nYY, pYY = input$materate, K = input$K)
+       xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size<.5)), no = NaN)
+       
+       
+       z %>% ggplot(aes(x = 1:length(pop_size),y=pop_size)) + geom_line(size = 1.05) +
+         geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Population Size") +
+         scale_color_manual(name = "Extirpation", values = "red") +
+         theme(legend.position = c(.9,.9))
+    
      }
    )
 }
@@ -297,26 +318,30 @@ server <- function(input, output) {
 # Run the application 
 shinyApp(ui = ui, server = server)
 
-
+# 
 # A <- diag(4)
 # A[2,1] <- .1
 # A[3,2] <- .1
 # A[4,3] <- .1
 # A[4,4] <- .1
+# A[1,] <- c(0,.1,.1,.1)
 # 
-# A[1,] <- c(.1,.1,.1,.1)
-# A
+# H <- diag(4)
+# diag(H) <- .5
+# 
+# nYY <- c(1000,10,10,10)
+# 
 # n <- c("10,20,30,40")
 # n <- as.numeric(unlist(strsplit(n, ",")))
 # 
-# z <- leslie_exp(n=n, A=A, K=10000)
+# z <- leslie_exp(n=n, A=A, K=1000, H = H, nYY = nYY)
 # 
-# plot(z$pop_size)
+# 
+# z %>% ggplot(aes(x= 1:length(pop_size),y=pop_size)) + geom_line() + geom_vline(xintercept = min(which(z$pop_size<.5)))
+# plot(z)
 # 
 # diag(A) <- 0
-# 
-# diag(A)
-# A
+
 
 
 # N <- NULL
