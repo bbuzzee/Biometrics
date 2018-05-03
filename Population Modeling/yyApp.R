@@ -33,7 +33,7 @@ ui <- fluidPage(
                       label = "Carrying Capacity",
                       value = 5000),
          
-         textInput(inputId = "n", "Intial abundances (comma sep)", "1000,0,40,10"),
+         textInput(inputId = "n", "Intial abundances (comma sep)", "1000,50,40,10"),
          
          numericInput(inputId = "num_yy",
                       label = "Number of Age 1 YY males stocked each year",
@@ -202,7 +202,7 @@ server <- function(input, output) {
       n <- sup_mat%*%n 
       
       # of the ones that survive, remove some
-       n <- n - H%*%n
+      n <- n - H%*%n
       
       # after removing some, add YY stock
       # Fish released are Myy supermales, producing only xy males
