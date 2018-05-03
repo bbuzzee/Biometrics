@@ -1,9 +1,7 @@
 
-
-
 # Basic population modeling
-# logistic growth no age structure
-
+# this is the original exploratory script
+# used to create yyApp from
 
 model <- function(n0, r, K, t){
   
