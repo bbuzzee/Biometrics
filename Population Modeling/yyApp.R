@@ -8,22 +8,26 @@
 #
 
 library(shiny)
-library(plotly)
 library(tidyverse)
 
 
 ui <- fluidPage(
    
-   # Application title
-   titlePanel("Pike Population Modeling"),
+  
+  # user interface
+  # create and place all buttons and graphs in this section
+  # we can use inputs inside of reactive functions by referring to their inputId in the server section
+  
+   titlePanel("Trojan Pike Models"),
    
-
+    
      plotOutput("distPlot"),
    
-   # create three rows of input widgets  
+   # create one row, each element is a column of inputs
 
         fluidRow(
           
+        # column 1
          column(3,
          radioButtons(inputId = "growth",
                       label = "Type of Growth",
@@ -33,15 +37,17 @@ ui <- fluidPage(
                       label = "Carrying Capacity",
                       value = 5000),
          
-         textInput(inputId = "n", "Intial age class abundances (comma sep)", "1000,50,40,10")
+         textInput(inputId = "n", "Intial age class abundances (comma sep)", "1000,500,200,100")
         
          
          ),
          
          
          
-         
+         # column 2
          column(3,
+                
+         h3("Survival"),
                 
          sliderInput(inputId = "s1",
                      label = "Yearly Survival % Age 1",
@@ -57,7 +63,11 @@ ui <- fluidPage(
                      min = 0, max = 1, value = .4)
          ),
          
+         
+         # column 3
          column(3,
+                
+         h3("Fecundity"),
 
          numericInput(inputId = "f1",
                      label = "Age 1 produced by Age 1",
@@ -73,7 +83,11 @@ ui <- fluidPage(
                       value = 15)
          ),
          
+         
+         # column 4
          column(3,
+                
+                h3("Intervention"),
                 
                 numericInput(inputId = "num_yy",
                              label = "Number of Age 1 YY males stocked each year",
@@ -93,254 +107,278 @@ ui <- fluidPage(
          
          
          
-        )
-)
+        ) # end row
+) # end page
 
       
 
 
-
-
-# to fix, assign all innputs values and run throug server code
 
 
 server <- function(input, output) {
   
-  leslie_log <- function(n, A, K, H, nYY, pYY = 1){
+  
+  # ==== grow_pop is the primary modeling function. It is non-reactive (takes no inputs directly from ui)
+  # ==== outputs a vector of population sizes
+  
+  grow_pop <- function(n, A, K, H, nYY, pYY = 1, growth = 1){
     
     # n is the vector of intial age-class abundances of reproducing females
     # A is the leslie matrix - fecundity is the per capita number of females produced by each age class
-    # K is the carrying capacity in terms of total fish
-    # t is the number of years to run the model
-    # H is the harvest matrix: The diagonal elements are the percent of each age class harvested
+    # K is the carrying capacity in terms of female fish
+    # H is the harvest matrix: The diagonal elements are the percent of each age class harvested each year
     # nYY is the vector of initial YY male abundances - must be same length as n, and it is assumed the same number are stocked each year
+    # ** pYY is the proportion of the nYY stock that are deemed fit - assumed all successfully mate - CHANGE??
     
     
-    # sup_mat is to become the matrix with fecundity surpressed
+    # sup_mat is to become the A matrix with fecundity supressed
     # N is a vector that keeps track of total population size
-    # out is a matrix where each column is the vector of female abundances that year
-    
+    # out is a matrix where each column is the vector of age-class abundances that year (females only)
+  
     sup_mat <- A 
     I <- diag(length(n))
     N <- NULL
     out <- matrix(0, nrow = length(n), ncol = 25)
     
+    # this is the effective number of fit males stocked
+    nYY <- nYY*pYY
+
+    
     for (i in 1:25){
       
-      out[,i] <- n
       N[i] <- sum(n)
+      out[,i] <- n
       
-      
-      # print(c("n= ", n))
-      # print((K-N[i])/K)
-      # print(sup_mat-I)
-      # print((sup_mat-I)%*%n)
-      # print(((K-N[i])/K)*(sup_mat - I)%*%n )
-      
-      
-      # source for below: A.L. Jensen 1995 page 46 equation 15
-      # The fish population grows, post breeding census
-      n <- n + ((K-N[i])/K)*(sup_mat - I)%*%n 
-      
-      # of the ones that survive, remove some
-      n <- n - H%*%n
-      
-      # after removing some, add YY stock
-      # Fish released are Myy supermales, producing only xy males
-      # only a fraction of the YY stock (pYY) will successfully mate
-      # Dampen the number by the percent expected to successfully mate with a female
-      nYY <- nYY*pYY
-      
-      
-      # if there are more successful males than females, 90% of the age class will mate with a YY male
-      age_p <- ifelse(nYY/n < .99, nYY/n, 1)
       
       # the number of females that emerge next year will be reduced by
       # the percent of females that paired with YY males
       # The original fecundity rates are the ones that need to be suppressed each year by a potentially different number of YY males
+      
+      # BIG NOTE: this method implies a maximum (relatively low) number beyond which stocking more YY is not longer useful
+      # effectively zeroes out fecundity
+      # find assumptions and requirements and see if reasonable
+      
+      age_p <- ifelse(nYY/n <= 1, nYY/n, 1)
       sup_mat[1,] <- A[1,]*(1-age_p)
+      
+      
+      if(growth == 1){
+        
+        # logistic growth
+          
+        # source for below: A.L. Jensen 1995 page 46 equation 15
+        # The fish population grows - post breeding census
+        # This form of logistic growth is only useful when the intial abundances and first generations are below
+        # the carrying capacity. Otherwise the numbers shoot off to +- infinity = NAN
+        n <- n + ((K-N[i])/K)*(sup_mat - I)%*%n
+      
+      }else{
+        # exponential growth matrix formulation
+        n <- sup_mat%*%n
+      }
+      
+      
+      
+      # of the ones that survive, remove some
+      n <- n - H%*%n
+      
       
       # a year passes and apply survival rates to YY males (same as females) and add new stock
       # zero fecundity since they produce no females
+      # next years YY stock consists of a group of pYY-suppressed yearlings plus those that survived from previous years
       B <- A
       B[1,] <- rep(0, times = length(B[1,]))
       nYY <- nYY + B%*%nYY
       
     }
     
-    #list(age_vec = out, pop_size = N)
     return(data.frame(pop_size = N))
   }
   
-
-  leslie_exp <- function(n, A, K, H, nYY, pYY = 1){
+  
+  
+  # ==== collect inputs using reactive expressions 
+  # ==== reactive expressions are used where inputs need to be manipulated to be useful
+  
+  # initial abundances
+  n <- reactive({
+    return(as.numeric(unlist(strsplit(input$n, ","))))
+    })
+  
+  # leslie matrix
+  A <- reactive({
     
-    # n is the vector of intial age-class abundances of reproducing females
-    # A is the leslie matrix - fecundity is the per capita number of females produced by each age class
-    # K is the carrying capacity in terms of total fish
-    # t is the number of years to run the model
-    # H is the harvest matrix: The diagonal elements are the percent of each age class harvested
-    # nYY is the vector of initial YY male abundances - must be same length as n, and it is assumed the same number are stocked each year
-    
-    
-    # sup_mat is to become the matrix with fecundity surpressed
-    # N is a vector that keeps track of total population size
-    # out is a matrix where each column is the vector of female abundances that year
-    
-    sup_mat <- A 
-    I <- diag(length(n))
-    N <- NULL
-    out <- matrix(0, nrow = length(n), ncol = 25)
-    
-    for (i in 1:25){
-      
-      out[,i] <- n
-      N[i] <- sum(n)
-      
-      
-      
-      # The fish population grows, post breeding census
-      n <- sup_mat%*%n 
-      
-      # of the ones that survive, remove some
-      n <- n - H%*%n
-      
-      # after removing some, add YY stock
-      # Fish released are Myy supermales, producing only xy males
-      # only a fraction of the YY stock (pYY) will successfully mate
-      # Dampen the number by the percent expected to successfully mate with a female
-      nYY <- nYY*pYY
-      
-      
-      # if there are more successful males than females, 90% of the age class will mate with a YY male
-      age_p <- ifelse(nYY/n < 1, nYY/n, 1)
-      
-      # the number of females that emerge next year will be reduced by
-      # the percent of females that paired with YY males
-      # The original fecundity rates are the ones that need to be suppressed each year by a potentially different number of YY males
-      sup_mat[1,] <- A[1,]*(1-age_p)
-      
-      # a year passes and apply survival rates to YY males (same as females) and add new stock
-      # zero fecundity since they produce no females
-      B <- A
-      B[1,] <- rep(0, times = length(B[1,]))
-      nYY <- nYY + B%*%nYY
-      
-    }
-    
-    # for objects w/ differing number of rows output a list
-    # list(age_vec = out, pop_size = N)
-    return(data.frame(pop_size = N))
-  }
+    A <- diag(length(n()))
+    diag(A) <- 0
+  
+    A[2,1] <- input$s1
+    A[3,2] <- input$s2
+    A[4,3] <- input$s3
+    A[4,4] <- input$s4
+  
+    A[1,] <- c(input$f1, input$f2, input$f3, input$f4)
+  
+    return(A)
+    })
+  
+  # supression matrix - diagonal elements are the percents of each age class removed, so n - H%*%n
+  # is how we can remove a percent of each age class
+  H <- reactive({
+    H <- diag(length(n()))
+    diag(H) <- c(0, rep(input$hrate, times = length(n())-1))
+    return(H)
+    })
+  
+  # vector of number of yy supermales stocked each year
+  nYY <- reactive({
+    return(c(input$num_yy,0,0,0))
+    })
+  
+  
   
    
-   output$distPlot <- renderPlot(
-     
-     
-     
-     
-     if(input$growth == 1){
+   output$distPlot <- renderPlot({
        
+       # inputs taken from reactive expressions
+       z <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
        
-       # following lines are repeated twice - take out of if statement
-       # diag elements should be zero
-       
-       # create A matrix
-       n <- as.numeric(unlist(strsplit(input$n, ",")))
-       A <- diag(length(n))
-       diag(A) <- 0
-       
-       A[2,1] <- input$s1
-       A[3,2] <- input$s2
-       A[4,3] <- input$s3
-       A[4,4] <- input$s4
-       
-       A[1,] <- c(input$f1, input$f2, input$f3, input$f4)
-       
-       
-       # create H matrix 
-       
-       H <- diag(length(n))
-       diag(H) <- c(0, rep(input$hrate, times = length(n)-1))
-       
-       nYY <- c(input$num_yy,0,0,0)
-       
-       z <- leslie_log(n=n, A=A, H=H, nYY = nYY, pYY = input$materate, K = input$K)
-       xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size < .5)), no = NaN)
+       xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size < 1)), no = NaN)
        
        z %>% ggplot(aes(x = 1:length(pop_size),y=pop_size)) + geom_line(size = 1.05) +
          geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Population Size") +
          scale_color_manual(name = "Extirpation", values = "red") +
-         theme(legend.position = c(.9,.9)) 
+         theme(legend.position = c(.9,.9),
+               panel.border = element_rect(colour = "gray", fill=NA, size=1))
+   })
        
       
        
-       
-     }else{
-       
-       # following lines are repeated twice - take out of if statement
-       # diag elements should be zero
-       
-       # create A matrix
-       n <- as.numeric(unlist(strsplit(input$n, ",")))
-       A <- diag(length(n))
-       diag(A) <- 0
-       
-       A[2,1] <- input$s1
-       A[3,2] <- input$s2
-       A[4,3] <- input$s3
-       A[4,4] <- input$s4
-       
-       A[1,] <- c(input$f1, input$f2, input$f3, input$f4)
-       
-       
-       # create H matrix 
-       
-       H <- diag(length(n))
-       diag(H) <- c(0, rep(input$hrate, times = length(n)-1))
-       
-       nYY <- c(input$num_yy,0,0,0)
-      
-       
-       z <- leslie_exp(n=n, A=A, H=H, nYY = nYY, pYY = input$materate, K = input$K)
-       xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size<.5)), no = NaN)
-       
-       
-       z %>% ggplot(aes(x = 1:length(pop_size),y=pop_size)) + geom_line(size = 1.05) +
-         geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Population Size") +
-         scale_color_manual(name = "Extirpation", values = "red") +
-         theme(legend.position = c(.9,.9))
-    
-     }
-   )
+
 }
 
 # Run the application 
 shinyApp(ui = ui, server = server)
 
+
+
+
+
+
+# ==== TEST CODE ====
+# 
+# leslie_log <- function(n, A, K, H, nYY, pYY = 1){
+# 
+#   # n is the vector of intial age-class abundances of reproducing females
+#   # A is the leslie matrix - fecundity is the per capita number of females produced by each age class
+#   # K is the carrying capacity in terms of total fish
+#   # t is the number of years to run the model
+#   # H is the harvest matrix: The diagonal elements are the percent of each age class harvested
+#   # nYY is the vector of initial YY male abundances - must be same length as n, and it is assumed the same number are stocked each year
+# 
+# 
+#   # sup_mat is to become the matrix with fecundity surpressed
+#   # N is a vector that keeps track of total population size
+#   # out is a matrix where each column is the vector of female abundances that year
+# 
+#   sup_mat <- A
+#   I <- diag(length(n))
+#   N <- NULL
+#   out <- matrix(0, nrow = length(n), ncol = 25)
+# 
+#   for (i in 1:25){
+# 
+#     out[,i] <- n
+#     N[i] <- sum(n)
+# 
+# 
+#     # print(c("n= ", n))
+#     # print((K-N[i])/K)
+#     # print(sup_mat-I)
+#     # print((sup_mat-I)%*%n)
+#     # print(((K-N[i])/K)*(sup_mat - I)%*%n )
+# 
+# 
+#     # source for below: A.L. Jensen 1995 page 46 equation 15
+#     # The fish population grows, post breeding census
+# 
+#     n <- n + ((K-N[i])/K)*(sup_mat - I)%*%n
+# 
+#     # of the ones that survive, remove some
+#     n <- n - H%*%n
+# 
+#     # after removing some, add YY stock
+#     # Fish released are Myy supermales, producing only xy males
+#     # only a fraction of the YY stock (pYY) will successfully mate
+#     # Dampen the number by the percent expected to successfully mate with a female
+#     nYY <- nYY*pYY
+# 
+# 
+#     # if there are more successful males than females, 90% of the age class will mate with a YY male
+#     age_p <- ifelse(nYY/n < .99, nYY/n, 1)
+# 
+#     # the number of females that emerge next year will be reduced by
+#     # the percent of females that paired with YY males
+#     # The original fecundity rates are the ones that need to be suppressed each year by a potentially different number of YY males
+#     sup_mat[1,] <- A[1,]*(1-age_p)
+# 
+#     # a year passes and apply survival rates to YY males (same as females) and add new stock
+#     # zero fecundity since they produce no females
+#     B <- A
+#     B[1,] <- rep(0, times = length(B[1,]))
+#     nYY <- nYY + B%*%nYY
+# 
+#   }
+# 
+#   #list(age_vec = out, pop_size = N)
+#   return(list(out = out, pop_size = N))
+# }
+# 
+# 
+# 
+# 
+# 
 # 
 # A <- diag(4)
-# A[2,1] <- .1
-# A[3,2] <- .1
-# A[4,3] <- .1
-# A[4,4] <- .1
-# A[1,] <- c(0,.1,.1,.1)
+# A[2,1] <- .25
+# A[3,2] <- .6
+# A[4,3] <- .6
+# A[4,4] <- .4
+# A[1,] <- c(7,5,10,15)
 # 
 # H <- diag(4)
-# diag(H) <- .5
+# diag(H) <- c(0)
 # 
-# nYY <- c(1000,10,10,10)
+# nYY <- c(100,0,0,0)
 # 
-# n <- c("10,20,30,40")
+# n <- c("1000,50,40,10")
 # n <- as.numeric(unlist(strsplit(n, ",")))
 # 
-# z <- leslie_exp(n=n, A=A, K=1000, H = H, nYY = nYY)
+# z <- leslie_log(n=n, A=A, K=5000, H = H, nYY = nYY)
 # 
-# 
-# z %>% ggplot(aes(x= 1:length(pop_size),y=pop_size)) + geom_line() + geom_vline(xintercept = min(which(z$pop_size<.5)))
-# plot(z)
+# sum(z$out[,12])
+# plot(z$pop_size)
 # 
 # diag(A) <- 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
