@@ -1,2 +1,2 @@
 # Biometrics
-Repo for fisheries related R code
+Repository for R code and statistical sources.
