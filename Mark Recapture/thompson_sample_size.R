@@ -3,13 +3,11 @@
 
 
 # Objective:
-# That the probability is 1-alpha that each estimated proportions will be within the specified distance of the true value
+# The probability is 1-alpha that each estimated proportion will be within the specified distance of the true value
 
 
-#binomial approximation works for two cases, n large, and npq > 3 
-# both are an appeal to the CLT
-# npq > 3 implies counts are symmetric to begin with so it works for smaller n
-
+# normal approximations to the binomial distribution work for two scenarios - n large, and npq > 3 
+# both are an appeal to the CLT. npq > 3 implies counts are symmetric to begin with so it works for smaller n
 
 multi_sample_size <- function(alpha, p){
   
@@ -21,7 +19,7 @@ multi_sample_size <- function(alpha, p){
     ns[m] <- (qnorm(1-(alpha/(2*m)))^2*(1/m)*(1-1/m))/p^2
   }
   
-  #exclude first element for m=1
+  # m=1 means there is only one possible outcome, so exclude
   # then round up the highest value
   return(ceiling(max(ns[2:length(ns)])))
 }

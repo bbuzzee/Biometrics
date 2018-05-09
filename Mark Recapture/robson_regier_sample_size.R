@@ -82,9 +82,51 @@ sample_size <- function(alpha, p, N){
   
   # return the number of fish that need to be captured in both events
   # and the number of iterations it took to get there 
+  
   return(list(captures = guess_vec[length(guess_vec)], iter = i))
   
 }
 
 
-sample_size(N = 25000, p = .25, alpha = .05)  
+sample_size(N = 10000, p = .25, alpha = .05)  
+
+
+
+# Power function
+
+# for a given alpha, M, C, NH and N0 calculate the power
+
+
+hyper_power <- function(n, alpha, NH, N0){
+  
+  # n is the sample size for both the mark and recapture occasions
+  # alpha is the precision
+  # NH is the population size under the alternative
+  # N0 is the population size under the null
+  
+  # find critical value under the null
+  
+  if(NH>N0){
+  crit <- qhyper(p = alpha, m = n, n = N0-n, k = n)
+  }else{
+  crit <- qhyper(p = 1 - alpha, m = n, n = N0-n, k = n)
+  }
+  
+  # find the probability of an Nhat less than that crit value under the alternative
+  power <- phyper(crit, m = n, n = NH-n, k = n)
+  
+  return(power)
+}
+
+hyper_power(804, .05, 7000, 6000)  
+
+N <- 10000
+
+dat <- rhyper(nn = 1000, m = 804, n = 10000-804, k = 904)
+
+hist(dat)
+
+?vline
+
+
+

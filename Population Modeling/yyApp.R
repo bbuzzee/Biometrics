@@ -222,8 +222,9 @@ server <- function(input, output) {
     })
   
   # supression matrix - diagonal elements are the percents of each age class removed, so n - H%*%n
-  # is how we can remove a percent of each age class
+  # is how we can remove a percent of each age class year to year
   H <- reactive({
+    
     H <- diag(length(n()))
     diag(H) <- c(0, rep(input$hrate, times = length(n())-1))
     return(H)
@@ -231,8 +232,10 @@ server <- function(input, output) {
   
   # vector of number of yy supermales stocked each year
   nYY <- reactive({
+    
     return(c(input$num_yy,0,0,0))
     })
+  
   
   
   
