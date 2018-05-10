@@ -1,2 +1,2 @@
 # Biometrics
-Repository for R code and statistical sources.
+Repository for R code and important statistical papers.
