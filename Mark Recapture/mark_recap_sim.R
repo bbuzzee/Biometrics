@@ -154,9 +154,9 @@ run_sim <- function(num_sims = 1000,
 }
 
 
-sim <- run_sim(num_sims = 1000, pop_size_per_sim = 500, bias_amt1 = c(0,.1), bias_amt2 = c(0,.05))    
+sim <- run_sim(num_sims = 1000, pop_size_per_sim = 500, bias_amt1 = c(0,.1), bias_amt2 = c(0,.1))    
 
-sim <- sim %>% mutate(z_yes = (pop >= z_upper& pop <= z_lower), pois_yes = (pop >= pois_lower & pop <= pois_upper) )
+sim <- sim %>% mutate(z_yes = (pop >= z_upper & pop <= z_lower), pois_yes = (pop >= pois_lower & pop <= pois_upper) )
 
 
 sum(sim$z_yes/length(sim$z_yes))

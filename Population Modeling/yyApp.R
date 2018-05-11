@@ -27,7 +27,7 @@ ui <- fluidPage(
 
         fluidRow(
           
-        # column 1
+         # column 1
          column(3,
          radioButtons(inputId = "growth",
                       label = "Type of Growth",
@@ -37,7 +37,9 @@ ui <- fluidPage(
                       label = "Carrying Capacity",
                       value = 5000),
          
-         textInput(inputId = "n", "Intial age class abundances (comma sep)", "1000,500,200,100")
+         textInput(inputId = "n",
+                   label = "Intial age class abundances (comma sep)",
+                   value = "1000,500,200,100")
         
          
          ),
