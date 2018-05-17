@@ -5,7 +5,7 @@
 library(tidyverse)
 
 
-#==== Stage 1: Create fish population and mark them 
+#==== Stage-1: Create fish population and mark them 
 
 mark_fish <- function(N, bias = "random", bias_amt = c(.5,.2)){
   
