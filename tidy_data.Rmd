@@ -49,5 +49,17 @@ catch_df %>% group_by(Year, Region) %>% summarize(catch = mean(catch)) %>%  ggpl
 
 
 
+```{r}
+region_defs <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.303.1", method = "libcurl"),
+                        stringsAsFactors = FALSE)
+
+region_defs <- region_defs %>% select(code, mgmtArea) %>% rename(Region = code, region_area = mgmtArea)
+
+joined <- left_join(catch_df, region_defs)
+
+```
+
+
+
 
 
