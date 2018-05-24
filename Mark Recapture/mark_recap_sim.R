@@ -124,22 +124,34 @@ run_sim <- function(num_sims = 1000,
   
     out <- mark_fish(pop_size_per_sim, bias = event1bias, bias_amt = bias_amt1) %>% recap_fish(bias = event2bias, bias_amt = bias_amt2)
     
-    estimates$M[i] <- sum(out$M)
-    estimates$C[i] <- sum(out$C)
-    estimates$R[i] <- sum(out$R)
+    
+    M <- sum(out$M)
+    C <- sum(out$C)
+    R <- sum(out$R)
+    
+    
+    
+    estimates$M[i] <- M
+    estimates$C[i] <- C
+    estimates$R[i] <- R
    
-    lp <- (estimates$M[i]*estimates$C[i])/estimates$R[i]
-    chap <- (estimates$M[i] + 1)*(estimates$C[i] + 1)/(estimates$R[i] + 1)
+    lp <- (M*C)/R
+    chap <- (M + 1)*(C + 1)/(R + 1)
     
     estimates$lp[i] <- lp
     estimates$chap[i] <- chap
      
-    # variance of 1/lp from Ricker 1975 pg 78
+    # varianceS rom Ricker 1975 pg 78
+
+    estimates$var_lp[i] <- M^2*C*(C-R)/R^3
     estimates$inv_lp[i] <- 1/estimates$lp[i]
-    estimates$var_inv_lp[i] <- (estimates$R[i]*(estimates$C[i]-estimates$R[i]))/(estimates$M[i]^2*estimates$C[i]^3)
+    estimates$var_inv_lp[i] <- (R*(C-R))/(M^2*C^3)
     
-    estimates$z_lower[i] <- 1/(estimates$inv_lp[i] - 1.96*sqrt(estimates$var_inv_lp[i]))
-    estimates$z_upper[i] <- 1/(estimates$inv_lp[i] + 1.96*sqrt(estimates$var_inv_lp[i]))
+    estimates$z_lower[i] <- estimates$lp[i] - 1.96*sqrt(estimates$var_lp[i])
+    estimates$z_upper[i] <- estimates$lp[i] + 1.96*sqrt(estimates$var_lp[i])
+    
+    estimates$inv_z_lower[i] <- 1/(estimates$inv_lp[i] + 1.96*sqrt(estimates$var_inv_lp[i]))
+    estimates$inv_z_upper[i] <- 1/(estimates$inv_lp[i] - 1.96*sqrt(estimates$var_inv_lp[i]))
     
     # source for pois interval http://ms.mcmaster.ca/peter/s743/poissonalpha.html
     # Find interval for R, then use it in lp estimate for N
@@ -154,12 +166,15 @@ run_sim <- function(num_sims = 1000,
 }
 
 
-sim <- run_sim(num_sims = 1000, pop_size_per_sim = 250, bias_amt1 = c(0,.1), bias_amt2 = c(0,.1))    
+sim <- run_sim(num_sims = 1000, pop_size_per_sim = 300, bias_amt1 = c(0,.15), bias_amt2 = c(0,.2))    
 
-sim <- sim %>% mutate(z_yes = (pop >= z_upper & pop <= z_lower), pois_yes = (pop >= pois_lower & pop <= pois_upper) )
+sim <- sim %>% mutate(z_yes = (pop <= z_upper & pop >= z_lower),
+                      inv_z_yes = (pop <= inv_z_upper & pop >= inv_z_lower),
+                      pois_yes = (pop >= pois_lower & pop <= pois_upper) )
 
 
 sum(sim$z_yes/length(sim$z_yes))
+sum(sim$inv_z_yes/length(sim$inv_z_yes))
 sum(sim$pois_yes/length(sim$pois_yes))
 
 mean(sim$R)
