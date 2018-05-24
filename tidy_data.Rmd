@@ -19,6 +19,8 @@ library(tidyverse)
 
 # Clean section
 
+# On local but not remote
+
 ```{r }
 
 catch_df <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1",
