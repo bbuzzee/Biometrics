@@ -9,6 +9,7 @@
 
 library(shiny)
 library(tidyverse)
+library(knitr)
 
 
 ui <- fluidPage(
@@ -18,10 +19,14 @@ ui <- fluidPage(
   # create and place all buttons and graphs in this section
   # we can use inputs inside of reactive functions by referring to their inputId in the server section
   
-   titlePanel("Trojan Pike Models"),
+   titlePanel("Pike Supression Models"),
+  
    
-    
-     plotOutput("distPlot"),
+   
+   
+     tabsetPanel(
+       tabPanel("Plot", plotOutput("distPlot"),
+       
    
    # create one row, each element is a column of inputs
 
@@ -107,9 +112,15 @@ ui <- fluidPage(
          
          
          
+        ) # widget row
          
-         
-        ) # end row
+        ), # end panel
+   
+
+   
+   tabPanel("Modeling Details",
+            uiOutput('markdown'))
+  )
 ) # end page
 
       
@@ -119,9 +130,13 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+  # ==============================================================
+  # DEFINE POP GROWTH FUNCTION
+  # ==============================================================
   
-  # ==== grow_pop is the primary modeling function. It is non-reactive (takes no inputs directly from ui)
-  # ==== outputs a vector of population sizes
+  
+  # grow_pop is the primary modeling function. It is non-reactive (takes no inputs directly from ui)
+  # outputs a vector of population sizes
   
   grow_pop <- function(n, A, K, H, nYY, pYY = 1, growth = 1){
     
@@ -199,8 +214,9 @@ server <- function(input, output) {
   
   
   
-  # ==== collect inputs using reactive expressions 
-  # ==== reactive expressions are used where inputs need to be manipulated to be useful
+  # ==============================================================
+  # Collect Inputs using Reactive Expressions
+  # ==============================================================
   
   # initial abundances
   n <- reactive({
@@ -226,7 +242,6 @@ server <- function(input, output) {
   # supression matrix - diagonal elements are the percents of each age class removed, so n - H%*%n
   # is how we can remove a percent of each age class year to year
   H <- reactive({
-    
     H <- diag(length(n()))
     diag(H) <- c(0, rep(input$hrate, times = length(n())-1))
     return(H)
@@ -234,14 +249,16 @@ server <- function(input, output) {
   
   # vector of number of yy supermales stocked each year
   nYY <- reactive({
-    
     return(c(input$num_yy,0,0,0))
     })
   
   
   
+  # ==============================================================
+  # CREATE PLOT
+  # ==============================================================
   
-   
+  
    output$distPlot <- renderPlot({
        
        # inputs taken from reactive expressions
@@ -250,12 +267,18 @@ server <- function(input, output) {
        xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size < 1)), no = NaN)
        
        z %>% ggplot(aes(x = 1:length(pop_size),y=pop_size)) + geom_line(size = 1.05) +
-         geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Population Size") +
+         geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Number of Females") +
          scale_color_manual(name = "Extirpation", values = "red") +
          theme(legend.position = c(.9,.9),
                panel.border = element_rect(colour = "gray", fill=NA, size=1))
    })
-       
+  
+  # ==============================================================
+  # Render details md file
+  # ==============================================================
+  output$markdown <- renderUI({
+    HTML(markdown::markdownToHTML(knit('details.rmd', quiet = TRUE)))
+  })
       
        
 
