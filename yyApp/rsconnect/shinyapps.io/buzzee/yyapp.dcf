@@ -1,0 +1,10 @@
+name: yyapp
+title:
+username:
+account: buzzee
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 361203
+bundleId: 1430460
+url: https://buzzee.shinyapps.io/yyapp/
+when: 1529015257.91559

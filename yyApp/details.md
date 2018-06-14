@@ -25,13 +25,13 @@ Assumptions:
  
 
 
-__Example__: Suppose there are 1000 Age 2 females, each of which produces 5 females. Without YY males, 5000 Age 1 females would be produced next year. After introducing YY males, suppose 200 survive to age 2, and "50% of them successfuly mate with their age." The following year only 900 females will create 5 female offspring, so 4500 Age 1 females are produced the next year.
+__Example__: Suppose there are 1000 Age 2 females, each of which produces 5 females. Without YY males, 5000 Age 1 females would be produced next year. Suppose instead 200 YY males are in the same age class, and "50% of them successfuly mate with their age." The following year only 900 females will create 5 female offspring, so 4500 Age 1 females are produced the next year. This is how the YY supression is modeled.
 
 ## Thoughts
 
 Once the number of stocked YY males multplied by the percent that successfully mate outnumbers the number of females in that age class, no females are produced from that point on, and it takes several years for the remaining female pike to die off. This is why there is little difference between 1000 yy males and 10,000.
 
-Assumptions 4 and 5 are probably the least realistic assumptions.
+Assumptions 4 and 5 are probably the least realistic assumptions. If we introduce randomness, we need to know how variable things should be. It would be very easy to introduce too many unknowns.
 
 
 

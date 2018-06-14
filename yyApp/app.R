@@ -277,7 +277,7 @@ server <- function(input, output) {
   # Render details md file
   # ==============================================================
   output$markdown <- renderUI({
-    HTML(markdown::markdownToHTML(knit('details.rmd', quiet = TRUE)))
+    HTML(markdown::markdownToHTML(knit('details.Rmd', quiet = TRUE)))
   })
       
        
