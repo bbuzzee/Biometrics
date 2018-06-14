@@ -43,4 +43,4 @@ The matrix model formulation for logistic growth is taken from A.L. Jensen (1995
 
 Harvests are implemented by redefining the post-harvest vector of abundances to n - H*n where n is the vector of age abundances and H is a diagonal matrix with element [1,1] equal to zero since age 1's are not harvested. The other diagonal elements are the proportion harvested each year.
 
-All the code is available at: https://github.com/bbuzzee/Biometrics/blob/master/Population%20Modeling/yyApp.R
+All the code is available at: https://github.com/bbuzzee/Biometrics/blob/master/yyApp/app.R
