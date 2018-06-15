@@ -19,7 +19,7 @@ ui <- fluidPage(
   # create and place all buttons and graphs in this section
   # we can use inputs inside of reactive functions by referring to their inputId in the server section
   
-   titlePanel("Pike Supression Models"),
+   titlePanel("Pike Supression Modeling"),
   
    
    
@@ -98,14 +98,14 @@ ui <- fluidPage(
                 
                 numericInput(inputId = "num_yy",
                              label = "Number of Age 1 YY males stocked each year",
-                             value = 100),
+                             value = 200),
                 
                 sliderInput(inputId = "materate",
-                            label = "% of YY's that succesfuly mate with their age",
-                            min = 0, max = 1, value = .75),
+                            label = "Probability of Successful YY Fertilization",
+                            min = 0, max = 1, value = .5),
                 sliderInput(inputId = "hrate",
                             label = "% of age 2+ harvested each year",
-                            min = 0, max = 1, value = .5)
+                            min = 0, max = 1, value = .25)
 
          )
          
@@ -118,7 +118,7 @@ ui <- fluidPage(
    
 
    
-   tabPanel("Modeling Details",
+   tabPanel("Model Details",
             uiOutput('markdown'))
   )
 ) # end page
@@ -138,7 +138,7 @@ server <- function(input, output) {
   # grow_pop is the primary modeling function. It is non-reactive (takes no inputs directly from ui)
   # outputs a vector of population sizes
   
-  grow_pop <- function(n, A, K, H, nYY, pYY = 1, growth = 1){
+  grow_pop <- function(n, A, K, H, nYY, pYY = .5, growth = 1){
     
     # n is the vector of intial age-class abundances of reproducing females
     # A is the leslie matrix - fecundity is the per capita number of females produced by each age class
@@ -157,8 +157,7 @@ server <- function(input, output) {
     N <- NULL
     out <- matrix(0, nrow = length(n), ncol = 25)
     
-    # this is the effective number of fit males stocked
-    nYY <- nYY*pYY
+    # determine the random proportion that successfully mate
 
     
     for (i in 1:25){
@@ -175,7 +174,11 @@ server <- function(input, output) {
       # effectively zeroes out fecundity
       # find assumptions and requirements and see if reasonable
       
-      age_p <- ifelse(nYY/n <= 1, nYY/n, 1)
+      # Model mating as a bernoulli proccess
+
+      sYY <- rbinom(n = 1, p = pYY, size = nYY)
+      
+      age_p <- ifelse(sYY/n <= 1, sYY/n, 1)
       sup_mat[1,] <- A[1,]*(1-age_p)
       
       
@@ -263,14 +266,18 @@ server <- function(input, output) {
        
        # inputs taken from reactive expressions
        z <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
+       z2 <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
+       z3 <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
        
        xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size < 1)), no = NaN)
        
-       z %>% ggplot(aes(x = 1:length(pop_size),y=pop_size)) + geom_line(size = 1.05) +
+       z %>% ggplot(aes(x = 1:length(pop_size), y = pop_size)) + geom_line(size = 1.05) +
          geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Number of Females") +
          scale_color_manual(name = "Extirpation", values = "red") +
          theme(legend.position = c(.9,.9),
-               panel.border = element_rect(colour = "gray", fill=NA, size=1))
+               panel.border = element_rect(colour = "gray", fill=NA, size=1)) +
+         geom_line(data = z2, aes(x = 1:length(pop_size), y = pop_size), size = 1.05, color = "blue") +
+       geom_line(data = z3, aes(x = 1:length(pop_size), y = pop_size), size = 1.05, color = "blueviolet")
    })
   
   # ==============================================================
