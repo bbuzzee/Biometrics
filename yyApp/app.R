@@ -15,14 +15,16 @@ library(knitr)
 ui <- fluidPage(
    
   
-  # user interface
+  # ==============================================================
+  # DEFINE USER INTERFACE LAYOUT
+  # ==============================================================
+  
+  
   # create and place all buttons and graphs in this section
   # we can use inputs inside of reactive functions by referring to their inputId in the server section
   
    titlePanel("Pike Supression Modeling"),
   
-   
-   
    
      tabsetPanel(
        tabPanel("Plot", plotOutput("distPlot"),
@@ -31,6 +33,7 @@ ui <- fluidPage(
    # create one row, each element is a column of inputs
 
         fluidRow(
+          
           
          # column 1
          column(3,
@@ -71,6 +74,7 @@ ui <- fluidPage(
          ),
          
          
+         
          # column 3
          column(3,
                 
@@ -89,6 +93,7 @@ ui <- fluidPage(
                       label = "Age 1 produced by Age 5+",
                       value = 15)
          ),
+         
          
          
          # column 4
@@ -112,7 +117,7 @@ ui <- fluidPage(
          
          
          
-        ) # widget row
+        ) # end widget row
          
         ), # end panel
    
@@ -120,7 +125,9 @@ ui <- fluidPage(
    
    tabPanel("Model Details",
             uiOutput('markdown'))
-  )
+  
+   ) # end tabsetPanel
+  
 ) # end page
 
       
@@ -145,7 +152,7 @@ server <- function(input, output) {
     # K is the carrying capacity in terms of female fish
     # H is the harvest matrix: The diagonal elements are the percent of each age class harvested each year
     # nYY is the vector of initial YY male abundances - must be same length as n, and it is assumed the same number are stocked each year
-    # ** pYY is the proportion of the nYY stock that are deemed fit - assumed all successfully mate - CHANGE??
+    # pYY is the probability a YY male successfully pairs with a female - same for all YY males
     
     
     # sup_mat is to become the A matrix with fecundity supressed
@@ -156,8 +163,7 @@ server <- function(input, output) {
     I <- diag(length(n))
     N <- NULL
     out <- matrix(0, nrow = length(n), ncol = 25)
-    
-    # determine the random proportion that successfully mate
+    total_YY <- nYY
 
     
     for (i in 1:25){
@@ -168,15 +174,14 @@ server <- function(input, output) {
       
       # the number of females that emerge next year will be reduced by
       # the percent of females that paired with YY males
-      # The original fecundity rates are the ones that need to be suppressed each year by a potentially different number of YY males
-      
-      # BIG NOTE: this method implies a maximum (relatively low) number beyond which stocking more YY is not longer useful
-      # effectively zeroes out fecundity
-      # find assumptions and requirements and see if reasonable
+      # The original fecundity rates are the ones that need to be suppressed each year
+      # by a potentially different number of 'successful' YY males
       
       # Model mating as a bernoulli proccess
-
-      sYY <- rbinom(n = 1, p = pYY, size = nYY)
+      
+      # sYY is the total number of YY males that are successful
+      sYY <- rbinom(n = 1, p = pYY, size = total_YY)
+      
       
       age_p <- ifelse(sYY/n <= 1, sYY/n, 1)
       sup_mat[1,] <- A[1,]*(1-age_p)
@@ -192,6 +197,7 @@ server <- function(input, output) {
         # the carrying capacity. Otherwise the numbers shoot off to +- infinity = NAN
         n <- n + ((K-N[i])/K)*(sup_mat - I)%*%n
       
+        
       }else{
         # exponential growth matrix formulation
         n <- sup_mat%*%n
@@ -203,12 +209,13 @@ server <- function(input, output) {
       n <- n - H%*%n
       
       
-      # a year passes and apply survival rates to YY males (same as females) and add new stock
+      # next years YY stock consists of a new stock of age 1's plus those that survived from previous years
       # zero fecundity since they produce no females
-      # next years YY stock consists of a group of pYY-suppressed yearlings plus those that survived from previous years
+      
       B <- A
       B[1,] <- rep(0, times = length(B[1,]))
-      nYY <- nYY + B%*%nYY
+      
+      total_YY <- nYY + B%*%total_YY
       
     }
     
@@ -392,7 +399,6 @@ shinyApp(ui = ui, server = server)
 # 
 # sum(z$out[,12])
 # plot(z$pop_size)
-# 
 # diag(A) <- 0
 
 
@@ -405,15 +411,21 @@ shinyApp(ui = ui, server = server)
 
 
 
-
-
-
-
-
-
-
-
-
+# A[1,] <- rep(0, times= 4)
+# diag(A) <- 0
+# A[4,4] <- .6
+# 
+# 
+# 
+# 
+# nYY <- c(100,0,0,0)
+# 
+# bYY <- c(0,0,0,0)
+# 
+# for (i in 1:10){
+#   bYY <- nYY + A%*%bYY
+#   print(bYY)
+# }
 
 
 
