@@ -103,14 +103,14 @@ ui <- fluidPage(
                 
                 numericInput(inputId = "num_yy",
                              label = "Number of Age 1 YY males stocked each year",
-                             value = 200),
+                             value = 1000),
                 
                 sliderInput(inputId = "materate",
                             label = "Probability of Successful YY Fertilization",
                             min = 0, max = 1, value = .5),
                 sliderInput(inputId = "hrate",
                             label = "% of age 2+ harvested each year",
-                            min = 0, max = 1, value = .25)
+                            min = 0, max = 1, value = .4)
 
          )
          
@@ -180,11 +180,18 @@ server <- function(input, output) {
       # Model mating as a bernoulli proccess
       
       # sYY is the total number of YY males that are successful
-      sYY <- rbinom(n = 1, p = pYY, size = total_YY)
+      sYY <- rbinom(n = 1, p = pYY, size = round(sum(total_YY)))
       
       
-      age_p <- ifelse(sYY/n <= 1, sYY/n, 1)
-      sup_mat[1,] <- A[1,]*(1-age_p)
+      # this is the proportion of females that pair off with YY males
+      supress_rate <- sYY/N[i]
+      
+      # this suppression rate applies to all age classses, so we need a vector 
+      supress_vec <- rep(ifelse(supress_rate  <= 1, supress_rate, 1), times = nrow(A))
+      
+      # implicit assumption that YY males mate uniformly across age classes
+      # apply suppression rate to fecundity values
+      sup_mat[1,] <- A[1,]*(1-supress_vec)
       
       
       if(growth == 1){
@@ -273,8 +280,6 @@ server <- function(input, output) {
        
        # inputs taken from reactive expressions
        z <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
-       z2 <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
-       z3 <- grow_pop(n=n(), A=A(), H=H(), nYY = nYY(), pYY = input$materate, K = input$K, growth = input$growth)
        
        xint <- ifelse(test = is.finite(min(which(z$pop_size < 1))), yes = min(which(z$pop_size < 1)), no = NaN)
        
@@ -282,9 +287,7 @@ server <- function(input, output) {
          geom_vline(aes(xintercept = xint, color = paste("Year:", xint)), show.legend=T) + xlab("Year") + ylab("Number of Females") +
          scale_color_manual(name = "Extirpation", values = "red") +
          theme(legend.position = c(.9,.9),
-               panel.border = element_rect(colour = "gray", fill=NA, size=1)) +
-         geom_line(data = z2, aes(x = 1:length(pop_size), y = pop_size), size = 1.05, color = "blue") +
-       geom_line(data = z3, aes(x = 1:length(pop_size), y = pop_size), size = 1.05, color = "blueviolet")
+               panel.border = element_rect(colour = "gray", fill=NA, size=1)) 
    })
   
   # ==============================================================

@@ -19,9 +19,8 @@ Assumptions:
  1. We introduce a fixed number of YY males each year, all of Age 1.
  2. A fixed proportion of age 2+ females (no YY males) are harvested every year.
  3. YY males and wild females share the same survival rates.
- 4. YY males only fertilize eggs from females that are in the same age class.
- 5. Fertilization happens pairwise, meaning a male successfully fertilizes 100% of only one females eggs.
- 6.  __Probability of Successful YY Fertilization__ is the probability a YY male successfully fertilizes 100% of one females eggs. No females will be produced when a YY male successfuly fertilizes the eggs.
+ 4. Fertilization happens pairwise, meaning a male successfully fertilizes 100% of only one females eggs.
+ 5.  __Probability of Successful YY Fertilization__ is the probability a YY male successfully fertilizes 100% of one females eggs. No females will be produced when a YY male successfuly fertilizes the eggs.
 
 ### Possible Improvements
 
