@@ -1,0 +1,103 @@
+---
+title: "King Salmon Sizes"
+author: "Ben Buzzee"
+date: "April 4, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(gridExtra)
+```
+
+# The Data
+
+We will look at Chinook salmon age, sex, and length data collected from 1970 to 2012 in eastern Cook Inlet (District 244) by the commercial fish division of the ADFG.
+
+# Step 1: Plotting and Data Exploration
+
+```{r cars}
+# https://knb.ecoinformatics.org/view/doi:10.5063/F18K77BT
+
+kings <- read.csv("ASL_Eastside_Chinook.csv")
+
+
+kings <- kings %>% separate(col = sampleDate, into = c("year", "month", "day"))
+colnames(kings) <- tolower(colnames(kings))
+
+kings <- kings[!is.na(kings$sex) & !is.na(kings$length),]
+
+d <- kings[kings$length>= 1500,]
+
+# boxplot(kings$length)
+
+# everything is constant except the selected variables
+kings_len <- kings %>% select(year, sex, fresh.water.age, salt.water.age, length) %>% group_by(year, sex) %>%
+  summarize(mean_len = mean(length, na.rm = T),
+            mean_salt_age = mean(salt.water.age, na.rm = T),
+            mean_fresh_age = mean(fresh.water.age, na.rm = T),
+            mean_age = mean(salt.water.age + fresh.water.age, na.rm = T),
+            prop_fresh2 = sum(fresh.water.age==2, na.rm = T)/length(fresh.water.age),
+            n = n()
+  )
+
+
+
+
+
+
+theme1 <- theme(axis.text.x = element_text(angle = 60, hjust = 1))
+
+plot1 <- kings_len %>% ggplot(aes(x=year, y = mean_len, group = sex, col = sex)) + geom_line() + labs(title= "Mean Length", x = "Year", y = "Length (mm)") + theme1
+
+plot2 <- kings_len %>% ggplot(aes(x=year, y = mean_age, group = sex, col = sex)) + geom_line() + labs(title= "Mean Total Age", x = "Year", y = "Age") + theme1 
+
+plot3 <- kings_len %>% ggplot(aes(x=year, y = mean_salt_age, group = sex, col = sex)) + geom_line() + labs(title= "Mean Saltwater Age", x = "Year", y = "Age") + theme1
+
+plot4 <- kings_len %>% ggplot(aes(x=year, y = prop_fresh2, group = sex, col = sex)) + geom_line() + labs(title= "Proportion of Freshwater Age 2", x = "Year", y = "Proportion") + theme1
+
+
+grid.arrange(plot1, plot2, ncol=1, nrow = 2)
+```
+
+\newpage
+
+```{r, include = FALSE}
+grid.arrange(plot3, plot4, ncol=1, nrow = 2)
+```
+
+
+### Comments on plots
+By visually inspecting the data we can see that there seems to be a very strong correlation between length and age, which is to be expected. We also see that male and female fish
+seem to be following different trends. Both males and females seemed to decline in age and size in the late 90s and early 2000s. Since then, females have recovered back to their long run average, and males have continued to decline.
+
+The decline in size and age of males appears to be quite significant. Compared to the 1980s, male chinook salmon appear to be 6 months to 1 year younger and 100mm - 200mm smaller, on average.
+
+## Data Quality Check
+```{r, }
+
+kings_len %>% ggplot(aes(x=year, y=n, fill = sex)) + geom_bar(stat = "identity") + labs(x = "Year", y = "Count", title = "Observations per year") + theme1
+
+```
+
+\newpage
+```{r, fig.height=4, fig.width = 4, fig.align="center"}
+kings %>% ggplot(aes(y=length)) + geom_boxplot() + labs(title = "Boxplot of all measured lengths") + geom_hline(yintercept = 1473, color = "red")
+```
+
+The current world record caught on the Kenai in 1985 was 58 inches, represented by the red line above. 2000 mm is roughly 6.5 feet. Did someone accidently add a zero to a few observations? Perhaps, but this is commericial fishing data dating back to the 70s. All of the 1500+mm fish were supposedly caught between 1984 and 1988.
+
+
+
+## Research Questions:
+
+Is the apparent decline in sizes of males statistically significant? Could it reasonably be attributed to noise?
+
+Can we take advantage of any lagged linear relationships to accurately forecast the direction of future declines?
+```{r}
+
+```
+
+
+
