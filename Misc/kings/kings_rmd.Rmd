@@ -9,13 +9,17 @@ output: pdf_document
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(tidyverse)
 library(gridExtra)
+library(urca)
+library(tseries)
 ```
 
 # The Data
 
-We will look at Chinook salmon age, sex, and length data collected from 1970 to 2012 in eastern Cook Inlet (District 244) by the commercial fish division of the ADFG.
+Chinook salmon are a pillar of the Cook Inlet sport fishery. As someone who is new to the area, I've heard a lot about the decline in size and numbers of the species. We will look at Chinook salmon age, sex, and length data collected from 1970 to 2012 in eastern Cook Inlet (District 244) by the commercial fish division of the ADFG to see if there are any trends and if forecasting future lengths is possible.
 
 # Step 1: Plotting and Data Exploration
+
+As a first step in our time series analysis we will take a look at the raw data.
 
 ```{r cars}
 # https://knb.ecoinformatics.org/view/doi:10.5063/F18K77BT
@@ -74,7 +78,7 @@ seem to be following different trends. Both males and females seemed to decline 
 
 The decline in size and age of males appears to be quite significant. Compared to the 1980s, male chinook salmon appear to be 6 months to 1 year younger and 100mm - 200mm smaller, on average.
 
-## Data Quality Check
+# Data Quality Check
 ```{r, }
 
 kings_len %>% ggplot(aes(x=year, y=n, fill = sex)) + geom_bar(stat = "identity") + labs(x = "Year", y = "Count", title = "Observations per year") + theme1
@@ -95,9 +99,60 @@ The current world record caught on the Kenai in 1985 was 58 inches, represented 
 Is the apparent decline in sizes of males statistically significant? Could it reasonably be attributed to noise?
 
 Can we take advantage of any lagged linear relationships to accurately forecast the direction of future declines?
+
+
+# Stationarity
+
+First we will check both the time series for males and females to see if the data is stationary.
 ```{r}
+
+ts_male <- kings_len %>% filter(sex == "male")
+ts_fem <- kings_len %>% filter(sex == "female")
+
+# null is that there is a unit root implying a random walk
+kpss_males <- kpss.test(ts_male$mean_len, null = "Trend")
+
+kpss_males
+
+
+kpss_females <- kpss.test(ts_fem$mean_len, null = "Trend")
+
+kpss_females
+
 
 ```
 
+The null null hypothesis for both tests is that the time series is trend stationary. With p-values > .1, we fail to reject the null hypothesis.
+
+# Model Order
+
+To explore possible lagged relationships, we will take a look at ACF, PACF, and CCF plots.
+
+## ACF and PACF Plots
+
+```{r}
+par(mfrow = c(1,2))
+acf(ts_male$mean_len, lag.max = 100, main = "ACF Male Lengths")
+acf(ts_fem$mean_len, lag.max = 100, main = "ACF Female Lengths")
 
 
+pacf(ts_male$mean_len, lag.max = 100, main = "PACF Male Lengths")
+pacf(ts_fem$mean_len, lag.max = 100, main = "PACF Female Lengths")
+```
+
+## Interpretation of ACF and PACF plots
+
+For males, we see the ACF plot tailing off, and the PACF abrubtly cut off after a lag of 1. This may be a sign that an AR(1) model could be a good model for this time series. For female Chinook, there appears to be no discernable lagged relationship. 
+\newpage
+
+## CCF Plots
+
+```{r}
+par(mfrow = c(2,2))
+ccf(ts_male$mean_len, ts_male$mean_age, lag.max = 100, main = "Males Length vs Male Age")
+ccf(ts_fem$mean_len, ts_fem$mean_age, lag.max = 100, main = "Female Length vs Female Age")
+ccf(ts_male$mean_len, ts_fem$mean_age, lag.max = 100, main = "Males Length vs Female Age")
+ccf(ts_fem$mean_len, ts_male$mean_age, lag.max = 100, main = "Female Length vs Male Age")
+```
+
+We see from the CCF plot there is a clear and strong correlation between age and length. There may also be some ability to forecast future male lengths using previous values of their age.
