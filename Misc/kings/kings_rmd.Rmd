@@ -11,13 +11,18 @@ library(tidyverse)
 library(gridExtra)
 library(urca)
 library(tseries)
+library(forecast)
+library(astsa)
+library(vars)
 ```
 
-# The Data
+# Background
 
-Chinook salmon are a pillar of the Cook Inlet sport fishery. As someone who is new to the area, I've heard a lot about the decline in size and numbers of the species. We will look at Chinook salmon age, sex, and length data collected from 1970 to 2012 in eastern Cook Inlet (District 244) by the commercial fish division of the ADFG to see if there are any trends and if forecasting future lengths is possible.
+Chinook salmon are a pillar of the Cook Inlet sport fishery. As someone who is new to the area, I've heard a lot about the decline in size and numbers of the species. We will look at Chinook salmon age, sex, and length data collected from 1970 to 2012 in eastern Cook Inlet (District 244) by the commercial fish division of the ADFG to see if there are any trends and if forecasting the mean length of future returns is possible.
 
-# Step 1: Plotting and Data Exploration
+The data and documentation can be found at:https://knb.ecoinformatics.org/view/doi:10.5063/F18K77BT
+
+# Plotting and Data Exploration
 
 As a first step in our time series analysis we will take a look at the raw data.
 
@@ -37,7 +42,7 @@ d <- kings[kings$length>= 1500,]
 # boxplot(kings$length)
 
 # everything is constant except the selected variables
-kings_len <- kings %>% select(year, sex, fresh.water.age, salt.water.age, length) %>% group_by(year, sex) %>%
+kings_len <- kings %>% dplyr::select(year, sex, fresh.water.age, salt.water.age, length) %>% group_by(year, sex) %>%
   summarize(mean_len = mean(length, na.rm = T),
             mean_salt_age = mean(salt.water.age, na.rm = T),
             mean_fresh_age = mean(fresh.water.age, na.rm = T),
@@ -72,7 +77,7 @@ grid.arrange(plot3, plot4, ncol=1, nrow = 2)
 ```
 
 
-### Comments on plots
+## Comments on plots
 By visually inspecting the data we can see that there seems to be a very strong correlation between length and age, which is to be expected. We also see that male and female fish
 seem to be following different trends. Both males and females seemed to decline in age and size in the late 90s and early 2000s. Since then, females have recovered back to their long run average, and males have continued to decline.
 
@@ -90,7 +95,7 @@ kings_len %>% ggplot(aes(x=year, y=n, fill = sex)) + geom_bar(stat = "identity")
 kings %>% ggplot(aes(y=length)) + geom_boxplot() + labs(title = "Boxplot of all measured lengths") + geom_hline(yintercept = 1473, color = "red")
 ```
 
-The current world record caught on the Kenai in 1985 was 58 inches, represented by the red line above. 2000 mm is roughly 6.5 feet. Did someone accidently add a zero to a few observations? Perhaps, but this is commericial fishing data dating back to the 70s. All of the 1500+mm fish were supposedly caught between 1984 and 1988.
+The current world record caught on the Kenai in 1985 was 58 inches, represented by the red line above. 2000 mm is roughly 6.5 feet. I'm extremely suspicious of the observations above the line. But all of the 1500+mm fish were supposedly caught between 1984 and 1988 and don't affect the trend over the last couple decades.
 
 
 
@@ -101,32 +106,35 @@ Is the apparent decline in sizes of males statistically significant? Could it re
 Can we take advantage of any lagged linear relationships to accurately forecast the direction of future declines?
 
 
-# Stationarity
+# Stationarity and Trends
 
-First we will check both the time series for males and females to see if the data is stationary.
+First we will check the length time series' for males and females to see if the time series are stationary and if there is any statistically significant trend.
+
+__ADF Test for Males__:
 ```{r}
 
 ts_male <- kings_len %>% filter(sex == "male")
 ts_fem <- kings_len %>% filter(sex == "female")
 
-# null is that there is a unit root implying a random walk
-kpss_males <- kpss.test(ts_male$mean_len, null = "Trend")
-
-kpss_males
 
 
-kpss_females <- kpss.test(ts_fem$mean_len, null = "Trend")
-
-kpss_females
-
-
+summary(ur.df(ts_male$mean_len, selectlags = "AIC", type = "trend"))
 ```
 
-The null null hypothesis for both tests is that the time series is trend stationary. With p-values > .1, we fail to reject the null hypothesis.
+With a test statistic of -4.54, we can reject the null hypothesis that male chinook lengths are characterized by a random walk. And with a test statistic of 10.87, we also find statistically signficant evidence of a time trend.
+
+__ADF Test for Females__:
+
+```{r}
+summary(ur.df(ts_fem$mean_len, selectlags = "AIC", type = "trend"))
+```
+
+With a test statistic of -2.318 and p-value of .0297, we also find that female chinook lengths are not characterized by a random walk. 
+
 
 # Model Order
 
-To explore possible lagged relationships, we will take a look at ACF, PACF, and CCF plots.
+To explore possible lagged autoregressive relationships, we will take a look at ACF and PACF plots.
 
 ## ACF and PACF Plots
 
@@ -135,7 +143,10 @@ par(mfrow = c(1,2))
 acf(ts_male$mean_len, lag.max = 100, main = "ACF Male Lengths")
 acf(ts_fem$mean_len, lag.max = 100, main = "ACF Female Lengths")
 
-
+```
+\newpage
+```{r}
+par(mfrow = c(1,2))
 pacf(ts_male$mean_len, lag.max = 100, main = "PACF Male Lengths")
 pacf(ts_fem$mean_len, lag.max = 100, main = "PACF Female Lengths")
 ```
@@ -145,9 +156,93 @@ pacf(ts_fem$mean_len, lag.max = 100, main = "PACF Female Lengths")
 For males, we see the ACF plot tailing off, and the PACF abrubtly cut off after a lag of 1. This may be a sign that an AR(1) model could be a good model for this time series. For female Chinook, there appears to be no discernable lagged relationship. 
 \newpage
 
+
+
+## Simple AR Model
+Next we will check the ability of a simple model to forecast future mean lengths. We will fit AR(1) models to both male and female lengths and compare to a simple time trend model. We will judge each model by out-of-sample MSE.
+
+Note: Red is the one-year-ahead AR(1) forcasted mean length, black is the observed mean length, green is a linear model with time as the explanatory variable.
+```{r fig.align = "center"}
+ts_m <- ts(ts_male$mean_len)
+ts_f <- ts(ts_fem$mean_len)
+
+traindata_m <- ts_m[1:20]
+testdata_m <- ts_m[21:29]
+traindata_f <- ts_f[1:20]
+testdata_f <- ts_f[21:29]
+
+
+in_fit_m <- Arima(traindata_m, order = c(1,0,0))
+in_fit_mean <- Arima(traindata_m, order = c(0,0,0), xreg = 1:20)
+in_fit_flm <- Arima(traindata_f, order = c(0,0,0), xreg = 1:20)
+in_fit_f <- Arima(traindata_f, order = c(1,0,0))
+
+
+out_fit_m <- Arima(testdata_m, model = in_fit_m)
+out_fit_mean <- Arima(testdata_m, model = in_fit_mean, xreg = 1:9)
+out_fit_flm <- Arima(testdata_f, model = in_fit_mean, xreg = 1:9)
+out_fit_f <- Arima(testdata_f, model = in_fit_f)
+
+
+
+par(mfrow = c(2,2))
+
+plot(fitted(in_fit_m), ylim = c(600, 1000), col = "red", main = "In Sample Male Fit")
+lines(traindata_m)
+lines(fitted(in_fit_mean), col = "green")
+
+plot(fitted(out_fit_m), ylim = c(600, 1000), col = "red", main = "Out of Sample Male Fit")
+lines(testdata_m)
+lines(fitted(out_fit_mean), col = "green")
+
+
+plot(fitted(in_fit_f), ylim = c(600, 1000), col = "red", main = "In of Sample Female Fit")
+lines(traindata_f)
+lines(fitted(in_fit_flm), col = "green")
+
+plot(fitted(out_fit_f), ylim = c(600, 1000), col = "red", main = "Out of Sample Female Fit")
+lines(testdata_f)
+lines(fitted(in_fit_flm), col = "green")
+
+
+```
+
+
+## MSE & Testing for Model Deterioration
+```{r, fig.align="center"}
+in_mse_mean <- mean(in_fit_mean$residuals^2)
+in_mse_flm <- mean(in_fit_flm$residuals^2)
+in_mse_m <- mean(in_fit_m$residuals^2)
+in_mse_f <- mean(in_fit_f$residuals^2)
+
+out_mse_flm <- mean(out_fit_flm$residuals^2)
+out_mse_mean <- mean(out_fit_mean$residuals^2)
+out_mse_m <- mean(out_fit_m$residuals^2)
+out_mse_f <- mean(out_fit_f$residuals^2)
+
+f_stats <- c(out_mse_mean/in_mse_mean, out_mse_flm/in_mse_flm, out_mse_m/in_mse_m, out_mse_f/in_mse_f)
+p_vals <- 1-pf(f_stats, 9, 20)
+mse <- data.frame(model = c("Time Trend Males", "Time Trend Females", "AR(1) Males", "AR(1) Female"),
+                  in_sample_mse = c(in_mse_mean, in_mse_flm, in_mse_m, in_mse_f),
+                  out_of_sample_mse = round(c(out_mse_mean, out_mse_flm, out_mse_m, out_mse_f), 2),
+                  f_stats = round(f_stats, 2),
+                  p_vals = round(p_vals,2))
+
+
+knitr::kable(mse)
+```
+
+
+After conducting and F-Test for model deterioration, we see that all the models deteriorated somewhat. Using a significane level of  of .05, we would fail to reject the null that the in-sample and out-of-sample MSEs are different for the linear time trend model for female chinook and the AR(1) model for male chinook.
+
+# Multivariate Analysis
+
+Next we will see if we can improve our forecast by incorporating any lagged linear relationships among age and length. To explore this possibility we will look at CCF plots.
+
 ## CCF Plots
 
-```{r}
+
+```{r fig.align="center"}
 par(mfrow = c(2,2))
 ccf(ts_male$mean_len, ts_male$mean_age, lag.max = 100, main = "Males Length vs Male Age")
 ccf(ts_fem$mean_len, ts_fem$mean_age, lag.max = 100, main = "Female Length vs Female Age")
@@ -155,4 +250,56 @@ ccf(ts_male$mean_len, ts_fem$mean_age, lag.max = 100, main = "Males Length vs Fe
 ccf(ts_fem$mean_len, ts_male$mean_age, lag.max = 100, main = "Female Length vs Male Age")
 ```
 
-We see from the CCF plot there is a clear and strong correlation between age and length. There may also be some ability to forecast future male lengths using previous values of their age.
+We see from the CCF plot there is a clear zero-lag correlation between age and length within sex. There may also be some ability to forecast future male lengths using previous values of their age.
+
+Based on the above plots, I do not expect for there to be any lagged relationship between age and length. We can check what would happen if we tried to fit a model anyway:
+
+```{r}
+
+
+var_df_m <- ts_male[,c("mean_len", "mean_age")]
+var_df_f <- ts_fem[,c("mean_len", "mean_age")]
+
+varselm <- VARselect(var_df_m, lag.max =  15)
+varself <- VARselect(var_df_f)
+
+
+par(mfrow = c(1,2))
+plot(varselm$criteria[1,], type = "l", main = "AIC Selection Criteria (Males)", xlab = "Lag")
+plot(varself$criteria[1,], type = "l", main = "AIC Selection Criteria  (Females)", xlab = "Lag")
+```
+
+
+Both selection criteria shoot off to -Infinity at lag 9. This suggests a problem with calaculating the AIC (the same occurs for other the selection criteria) and is not indicative of a selected model order. We can try fitting a simple VAR model just to see what happens. First for male chinook with length as the response:
+
+
+
+```{r}
+var_fit_m <- VAR(var_df_m, p = 1)
+var_fit_f <- VAR(var_df_m, p = 1)
+
+
+
+summary(var_fit_m$varresult$mean_len)
+```
+
+We see that only a constant and a lag of length is signficant, which is just an AR(1) model.
+
+Next we can try the same for females with length as the response:
+
+```{r}
+summary(var_fit_f$varresult$mean_len)
+```
+
+Again, there is no lagged relationship with age.
+
+
+## Conclusion
+
+
+From our ADF test, we can conclude that male chinook lengths are not characterized by a random walk. Further, we found evidence of a statistically significant downward trend. We found that a simple AR(1) model provided improved forecasts over a simple time trend model. In exploring possible lagged relationships between length and age, we did not find any.
+
+
+Likewise for female chinook we found their length time series was not a random walk. For their time series, however, a simple time trend offered superior forecasting ability over an AR(1) model. For female chinook as well, there was no meaninful lagged relationship between age and length.
+
+As a next step we could look into incorporate environement variables in our analysis to improve forecastability and explore possible causal relationships.
