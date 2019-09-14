@@ -1,0 +1,111 @@
+---
+title: "Homework 2"
+author: "Ben Buzzee"
+date: "September 10, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+
+# 1. Depression Therapy
+
+
+## (a)
+
+First we will graph the data to visually compare scores and get ourselves oriented:
+
+```{r}
+H <- read.csv("hamilton.txt", sep = " ")
+
+preX <- H$X
+postY <- H$Y
+
+plot(preX, col = "red", main = "Pre and Post Therapy Hamilton Scores", ylab = "score")
+points(postY, col = "blue")
+legend("topleft", legend = c("pre-therapy", "post-therapy"), col = c("red", "blue"), pch = 1)
+
+```
+
+Next we will compute a Wilcoxon Rank Test.
+
+```{r}
+wilcox.test(preX, postY, alternative = "greater")
+```
+
+With a test statistic of 58 and p-value of .066, we would fail to reject the null hypothesis at the .05 significance level. But because our significance level is arbitrary, we could intrepret this result as evidence that post-therapy hamiliton scores are lower. To draw a formal conclusion we would need to know the power of the test and whether the assumptions are valid, as well as whether there is any practical difference between a p-value of .05 and .066.
+
+## (b)
+
+Next we will change observation 3 to 16.2 and repeat the test above.
+
+```{r, echo = F}
+preX[3] <- 16.2
+```
+
+
+
+```{r}
+wilcox.test(preX, postY, alternative = "greater")
+```
+
+After changing the value of $X_3$, we end up with a test statistic of 60 and p-value of .046, and we would rejec the null hypothesis at the .05 level. However, both .046 and .066 could be considered evidence that post-therapy hamilton scores are lower than pre-therapy scores. I think this highlights the need to interpret p-values in terms of a gradient instead of a binary decision.
+
+## (c)
+
+To change the results of the test significantly, we will change the value of $X_1$ to .8. This was the largest difference in scores observed in favor of lower post-therapy scores. 
+```{r}
+preX[3] <- 1.62
+preX[1] <- .8
+
+wilcox.test(preX, postY, alternative = "greater")
+```
+
+We see that this change about doubles the p-value of the original hypothesis test. 
+
+
+## (d)
+
+From b & c we see that individual outliers can have a major effect on p-values. We would need to be very confident in our data collection methods to trust the results.
+
+
+# 2. Addressing 0's
+
+
+## (a) & (b)
+
+We will compare two approaches to handling zero-difference observations. In the first approach, we will remove the zeros from our dataset. In the second approach, we will change the zeros into small negative numbers. This will zero out those observations when we compute the test statistic and err on the side of the null hypothesis. The following table was constructed after performing both tests:
+```{r, results= F}
+zero <- c(2.5, 3.7, 0.0, -0.6, 4.7, 0.0, 1.4, 0.0, 1.9, 5.2)
+
+rmZero <- zero[c(1,2,4,5,7,9,10)]
+
+negZero <- c(2.5, 3.7, -0.1, -0.6, 4.7, -0.3, 1.4, -0.2, 1.9, 5.2)
+
+wilcox.test(rmZero, alternative = "greater")
+
+```
+
+
+
+```{r, results=FALSE}
+wilcox.test(negZero, alternative = "greater")
+```
+
+
+
+```{r}
+method <- c("Remove zeros","Replace w/ negative number")
+pvals <- c(.0156, .042)
+test_stats <- c(27, 45)
+
+
+knitr::kable(data.frame(method, pvals, test_stats))
+```
+
+
+We see that using the conservative approach increases the p-value but would not change the results of a hypothesis test at a .05 significance level
