@@ -1,0 +1,72 @@
+---
+title: "Pike_det_probs"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(Removal)
+library(kableExtra)
+library(knitr)
+options(knitr.table.format = "html") 
+#plot CPUE vrs cumulative catch
+df_remove <- plyr::ldply(1:12, remove_df, data = dat_remove) %>% dplyr::as.tbl()
+
+
+
+#Hierarchical Model for K
+#data
+jags_dat <- list(y = df_remove$y, x = df_remove$x, sample = as.numeric(as.factor(df_remove$experiment)))
+#paramaters
+params <- c("beta0", "beta1", "sigma", "m_beta0", "m_beta1", "pred_beta1", "a", "b")
+#MCMC settings
+nc <- 3
+nb <- 4000
+nt <- 2
+ns <- nb * nt
+#model
+
+# requires model.txt document in same place as .rmd file
+
+post <- jagsUI::jags(data = jags_dat,
+             parameters.to.save = params,
+             model.file = "model.txt",
+             n.chains = nc,
+             n.iter = ns,
+             n.burnin = nb,
+             n.thin = nt,
+             parallel = F)
+
+
+
+
+
+# Hierarchical K
+m_beta1 <- Removal:::getpost("m_beta1", 3)
+nclass <- nclass.scott(m_beta1)
+
+# Hierarchical K quantiles
+quantile(m_beta1, c(0.05, 0.1, 0.5, .9, .95))
+
+# Predicted K
+pred_beta1 <- Removal:::getpost("pred_beta1", 3)
+nclass <- nclass.scott(pred_beta1)
+
+# Predicted K quantiles
+quantile(pred_beta1, c(0.05, 0.1, 0.5, .9, .95))
+
+```
+
+
+
+```{r out, echo=FALSE}
+nets <- Removal:::detprob(k = quantile(pred_beta1, probs = .5), netdensity = c(0.1, 0.25, 0.5,.75, 1, 2), hours = c(24, 48, 72, 96), population = 20)
+knitr::kable(format(round(nets, digits = 3), scientific = FALSE)) %>%  kable_styling(bootstrap_options = "striped", full_width = F, font_size = 12) %>%
+  add_header_above(c("","Net Densities" = 6)) %>% column_spec(1, bold = T, border_right = T)
+```
+
+

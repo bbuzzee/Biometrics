@@ -1,0 +1,39 @@
+,Drainage,Waterbody.Name,Description,Latest.Survey.Results,Threat.Ranking,Primary.Ranking.Criteria,Surface.acres,Surface.Hectares,Minimum.Netting.Effort.When.Native.Fish.Are.Not.A.Concern,Minimum.Netting.Effort.When.Native.Fish.Are.A.Concern,Minimum.eDNA.Sampling.Effort.When.Netting.Is.Not.Allowed.or.Restricted,net_hours_4_fish_80_prob,net_hours_4_fish_50_prob,net_hours_20_fish_80_prob,net_hours_20_fish_50_prob
+1,Soldotna Creek,Sevena Lake,Treated with rotenone in June of 2016 and 2017.,No pike detected in 2017 net survey following rotenone treatment,High,1C,76,30.8,NA,NA,NA,1529,658.5,305.8,131.7
+2,Soldotna Creek,Tree Lake,"Winterkill prone, pike last confirmed in 2000",No pike caught in net or eDNA surveys in 2015,Medium,2E,68.4,27.7,NA,NA,NA,1376.1,592.6,275.2,118.5
+3,Soldotna Creek,Union Lake,Treated with rotenone in 2014 when last pike were confirmed,"No pike detected in net survey, single edNA detection in 2017",High,1C,84,34,NA,NA,NA,1689.9,727.8,338,145.6
+4,Soldotna Creek,West Mackey Lake,Treated with rotenone in 2014 when last pike were confirmed,No pike detected in net and eDNA surveys in 2017 ,High,1C,183.7,74.3,NA,NA,NA,3695.7,1591.6,739.1,318.3
+5,Soldotna Creek,East Mackey Lake,Treated with rotenone in 2014 when last pike were confirmed,No pike detected in net and eDNA surveys in 2017 ,High,1C,100.3,40.6,NA,NA,NA,2017.8,869,403.6,173.8
+6,Soldotna Creek,Derks Lake,Treated with rotenone in 2014 when last pike were confirmed,"No pike detected in net survey, 50% eDNA detections in 2017",High,1C,37.4,15.1,NA,NA,NA,752.4,324,150.5,64.8
+7,Soldotna Creek,Loon Lake,"Treated with rotenone in August 2017, pike last confirmed in June, 2017",No pike detected in October 2017 survey,High,1C,21,8.5,NA,NA,NA,422.5,182,84.5,36.4
+8,Soldotna Creek,Tiny Lake,Intensively netted in 2011 when last pike was confirmed,No pike detected in net and eDNA survey 2013,Medium,2C,5.5,2.2,NA,NA,NA,110.6,47.7,22.1,9.5
+9,Soldotna Creek,Derks Pond,Treated with rotenone in 2014,No pike caught in 2017 survey,High,1C,2,0.8,NA,NA,NA,40.2,17.3,8,3.5
+10,Tote Road Drainage,Leisure Lake,"Pike detected in net survey 2006, scheduled for 2018 rotenone treatment",Pike detected in net survey 2006,High,1C,11.1,4.5,NA,NA,NA,223.3,96.2,44.7,19.2
+11,Tote Road Drainage,Leisure Pond,"Pike detected in net survey 2017, scheduled for 2018 rotenone treatment",Pike detected in net survey 2017,High,1C,1.5,0.6,NA,NA,NA,30.2,13,6,2.6
+12,Tote Road Drainage,Hope Lake,"Pike detected in net survey 2017, scheduled for 2018 rotenone treatment",Pike detected in net survey 2017,High,1C,26.9,10.9,NA,NA,NA,541.2,233.1,108.2,46.6
+13,Tote Road Drainage,Ranchero Lake,"Pike detected in net survey 2013, scheduled for 2018 rotenone treatment",Pike detected in net survey 2013,High,1C,7.7,3.1,NA,NA,NA,154.9,66.7,31,13.3
+14,Tote Road Drainage,Crystal Lake,"Pike detected in net survey 2013, scheduled for 2018 rotenone treatment",Pike detected in net survey 2013,High,1C,16.7,6.8,NA,NA,NA,336,144.7,67.2,28.9
+15,Tote Road Drainage,CC lake,"Pike detected in net survey 2013, scheduled for 2018 rotenone treatment",Pike detected in net survey 2013,High,1C,4.5,1.8,NA,NA,NA,90.5,39,18.1,7.8
+16,Tote Road Drainage,Fred's Lake,"Pike detected in net survey 2013, scheduled for 2018 rotenone treatment",Pike detected in net survey 2013,High,1C,6.1,2.5,NA,NA,NA,122.7,52.9,24.5,10.6
+17,Tote Road Drainage,G Lake,"Pike detected in net survey 2017, scheduled for 2018 rotenone treatment",Pike detected in net survey 2017,High,1C,17.3,7,NA,NA,NA,348,149.9,69.6,30
+18,Tote Road Drainage,Orphea Lake,"No pike detected in net survey, single eDNA detection 2017","No pike detected in net survey, single eDNA detection 2017",Medium,2F,53,21.4,NA,NA,NA,1066.3,459.2,213.3,91.8
+19,Tote Road Drainage,Lingren Pond,No surveys conducted,No surveys conducted,High,1A,1,0.4,NA,NA,NA,20.1,8.7,4,1.7
+20,Tote Road Drainage,Oxford Ave. Pond,Unverified report of pike capture in 2012,Unverified report of pike capture in 2012,Medium,2D,3.5,1.4,NA,NA,NA,70.4,30.3,14.1,6.1
+21,Swanson River Draiange,Stormy Lake,Treated with roteneone in 2012 when last pike were confirmed,No pike caught in net survey 2017,Medium,2C,403,163.1,NA,NA,NA,8107.5,3491.7,1621.5,698.3
+22,Swanson River Draiange,Crane Lake,Periodic pike rumors in area,No pike caught in net survey 2017,Medium,2D,51,20.6,NA,NA,NA,1026,441.9,205.2,88.4
+23,Swanson River Draiange,Middle Crane Lake West,Periodic pike rumors in area,No pike caught in net or eDNA survey 2017,Medium,2D,38,15.4,NA,NA,NA,764.5,329.2,152.9,65.8
+24,Swanson River Draiange,Middle Crane Lake East,Periodic pike rumors in area,No pike caught in net or eDNA survey 2017,Medium,2D,36,14.6,NA,NA,NA,724.2,311.9,144.8,62.4
+25,,Salmo Pond,,,,2D,30.6,12.4,NA,NA,NA,615.6,265.1,123.1,53
+26,Swanson River Draiange,Snipe Lake,Periodic pike rumors in area,No pike caught in net survey 2017,Medium,2D,128,51.8,NA,NA,NA,2575.1,1109,515,221.8
+27,Swanson River Draiange,Salmo Lake,Periodic pike rumors in area,No pike caught in net survey 2017,Medium,2D,125,50.6,NA,NA,NA,2514.7,1083,502.9,216.6
+28,Closed Stocked Lake,Scout Lake,Treated with rotneone in 2009 when last pike were confirmed,No pike caught in 2010 net survey,Medium,2 C,85,34.4,NA,NA,NA,1710,736.5,342,147.3
+29,Moose River,Kelly Lake,Periodic pike rumors in area,No pike caught in net survey 2014,Medium,2G,146,59.1,NA,NA,NA,2937.2,1265,587.4,253
+30,Moose River,Peterson Lake,Periodic pike rumors in area,No pike caught in net survey 2001,Medium,2G,92,37.2,NA,NA,NA,1850.9,797.1,370.2,159.4
+31,Moose River,Imeri Lake,Periodic pike rumors in area,No pike caught in net survey 2001,Medium,2G,16.5,6.7,NA,NA,NA,331.9,143,66.4,28.6
+32,Moose River,Afonsai Lake,Periodic pike rumors in area,No pike caught in net survey 2001,Medium,2G,112,45.3,NA,NA,NA,2253.2,970.4,450.6,194.1
+33,Moose River,Watson Lake,Periodic pike rumors in area,No pike caught in net survey 2001,Medium,2G,58,23.5,NA,NA,NA,1166.8,502.5,233.4,100.5
+34,Moose River,Engumen Lake,Periodic pike rumors in area,No pike caught in net survey 2001,Medium,2G,32,12.9,NA,NA,NA,643.8,277.3,128.8,55.5
+35,Miscellaneous Lakes,Warfle Lake,Intensively netted in spring 2011 when last pike was confirmed,No pike caught in net survey 2017,High,1C,7.5,3.1,NA,NA,NA,150.9,65,30.2,13
+36,Miscellaneous Lakes,Independence Road Ponds,No information,No information,Low,3A,NA,NA,NA,NA,NA,NA,NA,NA,NA
+37,,Arc Lake,Treated with rotneone in 2008 when last pike were confirmed,No pike caught in 2009 net survey,Low,3A,18,7.3,NA,NA,NA,362.1,156,72.4,31.2
+38,Miscellaneous Lakes,Hall Lake,Intensively netted in 2011 when last pike was confirmed,No pike caught in net survey 2017,Medium,2C,42.7,17.3,NA,NA,NA,859,370,171.8,74

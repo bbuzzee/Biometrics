@@ -1,0 +1,23 @@
+
+    model {
+    for (i in 1:12){
+      beta0[i] ~ dnorm(0, .001)
+      #beta1[i] ~ dnorm(m_beta1, p_beta1)T(, 0)
+      beta1[i] ~ dbeta(a, b)
+      }
+    #m_beta1 ~ dnorm(0, 0.001)T(, 0)
+    #p_beta1 <- 1/se_beta1/se_beta1
+      #se_beta1 ~ dexp(0.001)
+    a ~ dunif(0.1, 100)
+    b ~ dunif(0.1, 100)
+    m_beta1 <- a / (a + b)
+    pred_beta1 ~ dbeta(a, b)
+    tau <- 1/sigma/sigma
+      sigma ~ dexp(0.01)
+
+    for (i in 1:126){
+      y[i] ~ dnorm(mu[i], tau)
+      mu[i] <- beta0[sample[i]] - beta1[sample[i]] * x[i]
+      }
+    }
+    

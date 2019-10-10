@@ -1,0 +1,251 @@
+---
+title: "Salmon Permits for 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+All data is taken from the permit_records and harvest_records sheets in the original excel document. First we'll check counts:
+```{r}
+# Script to recreate the 2017 Salmon Harvest estimates
+
+
+#=====================================================================
+# Read in and examine the data
+#=====================================================================
+
+
+library(tidyverse)
+
+# Data Source: S:\RTS\common\Pat\Permits\Shrimp\2017\SHRIMP PERMITS 2017.XLS
+# I saved individual copies of the two following sheets to my project folder
+
+harvest <- read.csv("../data/harvest_records_18.csv", header = T, nrow = 26989, stringsAsFactors = FALSE, skip = 1)
+permits <- read.csv("../data/permit_records_18.csv", header = T, nrow = 23734)
+
+
+
+# change all variable names to lower (personal preference)
+names(harvest) <- tolower(names(harvest))
+names(permits) <- tolower(names(permits))
+
+
+
+
+# KASILOF DIPNET OR GILLNET
+
+# convert harvdate to date format
+harvest$harvdate <- as.Date(harvest$harvdate, format = "%m/%d/%Y")
+harvest <- harvest %>% filter(!is.na(harvdate))
+
+is_gillnet_date <- (harvest$harvdate >= as.Date("6/15/2018", format = "%m/%d/%Y")) & (harvest$harvdate <= as.Date("6/24/2018", format = "%m/%d/%Y"))
+
+# convert everything to dipnet, then switch to gillnet by date
+harvest$fishery[harvest$fishery == "KASILOF"] <- "KASILOF DIPNET"
+harvest$fishery[harvest$fishery == "KASILOF DIPNET" & is_gillnet_date] <- "KASILOF GILLNET"
+
+class(harvest$harvdate)
+
+# make it so each row is one permit-fishery and their harvest totals
+harvest <- harvest %>% group_by(permit, fishery) %>% summarise(red = sum(red), king = sum(king), coho = sum(coho), pink = sum(pink), chum = sum(chum), flounder = sum(flounder))
+
+
+
+
+# calculate counts for each mailing type as well as each mailing-status combination
+# and verify that they match the counts in the excel document
+
+mail_counts <- permits %>% group_by(mailing) %>% summarise(count = n())
+
+#sum across all dates to get total fishing effort per permit and fishery
+
+mail_counts <- rbind(mail_counts, c("total", sum(mail_counts$count)))
+knitr::kable(mail_counts)
+```
+
+```{r vendor}
+
+o <- 624
+
+p <- as.numeric(mail_counts$count[1])/as.numeric(mail_counts$count[5])
+
+M <- as.numeric(mail_counts[5,2])
+
+N_hat <- o*(1/p) + M
+
+non_respond <- N_hat - sum(as.numeric(mail_counts$count[1:3]))
+
+N_hat
+```
+
+
+So we have `r round(non_respond)` estimated non-respondents with mailing = 9.
+Note: There are 9 permits that have mailing status = 9 and have harvest reported.
+
+
+
+Next, to get w_hat, I found the proportion of those with mailing = 1 or 2 that reported fishing. I did this overall, not by fishery.
+
+```{r}
+
+# join harvest and permit sheets so one row has permit, fishery, total harvest-per-species, as well as mailing and status
+# This implicitly assumes each permit has just one unique mailing/status
+
+# note this is the master dataframe for people that harvested
+
+
+nc <- permits %>% filter(mailing %in% c(2))
+
+w_hat <- nc %>% group_by(status) %>% summarize(n())
+
+n_w_hat <- sum(w_hat[,2])
+w_hat <- 1-sum(w_hat[1:2,2])/sum(w_hat[,2])
+
+
+w_var <- w_hat*(1-w_hat)/n_w_hat
+
+
+knitr::kable(data.frame("w_hat" = w_hat))
+
+# w_hat <- .76
+
+
+```
+
+For all of those that had mailing = 2 and reported their harvest, I found the average number of salmon taken at each fishery. 
+
+```{r}
+
+master_df <- left_join(harvest, permits, by = c("permit")) %>% select(1:8, mailing, status, city)
+# FIND AVG HARVEST FOR NONCOMPLIANTS THAT REPORTED FISHING ====================================
+
+noncompl_sum <- master_df %>% filter(mailing %in% c(1,2)) %>% group_by(permit, fishery) %>% summarise(red = sum(red), king = sum(king), coho = sum(coho), pink = sum(pink), chum = sum(chum), flounder = sum(flounder))
+
+# We want to find the average number of fish taken at each fishery across all permits. To do this we make permit-species the key, and counts at each fishery the values. By grouping by species, we end up averaging across all permits within a species.
+
+df <- noncompl_sum %>% gather("species", "count", 3:8)
+
+df <- df %>% spread(key = fishery, value = count, fill = 0)
+
+h_var <- df[,-1] %>% group_by(species) %>% summarise_all(var)
+
+df <- df[,-1] %>% group_by(species) %>% summarise_all(mean)
+
+
+df
+```
+
+
+Then I multipled that dataframe by the estimated number of nonrespondents that fished (w_hat*7663) resulting in:
+
+```{r}
+
+non_respond_fished <- non_respond*w_hat
+
+
+
+
+est_totals <- df[,-1]*non_respond_fished
+row.names(est_totals) <- df$species
+
+
+est_totals
+
+```
+
+Then we add the above dataframe to the known totals below to get total estimated harvest:
+```{r}
+reported_totals <- master_df %>% group_by(fishery) %>% summarise(red = sum(red), king = sum(king), coho = sum(coho), pink = sum(pink), chum = sum(chum), flounder = sum(flounder))
+
+
+#reorient the reported totals so we can add the dataframe of reported total to the dataframe of estimated totals
+
+reported_totals2 <- reported_totals[,2:7]
+row.names(reported_totals2) <- reported_totals$fishery
+reported_totals2 <- t(reported_totals2)
+reported_totals2 <- reported_totals2[order(row.names(reported_totals2)),]
+
+
+colnames(est_totals) <- colnames(reported_totals2)
+
+
+round(est_totals + reported_totals2)
+```
+
+Just about a match. Need to account for vendor issue, and count blank reports as non-respondents.
+
+
+```{r}
+# Find the variance
+
+
+# h_var
+# w_var
+
+
+
+
+# var(h*w) 
+
+names_h <- h_var[,1]
+
+var_hw <- df[,-1]^2*w_var + w_hat^2*h_var[,-1] - w_var*h_var[,-1]
+
+Ndf <- sum(as.numeric(mail_counts$count[3:4]))
+# sqrt(var_hw*non_respond)
+sd_final <- sqrt(var_hw*Ndf)
+
+row.names(sd_final) <- names_h$species
+sd_final 
+```
+
+And the reported totals were:
+
+```{r}
+reported_totals
+```
+
+
+# Subsistence permits by city
+```{r}
+head(master_df)
+
+
+# recreate columns B-E of by-city excel document
+issued <- permits %>% group_by(city) %>% summarize(permits_issued = n(),
+                                         permits_returned = sum(mailing %in% c(0,1,2)),
+                                         permits_not_returned = sum(mailing == 9),
+                                         permits_fished = sum(status == "HARVEST REPORTED"),
+                                         no_return_but_fished = round(permits_not_returned*w_hat, 2))
+
+# calculate reported totals
+reported <- master_df %>% group_by(city) %>% summarise(red = sum(red),
+                                                       king = sum(king),
+                                                       coho = sum(coho),
+                                                       pink = sum(pink), 
+                                                       chum = sum(chum),
+                                                       flounder = sum(flounder))
+                                                       
+
+
+subsistence_master <- left_join(issued, reported, by = "city")
+
+
+subsistence_master <- subsistence_master %>% mutate(exp_reds = red + no_return_but_fished*red/permits_fished,
+                                      exp_kings = king + no_return_but_fished*king/permits_fished,
+                                      exp_coho = coho+ no_return_but_fished*coho/permits_fished,
+                                      exp_pink = pink + no_return_but_fished*pink/permits_fished,
+                                      exp_chum = chum + no_return_but_fished*chum/permits_fished,
+                                      exp_flounder = flounder + no_return_but_fished*flounder/permits_fished)
+
+subsistence_master[,12:18] <- round(subsistence_master[,12:18], 0)
+
+
+subsistence_master
+
+write.csv(subsistence_master, file = "PU By city.csv", na = "0")
+```
+

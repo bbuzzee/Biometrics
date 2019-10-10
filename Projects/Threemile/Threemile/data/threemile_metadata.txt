@@ -1,0 +1,48 @@
+Introductory Information:
+
+This data was collected as part of a mark-recapture study on the Threemile lake complex in Beluga, AK. 
+The goal was to estimate the number of northern pike >= 300mm present to serve as a reference after future suppression efforts. 
+
+
+Filenames: 
+
+"mark_data_raw" is the raw data from the mark event. The first 7 columns represent all the data from the "mark" event.
+"recap_dissection_raw" is the raw data from the recap event, all fish caught during the recap event were brought to shore and measured/dissected
+"mark_data_raw" and "recap_dissection_raw" were combined into "clean_mr_data" to use in the abundance estimate.
+Duplicate copies in .csv format were created so the files could be easily read into R
+
+
+Name/Instituiton/Address/Principal Investigators:
+
+Who conoducted the study?: ADFG and the Tyonek Tribal Conservation District
+Date of Data Collection: 6/1/2018 - 6/27/2018, the 'mark' event took place during 6/1/2018-6/10/2018 and the 'recap' event took place from  6/21/2018-6/30/2018
+Location: Threemile Lake Complex, Beluga, AK
+When was the data file created?: Around 7/11/2018
+Keywords: Northern Pike, Invasive Species, Alaska, Threemile, Tyonek, Coho Salmon, Sockeye Salmon, Beluga, Cook Inlet
+
+Methodological Information:
+
+The lake was divided into roughly equally sized sections. Each section was fished with gillnets and hook & line.
+The same number of gillnets and same soaktimes were used in each section, and the nets were spread out uniformly. Four anglers
+fished each section (two from shore, two from boat) and systematically worked their way around the permiter of each section. Each section 
+was fished for a total of two days during both the mark and recapture events.
+
+(add link to op plan)
+
+Data-Specific Information:
+
+Variable full names and descriptions:
+
+    Section: Section of the lake, see ADFG op plan - the main lake was broken into thirds, labelled 1, 2, and 3 with the southern-most section labeled 1 and northern-most 3,
+    lower lilly 4, west lake was 5, and upper lily was section 6.
+    Fork Length: Length from tip of snout to fork in tail, measured to nearest mm
+    Tag #: During the mark event, each fish was tagged with a unique 4 digit identifier.
+
+Data Quality:
+
+
+Sharing/Access Information
+
+    Links to publications that cite or use the data
+    Links to other publicly accessible locations of the data
+

@@ -1,0 +1,48 @@
+---
+title: "Permit Theory"
+author: "Ben Buzzee, Biometrician, ADFG"
+date: "December 19, 2018"
+output: word_document
+---
+
+
+
+
+First, we observe that the total number of permits issued can be split into three groups:
+
+
+$N = N_c + N_2 + N_{nr}$
+
+
+
+where:
+
+* $N_c$ is the number of compliant households that responded without a reminder or after the first reminder
+* $N_2$ is the number of households that responded after the second reminder
+* $N_{nr}$ is the number of households that never responded.
+
+We will assume that $N_2 + N_{nr}$ is a population of "noncompliant" households and $N_2$ is a random sample from said population. Further, note that $N_c$, $N_2$ and the harvests from those households are fixed and known. We only need to estimate the harvest of households that never responded.
+
+
+Since the households making up $N_2$ are a random sample, both $N_2$ and $N_{nr}$ share the same population mean harvest and proportion of permit holders that fished. So we will use observations from $N_2$ to estimate those parameters. From the households making up $N_2$, we will estimate:
+
+* $\hat{w}$ as the proportion of $N_2$ that participated in fishing: $\hat{w}$ = $\frac{n_{2f}}{N_2}$ where $n_{2f}$ is the number of households responding to the second reminder (mailing = 2) that reported fishing.
+* and $\bar{h}$ as the average harvest __among those that fished__: $\bar{h} = \frac{\sum_{i=1}^{n_{2f}} (h_i)}{n_{2f}}$ over households 
+$i=1, 2,..., n_{2f}$
+
+And by the central limit theorem:
+
+$\hat{w}$ follows a $N(w, \frac{\sigma^2}{N_2})$ distribution with $\hat{var}(\hat{w}) = \frac{\hat{w}(1-\hat{w})}{N_2}$
+
+and $\bar{h}$ is $N(h, \frac{\sigma^2}{n_{2f}})$ with $\hat{var}(\bar{h}) = \frac{s^2}{n_{2f}}$ where $s^2 = \Sigma_{i=1}^{n_{2f}}\frac{(h_i - \bar{h})^2}{n_{2f}-1}$
+
+So the estimated number of non-respondents that fished is: $\hat{N}_{nrf} = N_{nr}\hat{w}$ and the estimated total harvest by non-respondents is $\hat{H}_{nrf} = \hat{N}_{nrf}\bar{h}$. Our estimated variance of the harvest estimate is then:
+
+$\hat{var}(\hat{H}_{nrf}) = \hat{var}(\hat{N}_{nrf}\bar{h}) =  \hat{var}({N_{nr}\hat{w}\bar{h})} = N_{nr}^2\hat{var}(\hat{w}\bar{h}) =$
+
+$N_{nr}^2[\bar{h}^2\hat{var}(\hat{w}) + \hat{w}^2\hat{var}(\bar{h}) - \hat{var}(\hat{w})\hat{var}(\bar{h})]$ by Goodman (1960)
+
+Finally, our estimated total harvest would be $H_c + H_2 + \hat{H}_{nrf}$ where both $H_c$ and $H_2$ are known. Since they are both known, the total variance would be the same as above.
+
+
+

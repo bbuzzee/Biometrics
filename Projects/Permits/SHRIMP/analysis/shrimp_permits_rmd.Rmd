@@ -1,0 +1,248 @@
+---
+title: "Shrimp Permits"
+author: "Ben Buzzee, Biometrician, ADFG"
+date: "July 27, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# NOTE TO SELF: double  check that reported fishign == "harvest reported"
+```
+
+
+
+```{r init, echo = FALSE, include = FALSE}
+library(tidyverse)
+
+harvest <- read.csv("harvest_records_17.csv", header = T, nrows = 10687)
+permits <- read.csv("permit_records_17.csv", header = T)
+
+names(harvest) <- tolower(names(harvest))
+names(permits) <- tolower(names(permits))
+harvest$harvdate <- as.character(harvest$harvdate)
+
+harvest <- harvest %>% mutate(reported_fishing = 1)
+
+
+# rm_jay <- c(10733,
+#             12311,
+#             10733,
+#             13037,
+#             10414)
+# 
+# rm_date <- c("4/15/2017",
+#              "7/5/2017",
+#              "4/16/2017",
+#              "7/16/2017",
+#              "5/31/2017")
+# 
+# 
+# 
+# harvest <- harvest %>% filter((permit %in% rm_jay))
+
+harv_na <- apply(X = harvest, MAR = 2, FUN = function(x){any(is.na(x))})
+data.frame(missing_values = harv_na)
+
+
+permit_na <- apply(X = permits, MAR = 2, FUN = function(x){any(is.na(x))})
+data.frame(missing_values = permit_na)
+
+
+
+```
+
+
+## Tables of Counts
+
+
+First we will look at some tables to get a sense of the data we are starting with.
+
+Counts by mailing status:
+```{r counts, echo=FALSE}
+
+mail_cnts <- permits %>% group_by(mailing) %>% summarise(count = n())
+knitr::kable(mail_cnts)
+
+
+```
+
+Counts by combinations of mailing and reporting status:
+```{r}
+status_cnts <- permits %>% group_by(mailing, status) %>% summarise(count = n())
+knitr::kable(status_cnts)
+
+```
+```{r}
+
+status_cnts <- status_cnts %>% filter(status != "BLANK REPORT")
+
+status_cnts[1,3] <- 634
+status_cnts[3,3] <- 238
+```
+
+## Important Quantities in Formulas
+
+*Important: A "noncompliant" household is interpeted as a household with a mailing status of either 2 or 9,
+and "compliant households" have a mailing status of 0 or 1. I also assumed each household had only one permit and one mailing status.
+
+```{r}
+# number of noncompliant (mailing == 2) households responding to the second reminder that reported fishing
+ndf <- status_cnts %>% filter(mailing == 2, status == "HARVEST REPORTED") %>% ungroup() %>% select(count) %>% as.integer()
+
+
+# total number of noncompliant households responding to the second reminder (mailing == 2)
+nd <- status_cnts %>% filter(mailing == 2) %>% ungroup() %>% select(count) %>% sum() %>% as.integer()
+Nd <- status_cnts %>% filter(mailing %in% c(2,9)) %>% ungroup() %>% select(count) %>% sum() %>% as.integer()
+
+# estimated proportion of non-respondents that fished
+w_hat <- ndf/nd
+
+
+N <- sum(mail_cnts$count)
+
+
+# Ncf2 <- status_cnts %>% filter((mailing == 0 | mailing == 1) & status == "HARVEST REPORTED") %>% ungroup() %>% select(count) %>% sum()
+# Ncz2 <- status_cnts %>% filter((mailing == 0 | mailing == 1)  & status == "DID NOT FISH") %>% ungroup() %>% select(count) %>% sum()
+# Ndf2 <- (N - (Ncf2 + Ncz2))*w_hat
+# Ndf2 <- ndf + Ndf
+
+
+# counts of all the people we know did or did not fish
+# Ncf <- status_cnts %>% filter((mailing == 0 | mailing == 1 | mailing == 2) & status == "HARVEST REPORTED") %>% ungroup() %>% select(count) %>% sum()
+# Ncz <- status_cnts %>% filter((mailing == 0 | mailing == 1 | mailing == 2)  & status == "DID NOT FISH") %>% ungroup() %>% select(count) %>% sum()
+
+
+
+# N - Ncf - Ncz = 283, equals 279 non-respondents plus 4 blank reports
+# Ndf is the estimated number of mailing = 9 that fished
+
+
+Ndf <- Nd*w_hat
+# Ndf <- (N - Ncf - Ncz)*w_hat
+# 
+# Ndz <- N - Ncf - Ncz - Ndf
+
+
+
+
+ndf_d <- "number of households with mailing = 2 and status = 'harvest reported'"
+
+nd_d <- "total number of households with mailing = 2"
+
+w_hat_d <- "ndf/nd"
+
+N_d <- "count of all households that recieved mailing status of either 0, 1, 2, or 9"
+
+# Ncf_d <- "count of households that had status = 'harvest reported' and mailing status 0 or 1"
+
+# Ncz_d <-  "count of households that had status = 'did not fish' and mailing status 0 or 1"
+
+Ndf_d <- "(N - (Ncf + Ncz))*w_hat, estimated count of mailing = 9 households that fished"
+
+# Ndz_d <- "N - Ncf - Ncz - Ndf, estimated count of mailing = 9 that did not fish"
+
+# metric_tabl <- data.frame(Metric = c("ndf", "nd", "w_hat", "N", "Ncf", "Ncz", "Ndf", "Ndz"),
+#                           Value = c(ndf, nd, w_hat, N, Ncf, Ncz, Ndf, Ndz),
+#                           Description = c(ndf_d, nd_d, w_hat_d, N_d, Ncf_d, Ncz_d, Ndf_d, Ndz_d))
+# metric_tabl$Value <- round(metric_tabl$Value, 2)
+# 
+# 
+# knitr::kable(metric_tabl)
+
+```
+
+
+Next I joined the harvest data and the permit data by permit number. Shrimp and pot days become the totals (sum) for that permit. I did this so I'd have a dataframe with permit number, pot_days, shrimp gallons, mailing status and harvest status all together. The dataframe looks like this:
+```{r}
+
+
+permit_dat <- full_join(harvest, permits, by = "permit") %>% group_by(permit) %>%
+  summarize(pot_days = sum(pot_days), shrimp = sum(shrimp), mailing = unique(mailing), status = unique(status), reported_fishing = unique(reported_fishing))
+
+permit_dat
+# permit_dat$pot_days[which(is.na(permit_dat$pot_days))] <- 0
+# permit_dat$shrimp[which(is.na(permit_dat$shrimp))] <- 0
+# PROBLEM! 
+# unique(permit_dat$status)
+
+
+
+```
+
+This results in a dataframe with one row per permit in the permit records data sheet. There were `r length(unique(permits$permit))` permits in the permit excel sheet, and `r length(unique(harvest$permit))` in the harvest sheet.
+
+More quantities used in the final formulas:
+
+```{r}
+# calculate harvest and effort for compliant households.
+Hcf_gals <- permit_dat %>% filter((mailing == 0 | mailing == 1)  & !is.na(shrimp)) %>% select(shrimp) %>% sum()
+Hcf_days <- permit_dat %>% filter((mailing == 0 | mailing == 1)  & !is.na(pot_days)) %>% select(pot_days) %>% sum()
+
+
+# calculate mean harvest and effort from those that responded to the second request
+hdf_gals<- permit_dat %>% filter(mailing == 2, !is.na(shrimp), status == "HARVEST REPORTED") %>% select(shrimp) %>% summarize(mean = mean(shrimp)) %>% as.numeric()
+hdf_days <- permit_dat %>% filter(mailing == 2, !is.na(pot_days), status == "HARVEST REPORTED") %>% select(pot_days) %>% summarize(mean = mean(pot_days)) %>% as.numeric()
+
+
+# Should the variance formulas in equations 12 and 13 in the op plan have hats on them?
+VAR_gals <- permit_dat %>% filter(mailing == 2, !is.na(shrimp), status == "HARVEST REPORTED") %>% select(shrimp) %>% summarize(sd = var(shrimp)) %>% as.numeric()
+VAR_days <-  permit_dat %>% filter(mailing == 2, !is.na(pot_days), status == "HARVEST REPORTED") %>% select(pot_days) %>% summarize(sd = var(pot_days)) %>% as.numeric()
+
+
+# multiply the means of respondents of the second request by the number that failed to respond
+# to get an estimate of the total harvest and effort by non-respondents
+
+Hdf_gals <- (Ndf)*hdf_gals
+Hdf_days <- (Ndf)*hdf_days
+
+
+
+Name <- c("Hcf", "hdf", "VAR", "Hdf")
+Desc <- c("Total for households with mailing = 0, 1, or 2",
+          "Mean for mailing = 2 AND status = 'HARVEST REPORTED'",
+          "Variance for mailing = 2 AND status = 'HARVEST REPORTED'",
+          "Ndf x hdf")
+
+Value_gal <- round(c(Hcf_gals, hdf_gals, VAR_gals, Hdf_gals))
+Value_days <- round(c(Hcf_days, hdf_days, VAR_days, Hdf_days))
+
+estimates_df <- data.frame(Estimate = Name, Description = Desc, Value_gal, Value_days)
+
+
+knitr::kable(estimates_df)
+```
+
+
+## Final Estimates
+
+```{r}
+
+tot_gal <- Hcf_gals + Hdf_gals
+tot_days <-  Hcf_days + Hdf_days
+
+
+# I think ndf/Ndf is incorrect because its larger than 1 
+
+var_hdf_gal <- (Ndf-ndf)/(Ndf-1)*(VAR_gals/ndf)
+var_hdf_days <- (Ndf-ndf)/(Ndf-1)*(VAR_days/ndf)
+
+var_what <- (Nd - nd)/(Nd-1)*(w_hat*(1-w_hat)/(nd-1))
+var_Ndf <- Nd^2*var_what
+
+total_var_gal <- Ndf^2*var_hdf_gal + hdf_gals^2*var_Ndf - var_hdf_gal*var_Ndf
+total_var_days <- Ndf^2*var_hdf_days + hdf_gals^2*var_Ndf - var_hdf_days*var_Ndf
+
+
+se_gal <- round(sqrt(total_var_gal), 2)
+se_days <- round(sqrt(total_var_days), 2)
+
+
+knitr::kable(data.frame(`Estimated Totals` = c(tot_gal, tot_days), `Standard Errors` = c(se_gal, se_days)))
+
+
+
+
+```
+
