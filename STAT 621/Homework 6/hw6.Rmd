@@ -1,0 +1,45 @@
+---
+title: "Homework 6"
+author: "Ben Buzzee"
+date: "October 23, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(splines)
+```
+
+
+
+# 1. Spline Regression
+
+```{r, include = FALSE}
+ozone <- read.csv("ozone.txt", sep = "\t")
+
+oz <- ozone$ozone
+temp <- ozone$temp
+```
+
+## (a)
+```{r}
+x.pred <- seq(from = 50, to = 100, length.out = 111)
+
+plot(temp, oz)           
+lines(x.pred, predict(lm(oz~ns(temp, df= 1), data = ozone), data.frame(temp= x.pred)), col='red', lwd=1)
+lines(x.pred, predict(lm(oz~ns(temp, df= 4), data = ozone), data.frame(temp= x.pred)), col='blue', lwd=1, lty = 2)
+lines(x.pred, predict(lm(oz~ns(temp, df= 10), data = ozone), data.frame(temp= x.pred)), col='purple', lwd=1, lty = 3)
+legend("topleft", legend = c("df = 1", "df = 3", "df = 10"), col = c("red", "blue", "purple"), lty = 1:3)
+```
+
+From the above plot I'd guesstimate that about 4 degrees of freedom is sufficient.
+
+```{r}
+fit.ss=smooth.spline(ozone$temp, ozone$oz, cv=T, all.knots=T)
+pred.ss <- predict(fit.ss, x.pred)
+plot(temp, oz)
+lines(x.pred, predict(lm(oz~ns(temp, df = 4), data = ozone), data.frame(temp= x.pred)), col='blue', lwd=1, lty = 2)
+lines(pred.ss$x, pred.ss$y, col = "red")
+```
+
+And from the above plot we see that my initial guess was fairly close to what was chosen via cross validation. I did make my initial guess as someo
