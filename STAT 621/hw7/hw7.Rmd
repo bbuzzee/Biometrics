@@ -1,0 +1,101 @@
+---
+title: "Homework 7"
+author: "Ben Buzzee"
+date: "11/7/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(MASS) 
+library(ISLR) 
+library(e1071) 
+library(caret) 
+library(klaR)
+```
+
+$ 1. 
+```{r cars}
+heart <- read.csv("heart.txt", sep = "\t")
+train <- sample(1:nrow(heart), size = 347)
+heart.train <-  heart[train,]
+heart.test <- heart[-train,]
+
+heart.train$chd <- as.factor(heart.train$chd)
+heart.test$chd <- as.factor(heart.test$chd)
+```
+
+## (a) Logistic Classifier
+
+```{r}
+logit <- glm(chd ~ ., data = heart.train, family = "binomial")
+
+p <- predict.glm(logit, newdata = heart.test, type = "response")
+logistic.pred <- factor(as.numeric(p>0.5))
+confusionMatrix(data = logistic.pred, reference = heart.test$chd)
+```
+
+## (b) Naive Bayes 
+```{r}
+nb <- NaiveBayes(chd ~ ., data = heart.train, usekernel=T)
+nb.pred <- predict(nb, newdata = heart.test)
+confusionMatrix(data = nb.pred$class, reference = heart.test$chd)
+```
+
+## (c) LDA
+
+```{r}
+lda1 <- lda(chd ~ ., data = heart.train)
+lda.pred <- predict(lda1, newdata = heart.test)
+confusionMatrix(data = lda.pred$class, reference = heart.test$chd)
+```
+# (d) SVM
+
+```{r}
+tune.out <- tune(svm, chd~., data=heart.train, kernel="radial", ranges=list(cost=seq(20,70,10), gamma=seq(.1,.5,.1))) 
+summary(tune.out)
+
+svm1 <- svm(chd~., data=heart.train, kernel="radial", gamma=.1, cost=20) 
+
+svm.pred <- predict(svm1,heart.test)
+confusionMatrix(svm.pred, heart.test$chd)
+```
+
+
+```{r}
+K=5 
+cv.error = matrix(0,nrow=4,ncol=K)
+set.seed(135)
+folds = sample(1:K, nrow(heart),replace=T)
+# will give more or less same n each fold
+for(i in 1:K){
+  CV.train = heart[folds != i,] 
+  CV.test = heart[folds == i,] 
+  CV.train$chd <- as.factor(CV.train$chd)
+  CV.test$chd <- as.factor(CV.test$chd)
+  # logistic
+  logistic.fit = glm(chd ~., data = CV.train, family = binomial)
+  logistic.probs = predict(logistic.fit, CV.test, type = "response")
+  logistic.pred = factor(as.numeric(logistic.probs>0.5))
+  cv.error[1,i]=mean(logistic.pred != as.numeric(CV.test$chd)-1)
+  
+  # naive bayes
+  nb.fit=NaiveBayes(chd~., data=CV.train, usekernel=T)
+  nb.pred=predict(nb.fit, CV.test)
+  cv.error[2,i]=mean(nb.pred$class != CV.test$chd)
+
+  # LDA
+  lda.fit=lda(chd~., data=CV.train)
+  lda.pred=predict(lda.fit, CV.test)
+  cv.error[3,i]=mean(lda.pred$class != CV.test$chd)
+  # SVM 
+  svm.fit=svm(chd~., data=CV.train, kernel="radial", gamma=.1, cost=20)  
+  svm.pred=predict(svm.fit,CV.test)
+  cv.error[4,i]=mean(svm.pred != CV.test$chd)
+  }
+
+row.names(cv.error) <- c("logistic","NBayes","LDA","SVM")
+apply(cv.error, 1, mean)
+```
+
