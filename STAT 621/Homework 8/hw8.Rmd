@@ -1,0 +1,125 @@
+---
+title: "Homework 8"
+author: "Ben Buzzee"
+date: "November 20, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ISLR)
+library(tree)
+library(MASS)
+library(randomForest)
+```
+
+# 1.
+
+## (a) Fit Tree
+First we will split the data in half and fit an unrestricted tree on the training set.
+```{r cars}
+train_sample <- sample(1:400, 200)
+cars.train <- Carseats[train_sample,]
+cars.test <- Carseats[-train_sample,]
+```
+
+
+```{r pressure}
+tree.cars <- tree(Sales~., data = cars.train)
+plot(tree.cars)
+text(tree.cars)
+```
+
+
+```{r}
+summary(tree.cars)
+```
+
+We see that our residual mean deviance is 2.015. There are also 19 terminal nodes which might be indicative of overfitting.
+
+## (b) Size by CV
+
+Next we'll find the optimal tree size using cross validation.
+
+```{r}
+cv.cars <- cv.tree(tree.cars)
+plot(cv.cars$size, cv.cars$dev, main = "Size vs Deviation", type = "l")
+```
+
+Our CV error seems to decrease as size increases all the way up to a size of 19. So pruning is probably not necessary, but we will try it.
+
+## (c) Pruning
+
+```{r}
+prune.cars <- prune.tree(tree.cars, best = 11)
+summary(prune.cars)
+plot(prune.cars)
+text(prune.cars)
+```
+
+
+We see that pruning does not improve the MSE of our model. It does however make our model simpler and more interpretable.
+
+## (d) Predicted Sales
+
+Next we will use our fitted model to predict sales in the test dataset.
+```{r}
+yhat = predict(tree.cars, newdata=cars.test)
+plot(yhat, cars.test$Sales, main = "Predicted vs Actual Values")
+abline(0,1)
+```
+
+And our prediction MSE is:
+
+```{r}
+mean((yhat-cars.test$Sales)^2)
+```
+
+Which is roughly double our test MSE.
+
+## (e) Bagging
+
+```{r}
+bag.cars <- randomForest(Sales~., data = cars.train, mtry = 10, importance = TRUE)
+bag.cars
+yhat.bag <-  predict(bag.cars, newdata=cars.test)
+plot(yhat.bag, cars.test$Sales)
+abline(0,1)
+mean((yhat.bag-cars.test$Sales)^2)
+
+```
+
+With a prediction MSE of 2.9, bagging is a significant improvement over the unrestricted regression tree. The % of variance explained is 64.31 which leaves room for improvement.
+
+
+```{r}
+round(importance(bag.cars), 2)
+```
+
+From the above importance metrics we see that Price and ShelveLoc are the most important predictors of unit Sales.
+
+## (f) Random Forest
+
+```{r}
+bag.cars2 <- randomForest(Sales~., data = cars.train, mtry = 4, importance = TRUE)
+bag.cars2
+yhat.bag2 <-  predict(bag.cars2, newdata=cars.test)
+plot(yhat.bag2, cars.test$Sales)
+abline(0,1)
+mean((yhat.bag2-cars.test$Sales)^2)
+
+```
+
+With a prediction MSE of 3.3 and 61.6% of the variance explained, our random forest predictions are not an improvement over bagging.
+
+
+```{r}
+round(importance(bag.cars2), 2)
+```
+
+Finally, we still find that price and shelving location are the most important predictors of unit sales.
+
+## (g) Summary
+
+Our bagged model seems to be the best performer on the test dataset. Price and ShelveLoc are consistently the most important predictors, so if I were interested in carseat sales I'd look into possibly manipulating one of those variables to increase unit sales.
