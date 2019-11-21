@@ -1,0 +1,6 @@
+PROC EXPORT DATA= WORK.FISHERY_BY_CITY 
+            OUTFILE= "H:\common\PAT\Permits\Salmon\2006\PU PERMITS 2006.
+xls" 
+            DBMS=EXCEL REPLACE;
+     SHEET="FISHERY BY CITY"; 
+RUN;

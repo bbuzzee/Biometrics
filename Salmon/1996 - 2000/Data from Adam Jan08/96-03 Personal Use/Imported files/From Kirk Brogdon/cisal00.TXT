@@ -1,0 +1,330 @@
+
+Structure for table:  CISLHV00.DBF (Cislhv00)
+Number of records:    16389
+Date of last update:  04/11/2001
+Memo file block size: 64
+Code Page:            1252
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  RECID                      I       4    0     No  RECNO()
+  2  CISALPRMNO                 N       6    0     No  
+  3  NOCATCH                    L       1    0     No  .F.
+  4  NOHRVRPT                   L       1    0     No  .F.
+  5  HARVDATE                   D       8    0    Yes  
+  6  RED                        N       3    0     No  0
+  7  KING                       N       3    0     No  0
+  8  COHO                       N       3    0     No  0
+  9  PINK                       N       3    0     No  0
+ 10  CHUM                       N       3    0     No  0
+ 11  FISHERY                    C      35    0     No  
+ 12  KEYDATE                    D       8    0     No  
+ 13  KEYID                      C       8    0     No  
+ 14  YEAR                       I       4    0     No  2000
+                                    -----
+                                       92
+
+
+Additional Field Information:
+
+RECID
+   Caption:    Record ID
+   Default Value: RECNO()
+
+CISALPRMNO
+   Comment:    Cook Inlet Salmon Permit No.
+   Caption:    Cook Inlet Salmon Permit No.
+   Validation: BETWEEN(cisalprmno,0,79999)
+   Error Message: "Permit number must be between 0 and 79,999"
+
+NOCATCH
+   Comment:    At least one zero indicated however total fish is still 0
+   Caption:    Caught no fish
+   Default Value: .F.
+
+NOHRVRPT
+   Comment:    Left harvest information blank (ie, no zero harvest
+               indicated (or an 'X'))
+   Caption:    No harvest reported
+   Default Value: .F.
+
+HARVDATE
+   Comment:    Date of Harvest
+   Caption:    Harvest date
+
+RED
+   Comment:    Number of red Salmon Harvested
+   Caption:    Red salmon harvest
+   Default Value: 0
+
+KING
+   Comment:    Number of King Salmon Harvested
+   Caption:    King salmon harvest
+   Default Value: 0
+
+COHO
+   Comment:    Number of Coho Salmon Harvested
+   Caption:    Coho salmon harvest
+   Default Value: 0
+
+PINK
+   Comment:    Number of Pink Salmon Harvested
+   Caption:    Pink salmon harvest
+   Default Value: 0
+
+CHUM
+   Comment:    Number of Chum Salmon Harvested
+   Caption:    Chum salmon harvest
+   Default Value: 0
+
+FISHERY
+   Comment:    Which Fishery used for this harvest.  Based on valid Salmon
+               Areas - See field validation rule  
+   Caption:    Fishery for harvest
+   Validation: INLIST(fishery,"Kenai River Dip Net","Kasilof River Dip
+               Net","Fish Creek Dip Net","Kasilof River Gill
+               Net","None","Unreadable")
+   Error Message: "Fishery must be Kenai River Dip Net, Kasilof River Dip Net,
+                  Fish Creek Dip Net, Kasilof River Gill Net, or None"
+
+KEYDATE
+   Comment:    Date that info was keyed into system (set by system, not
+               user)
+   Caption:    Date harvest info keyed
+
+KEYID
+   Comment:    User ID of key entry person
+   Caption:    Keypuncher ID for harvest info
+
+YEAR
+   Comment:    Permit Year
+   Caption:    Permit year
+   Default Value: 2000
+
+
+
+Structure for table:  CISLPM00.DBF (Cislpm00)
+Number of records:    16521
+Date of last update:  04/16/2001
+Memo file block size: 64
+Code Page:            1252
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  RECID                      I       4    0     No  RECNO()
+  2  CISALPRMNO                 N       6    0     No  
+  3  FIRSTNAM                   C      15    0    Yes  SPACE(15)
+  4  LASTNAME                   C      15    0    Yes  SPACE(15)
+  5  INIT                       C       1    0    Yes  SPACE(1)
+  6  ADLNO                      C      10    0    Yes  
+  7  LICENSENO                  C       7    0    Yes  
+  8  ADDRESS                    C      30    0    Yes  SPACE(30)
+  9  CITY                       C      30    0    Yes  
+ 10  STATE                      C       2    0    Yes  
+ 11  ZIPCODE                    C      10    0    Yes  
+ 12  DPB                        C       2    0    Yes  
+ 13  ZIPERROR                   C       2    0    Yes  
+ 14  PHONE                      C      13    0    Yes  
+ 15  HHMEMBERS                  M       4    0    Yes  
+ 16  FAMILYSI                   N       3    0    Yes  
+ 17  ALLOWED                    N       4    0    Yes  
+ 18  NOTFISH                    L       1    0    Yes  
+ 19  OFFICE                     C      25    0    Yes  
+ 20  REPLACEMENT                L       1    0     No  .F.
+ 21  DUPAPP                     L       1    0     No  .F.
+ 22  VOID                       L       1    0     No  .F.
+ 23  PERMREF                    N       6    0    Yes  
+ 24  KEYDATE                    D       8    0    Yes  
+ 25  KEYID                      C       8    0    Yes  
+ 26  DATEISS                    D       8    0    Yes  
+ 27  MAIL1                      D       8    0    Yes  
+ 28  MAIL2                      D       8    0    Yes  
+ 29  MAIL3                      D       8    0    Yes  
+ 30  MAIL4                      D       8    0    Yes  
+ 31  COMMENTS                   M       4    0    Yes  
+ 32  YEAR                       I       4    0     No  2000
+ 33  HRVRPTLOG                  L       1    0     No  .F.
+ 34  DATEHRVRPT                 D       8    0    Yes  
+ 35  BLANKRPT                   L       1    0     No  .F.
+ 36  NOVENDCARD                 L       1    0     No  .F.
+                                    -----
+                                      273
+
+
+Additional Field Information:
+
+RECID
+   Comment:    Individual Record ID
+   Caption:    Record ID
+   Default Value: RECNO()
+
+CISALPRMNO
+   Comment:    Cook Inlet Salmon Permit No.
+   Caption:    Cook Inlet Salmon Permit No.
+   Validation: BETWEEN(cisalprmno,0,79999)
+   Error Message: "Permit number must be between 0 and 79,999"
+
+FIRSTNAM
+   Comment:    Permit Holders First Name
+   Caption:    First name
+   Default Value: SPACE(15)
+
+LASTNAME
+   Comment:    Permit Holders Last Name
+   Caption:    Last name
+   Default Value: SPACE(15)
+
+INIT
+   Comment:    Permit Holders Middle Initial
+   Caption:    Middle initial
+   Default Value: SPACE(1)
+
+ADLNO
+   Comment:    Alaska Driver License Number
+   Caption:    Alaska Driver License No.
+
+LICENSENO
+   Comment:    ADFG Licesne Number - Fishing, Hunting . . .
+   Caption:    ADF&G License No
+
+ADDRESS
+   Comment:    Permit Holders Mailing Address
+   Caption:    Address
+   Default Value: SPACE(30)
+
+CITY
+   Comment:    Permit Holders City Address
+   Caption:    City
+
+STATE
+   Comment:    Permit Holders State Address
+   Caption:    State
+
+ZIPCODE
+   Comment:    Permit Holders Zip code
+   Caption:    Zip code
+
+DPB
+   Comment:    Delivery Point Barcode - Accumail '+2' code
+   Caption:    Delivery point barcode
+
+ZIPERROR
+   Comment:    Accumail error code 
+   Caption:    Return code from address standardization
+
+PHONE
+   Comment:    Permit Holders Phone Number
+   Caption:    Phone
+Input Mask:    (999)999-9999
+
+HHMEMBERS
+   Comment:    Names of Permit Holders House Hold members seperated by
+               commas
+   Caption:    Names of other household members
+
+FAMILYSI
+   Comment:    Family Size of Permit Holder
+   Caption:    Family size
+
+ALLOWED
+   Comment:    Allowable number of salmon to harvest
+   Caption:    Allowable salmon harvest
+
+NOTFISH
+   Comment:    Logical field to flag that no one fished under this permit
+   Caption:    No one in household fished
+Disp Class:    Checkbox
+
+OFFICE
+   Comment:    Vendor that issued the Permit.  For mail-in applications,
+               the office receiving the application will be ANCHORAGE
+   Caption:    Office receiving permit application
+
+REPLACEMENT
+   Comment:    This is simply a check box that indicates a person thinks
+               they are obtaining a replacement permit.  No cross
+               references are made at time of issue.
+   Caption:    Replacement for Previously issued permit?
+   Default Value: .F.
+Disp Class:    Checkbox
+
+DUPAPP
+   Comment:    By checking adl, sport license, and name it is determined
+               that this permit is a duplicate of another permit that is
+               currently on file - the main permit number is in the field
+               permref.  This field is checked programatically - not at
+               time of issue.
+   Caption:    Duplicate permit application
+   Default Value: .F.
+Disp Class:    Checkbox
+
+VOID
+   Comment:    Permit has been voided
+   Caption:    Void permit application
+   Default Value: .F.
+Disp Class:    Checkbox
+
+PERMREF
+   Comment:    Reference Number of the Permit which should be used for data
+               analysis and should include any data on this permit.  This
+               field needs to be filled if the permit is a duplicate.  
+   Caption:    Main permit number for duplicate application
+
+KEYDATE
+   Comment:    Date the permit info was keyed by key entry person
+   Caption:    Permit application data entry date
+
+KEYID
+   Comment:    User ID of the Key Entry person
+   Caption:    Permit application data entry ID
+
+DATEISS
+   Comment:    The date the permit was issued
+   Caption:    Date permit issued
+
+MAIL1
+   Comment:    Date 1st reminder mailed
+   Caption:    Date 1st reminder mailed
+
+MAIL2
+   Comment:    Date 2nd reminder mailed
+   Caption:    Date 2nd reminder mailed
+
+MAIL3
+   Comment:    Date 3rd reminder mailed
+   Caption:    Date 3rd reminder mailed
+
+MAIL4
+   Comment:    Date 4th reminder mailed
+   Caption:    Date 4th reminder mailed
+
+COMMENTS
+   Comment:    Any Relative comments 
+Disp Class:    Editbox
+
+YEAR
+   Comment:    Year for which the permit is valid
+   Caption:    Permit year
+   Default Value: 2000
+
+HRVRPTLOG
+   Comment:    Logical flag to show that harvest report(s) have or have not
+               been logged for this permit.
+   Caption:    Harvest report logged
+   Default Value: .F.
+Disp Class:    Checkbox
+
+DATEHRVRPT
+   Comment:    Date that harvest report was logged
+   Caption:    Date harvest report logged
+
+BLANKRPT
+   Comment:    I don't think that this field is ever used for anything.
+               Originally a flag to show that a harvest report was returned
+               but was completly blank
+   Default Value: .F.
+
+NOVENDCARD
+   Comment:    Vendor card info entered from harvest card - We never
+               received the original from vendor/office.  We do not pay
+               vendor fees if they do not return them.
+   Caption:    No Vendor Card
+   Default Value: .F.
+
+

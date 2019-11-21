@@ -1,0 +1,122 @@
+* filename=cohobydate96-00.sas.  Used to get summary of coho harvest by day in Kenai River fishery;
+/* Here are the correct 1996 fishery names-they are a pain to get correct because of the spaces
+    IF FISHERY EQ 'DIP  FISH CREEK      -' THEN ;
+    IF FISHERY EQ 'DIP  KENAI RIVER     -' THEN ;
+    IF FISHERY EQ 'DIP  KASILOF         -' THEN ;
+    IF FISHERY EQ 'GILL KASILOF         -' THEN ;
+    IF FISHERY EQ 'OTHER                -' THEN ;
+    IF fishery EQ 'Did Not Fish'           THEN ; */
+
+options pageno=1;
+title ' ';
+Title2 ' ';
+run;
+* start with harv96-the cleaned up 1996 harvest file;
+libname UCIPERM 'c:\uci bof\uci dip net files';
+data work96; set uciperm.harv96;
+year = 1996;
+run;
+* Get distribution of permits fishing at the Kenai by household size;
+* First need to get one line per permit;
+Proc sort data=work96; by year licensen fishery;
+proc summary data=work96;  by year licensen;
+  where fishery='DIP  KENAI RIVER     -';
+  var red;
+  id familysi;
+  output out = kenaipermits96 n=hhdays sum=;
+  run;
+
+* start with all97b-the cleaned up 1997 permit&harvest file;
+data work97; set uciperm.harv97b;
+year = 1997;
+run;
+* Get distribution of permits fishing at the Kenai by household size;
+* First need to get one line per permit;
+Proc sort data=work97; by year permit fishery;
+proc summary data=work97; by year permit;
+  where fishery='Kenai River Dip Net';
+  var red;
+  id familysi;
+  output out = kenaipermits97 n=hhdays sum=;
+  run;
+
+* start with harv98-the cleaned up 1998 harvest file and permit98 the cleaned up permit file;
+data workharv98; set uciperm.harv98; run;
+* Get 1998 permit file into the new SAS format.  Only need to do this once;
+data workperm98; set uciperm.permit98; run;
+Proc sort data=workperm98; by cisalprm;
+proc sort data=workharv98; by cisalprm;
+run;
+data work98; merge workharv98 (in=inh) workperm98 (in=inp); by cisalprm;
+year = 1998;
+if inh=1 then inharv=1;
+if inp=1 then inperm=1;
+run;
+* Get distribution of permits fishing at the Kenai by household size;
+* First need to get one line per permit;
+Proc sort data=work98; by year cisalprm fishery;
+proc summary data=work98; by year cisalprm;
+  where fishery='Kenai River Dip Net';
+  var red;
+  id familysi;
+  output out = kenaipermits98 n=hhdays sum=;
+  run;
+
+* Get 1999 permit file into the new SAS format.  Only need to do this once;
+data workperm99; set uciperm.permit99;
+  keep cisalprm lastname city familysi blankrpt hrvrptlo dupapp permref void notfish;
+run;
+* start with harv99-the cleaned up 1999 harvest file;
+data workharv99; set uciperm.harv99; run;
+Proc sort data=workperm99; by cisalprm;
+proc sort data=workharv99; by cisalprm;
+run;
+data work99; merge workharv99 (in=inh) workperm99 (in=inp); by cisalprm;
+year = 1999;
+if inh=1 then inharv=1;
+if inp=1 then inperm=1;
+run;
+* Get distribution of permits fishing at the Kenai by household size;
+* First need to get one line per permit;
+Proc sort data=work99; by year cisalprm fishery;
+proc summary data=work99; by year cisalprm;
+  where fishery='Kenai River Dip Net';
+  var red;
+  id familysi;
+  output out = kenaipermits99 n=hhdays sum=;
+  run;
+
+* start with harvest00-the cleaned up 2000 harvest file;
+data work00; set uciperm.harvest00;
+year = 2000;
+run;
+
+* Get distribution of permits fishing at the Kenai by household size;
+* First need to get one line per permit;
+Proc sort data=work00; by year permit fishery;
+proc summary data=work00; by year permit;
+  where fishery=1;
+  var red;
+  id familysi;
+  output out = kenaipermits00 n=hhdays sum=;
+run;
+data combo; set kenaipermits96 kenaipermits97 kenaipermits98 kenaipermits99 kenaipermits00;
+if (red eq 0) then redharv = '00_00';
+if (red ge 1 and red le 5) then redharv = '01_05';
+if (red ge 6 and red le 10) then redharv = '06_10';
+if (red ge 11 and red le 15) then redharv = '11_15';
+if (red ge 16 and red le 20) then redharv = '16_20';
+if (red ge 21 and red le 25) then redharv = '21_25';
+if (red ge 26 and red le 30) then redharv = '26_30';
+if (red ge 31 and red le 35) then redharv = '31_35';
+if (red ge 36) then redharv = '36_99';
+run;
+proc tabulate data=combo noseps;
+*   where familysi gt 0;
+   class year familysi redharv;
+   var red;
+   table year=' '*(familysi=' ' all='Total'), (redharv all='Total')*red*n*f=comma5.
+      / box='Year   Hsehold size';
+run; quit;
+
+

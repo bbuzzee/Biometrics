@@ -1,0 +1,403 @@
+
+Structure for table:  CISLHV99.DBF (Cislhv99)
+Number of records:    17616
+Date of last update:  11/13/2000
+Memo file block size: 64
+Code Page:            1252
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  RECID                      I       4    0     No  RECNO()
+  2  CISALPRMNO                 N       6    0     No  
+  3  NOCATCH                    L       1    0     No  .F.
+  4  NOHRVRPT                   L       1    0     No  
+  5  HARVDATE                   D       8    0    Yes  
+  6  RED                        N       3    0     No  0
+  7  KING                       N       3    0     No  0
+  8  COHO                       N       3    0     No  0
+  9  PINK                       N       3    0     No  0
+ 10  CHUM                       N       3    0     No  0
+ 11  FISHERY                    C      35    0     No  
+ 12  MAILING                    N       1    0     No  
+ 13  OFFICE                     C      25    0    Yes  
+ 14  DATEREC                    D       8    0    Yes  
+ 15  PERSON                     C      25    0    Yes  
+ 16  RECBY                      C      25    0    Yes  
+ 17  KEYDATE                    D       8    0     No  
+ 18  KEYID                      C       8    0     No  
+ 19  YEAR                       I       4    0     No  1999
+                                    -----
+                                      176
+
+
+Additional Field Information:
+
+RECID
+   Caption:    Record ID
+   Default Value: RECNO()
+
+CISALPRMNO
+   Comment:    Walk-in permits assigned permit numbers between 1-79,999
+   Caption:    Cook Inlet Salmon Permit No.
+   Validation: BETWEEN(cisalprmno,0,79999)
+   Error Message: "Permit number must be between 0 and 79,999"
+
+NOCATCH
+   Caption:    Caught no fish
+   Default Value: .F.
+
+NOHRVRPT
+   Comment:    Left harvest information blank (ie, no zero harvest
+               indicated)
+   Caption:    No harvest reported
+
+HARVDATE
+   Caption:    Harvest date
+
+RED
+   Caption:    Red salmon harvest
+   Default Value: 0
+
+KING
+   Caption:    King salmon harvest
+   Default Value: 0
+
+COHO
+   Caption:    Coho salmon harvest
+   Default Value: 0
+
+PINK
+   Caption:    Pink salmon harvest
+   Default Value: 0
+
+CHUM
+   Caption:    Chum salmon harvest
+   Default Value: 0
+
+FISHERY
+   Caption:    Fishery for harvest
+   Validation: INLIST(fishery,"Kenai River Dip Net","Kasilof River Dip
+               Net","Fish Creek Dip Net","Kasilof River Gill
+               Net","None","Unreadable","None","Unreadable")
+   Error Message: "Fishery must be Kenai River Dip Net, Kasilof River Dip Net,
+                  Fish Creek Dip Net, Kasilof River Gill Net, or blank"
+
+MAILING
+   Caption:    Mailing on which harvest info received
+
+OFFICE
+   Caption:    Office receiving harvest info
+
+DATEREC
+   Caption:    Date harvest info received
+
+PERSON
+   Caption:    Person who sent harvest info
+
+RECBY
+   Caption:    Person receiving harvest info
+
+KEYDATE
+   Caption:    Date harvest info keyed
+
+KEYID
+   Caption:    Keypuncher ID for harvest info
+
+YEAR
+   Caption:    Permit year
+   Default Value: 1999
+
+
+
+Structure for table:  CISLPM99.DBF (Cislpm99)
+Number of records:    16895
+Date of last update:  11/13/2000
+Memo file block size: 64
+Code Page:            1252
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  RECID                      I       4    0     No  RECNO()
+  2  CISALPRMNO                 N       6    0     No  
+  3  FIRSTNAM                   C      15    0    Yes  SPACE(15)
+  4  LASTNAME                   C      15    0    Yes  SPACE(15)
+  5  INIT                       C       1    0    Yes  SPACE(1)
+  6  ADLNO                      C      10    0    Yes  
+  7  LICENSENO                  C       7    0    Yes  
+  8  ADDRESS                    C      30    0    Yes  SPACE(30)
+  9  CITY                       C      30    0    Yes  
+ 10  STATE                      C       2    0    Yes  
+ 11  ZIPCODE                    C      10    0    Yes  
+ 12  DPB                        C       2    0    Yes  
+ 13  ZIPERROR                   C       2    0    Yes  
+ 14  PREFIX                     C       5    0    Yes  
+ 15  PHONE                      C      13    0    Yes  
+ 16  HHMEMBERS                  M       4    0    Yes  
+ 17  FAMILYSI                   N       3    0    Yes  
+ 18  ALLOWED                    N       4    0    Yes  
+ 19  HARVEST                    N       4    0     No  
+ 20  NOTFISH                    L       1    0    Yes  
+ 21  NOCATCH                    L       1    0    Yes  
+ 22  UNKNFISH                   L       1    0    Yes  
+ 23  OFFICE                     C      25    0    Yes  
+ 24  RECBY                      C      25    0    Yes  
+ 25  DATESNT                    D       8    0    Yes  
+ 26  DATEREC                    D       8    0    Yes  
+ 27  PERSONISS                  C      25    0    Yes  
+ 28  INCOMPL                    L       1    0     No  .F.
+ 29  NOLICNO                    L       1    0     No  .F.
+ 30  NONAME                     L       1    0     No  .F.
+ 31  NOSIGN                     L       1    0     No  .F.
+ 32  NOTDELIVER                 L       1    0     No  .F.
+ 33  DUPAPP                     L       1    0     No  .F.
+ 34  VOID                       L       1    0     No  .F.
+ 35  PERMREF                    N       6    0    Yes  
+ 36  KEYDATE                    D       8    0    Yes  
+ 37  KEYID                      C       8    0    Yes  
+ 38  APPRETURN                  D       8    0    Yes  
+ 39  DATEISS                    D       8    0    Yes  
+ 40  MAIL1                      D       8    0    Yes  
+ 41  MAIL2                      D       8    0    Yes  
+ 42  MAIL3                      D       8    0    Yes  
+ 43  MAIL4                      D       8    0    Yes  
+ 44  STAT_DATE1                 D       8    0    Yes  
+ 45  STATUS1                    C       8    0    Yes  
+ 46  STAT_DATE2                 D       8    0    Yes  
+ 47  STATUS2                    C       8    0    Yes  
+ 48  STAT_DATE3                 D       8    0    Yes  
+ 49  STATUS3                    C       8    0    Yes  
+ 50  STAT_DATE4                 C      10    0    Yes  
+ 51  STATUS4                    C       8    0    Yes  
+ 52  COMMENTS                   M       4    0    Yes  
+ 53  YEAR                       I       4    0     No  1999
+ 54  HRVRPTLOG                  L       1    0     No  .F.
+ 55  DATEHRVRPT                 D       8    0    Yes  
+ 56  BLANKRPT                   L       1    0     No  .F.
+ 57  NOVENDCARD                 L       1    0     No  .F.
+                                    -----
+                                      430
+
+
+Additional Field Information:
+
+RECID
+   Caption:    Record ID
+   Default Value: RECNO()
+
+CISALPRMNO
+   Comment:    Walk-in permits assigned permit numbers between 1-79,999
+   Caption:    Cook Inlet Salmon Permit No.
+   Validation: BETWEEN(cisalprmno,0,79999)
+   Error Message: "Permit number must be between 0 and 79,999"
+
+FIRSTNAM
+   Caption:    First name
+   Default Value: SPACE(15)
+
+LASTNAME
+   Caption:    Last name
+   Default Value: SPACE(15)
+
+INIT
+   Caption:    Middle initial
+   Default Value: SPACE(1)
+
+ADLNO
+   Caption:    Alaska Driver License No.
+
+LICENSENO
+   Caption:    ADF&G License No
+
+ADDRESS
+   Caption:    Address
+   Default Value: SPACE(30)
+
+CITY
+   Caption:    City
+
+STATE
+   Caption:    State
+
+ZIPCODE
+   Caption:    Zip code
+
+DPB
+   Caption:    Delivery point barcode
+
+ZIPERROR
+   Caption:    Return code from address standardization
+
+PREFIX
+   Caption:    Phone areacode
+
+PHONE
+   Caption:    Phone
+Input Mask:    (999)999-9999
+
+HHMEMBERS
+   Caption:    Names of other household members
+
+FAMILYSI
+   Caption:    Family size
+
+ALLOWED
+   Caption:    Allowable salmon harvest
+
+HARVEST
+   Caption:    Harvest
+
+NOTFISH
+   Caption:    No one in household fished
+Disp Class:    Checkbox
+
+NOCATCH
+   Caption:    Fished, but no catch
+Disp Class:    Checkbox
+
+UNKNFISH
+Disp Class:    Checkbox
+
+OFFICE
+   Comment:    For mail-in applications, the office receiving the
+               application will be ANCHORAGE
+   Caption:    Office receiving permit application
+
+RECBY
+   Comment:    For mail-in applications, person receiving the application
+               will be RTS
+   Caption:    Person receiving permit application
+
+DATESNT
+   Comment:    If mail-in, this is the postmark date.
+               
+               If walk-in, it is the date the walk-in application was sent
+               to RTS
+   Caption:    Date application sent to RTS
+
+DATEREC
+   Caption:    Date application received
+
+PERSONISS
+   Comment:    For mail-in permits, this will be RTS staff
+   Caption:    Person issuing permit
+
+INCOMPL
+   Comment:    Field is true if either no sport license number, no name, or
+               no signature on the application
+   Caption:    Incomplete application
+   Default Value: .F.
+Disp Class:    Checkbox
+
+NOLICNO
+   Caption:    No sport license number
+   Default Value: .F.
+
+NONAME
+   Caption:    No name
+   Default Value: .F.
+Disp Class:    Checkbox
+
+NOSIGN
+   Caption:    No signature
+   Default Value: .F.
+Disp Class:    Checkbox
+
+NOTDELIVER
+   Caption:    Address not deliverable
+   Default Value: .F.
+Disp Class:    Checkbox
+
+DUPAPP
+   Caption:    Duplicate permit application
+   Default Value: .F.
+Disp Class:    Checkbox
+
+VOID
+   Caption:    Void permit application
+   Default Value: .F.
+Disp Class:    Checkbox
+
+PERMREF
+   Caption:    Main permit number for duplicate application
+
+KEYDATE
+   Caption:    Permit application data entry date
+
+KEYID
+   Caption:    Permit application data entry ID
+
+APPRETURN
+   Caption:    Date invalid application returned
+
+DATEISS
+   Comment:    For mail-in applicants, this will be the date the permit was
+               mailed.
+               
+               For walk-in applicants, this will be the date the permit was
+               issued over the counter.
+   Caption:    Date permit issued
+
+MAIL1
+   Comment:    Date 1st reminder mailed
+   Caption:    Date 1st reminder mailed
+
+MAIL2
+   Comment:    Date 2nd reminder mailed
+   Caption:    Date 2nd reminder mailed
+
+MAIL3
+   Comment:    Date 3rd reminder mailed
+   Caption:    Date 3rd reminder mailed
+
+MAIL4
+   Comment:    Date 4th reminder mailed
+   Caption:    Date 4th reminder mailed
+
+STAT_DATE1
+   Caption:    Status date #1
+
+STATUS1
+   Comment:    Status of 1st reminder mailing
+   Caption:    1st mailing status
+
+STAT_DATE2
+   Caption:    Status date #2
+
+STATUS2
+   Comment:    Status of 2nd reminder mailing
+   Caption:    2nd mailing status
+
+STAT_DATE3
+   Caption:    Status date #3
+
+STATUS3
+   Comment:    Status of 3rd reminder mailing
+   Caption:    3rd mailing status
+
+STAT_DATE4
+   Caption:    Status date #4
+
+STATUS4
+   Comment:    Status of 4th reminder mailing
+   Caption:    Status of 4th reminder mailing
+
+COMMENTS
+Disp Class:    Editbox
+
+YEAR
+   Caption:    Permit year
+   Default Value: 1999
+
+HRVRPTLOG
+   Caption:    Harvest report logged
+   Default Value: .F.
+Disp Class:    Checkbox
+
+DATEHRVRPT
+   Caption:    Date harvest report logged
+
+BLANKRPT
+   Default Value: .F.
+
+NOVENDCARD
+   Comment:    Vendor card info entered from harvest card
+   Caption:    No Vendor Card
+   Default Value: .F.
+
+

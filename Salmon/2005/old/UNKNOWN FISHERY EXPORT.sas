@@ -1,0 +1,6 @@
+PROC EXPORT DATA= WORK.UNKNOWN2 
+            OUTFILE= "H:\common\PAT\Permits\Salmon\2005\UNKNOWN HARVEST 
+RECORDS.xls" 
+            DBMS=EXCEL REPLACE;
+     SHEET="UNKNOWN"; 
+RUN;

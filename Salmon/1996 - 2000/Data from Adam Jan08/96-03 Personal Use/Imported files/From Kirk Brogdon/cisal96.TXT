@@ -1,0 +1,83 @@
+
+Structure for table:  HARV96.DBF (Harv96)
+Number of records:    15722
+Date of last update:  02/21/03
+Memo file block size: 64
+Code Page:            1252
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  OFFICE                     C      25    0     No  
+  2  DATEREC                    D       8    0     No  
+  3  DATESNT                    D       8    0     No  
+  4  PERSON                     C      25    0     No  
+  5  RECBY                      C      25    0     No  
+  6  KEYDATE                    D       8    0     No  
+  7  KEYID                      C       8    0     No  
+  8  HARVDATE                   D       8    0     No  
+  9  LICENSENO                  C       7    0     No  
+ 10  NOTFISH                    L       1    0     No  
+ 11  NOCATCH                    L       1    0     No  
+ 12  FISHERY                    C      35    0     No  
+ 13  RED                        N       3    0     No  
+ 14  KING                       N       3    0     No  
+ 15  COHO                       N       3    0     No  
+ 16  PINK                       N       3    0     No  
+ 17  CHUM                       N       3    0     No  
+ 18  MAILING                    N       1    0     No  
+                                    -----
+                                      176
+
+
+Additional Field Information:
+
+
+Additional Table Information:
+
+
+
+
+
+Structure for table:  PERM96.DBF (Perm96)
+Number of records:    14579
+Date of last update:  02/21/03
+Memo file block size: 64
+Code Page:            1252
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  OFFICE                     C      25    0     No  
+  2  DATEREC                    D       8    0     No  
+  3  DATESNT                    D       8    0     No  
+  4  PERSON                     C      25    0     No  
+  5  RECBY                      C      25    0     No  
+  6  KEYDATE                    D       8    0     No  
+  7  KEYID                      C       8    0     No  
+  8  LICENSENO                  C       7    0     No  
+  9  LICVERNO                   C       7    0     No  
+ 10  ADLNO                      C      10    0     No  
+ 11  FIRSTNAM                   C      15    0     No  
+ 12  LASTNAME                   C      15    0     No  
+ 13  ADDRESS                    C      30    0     No  
+ 14  CITY                       C      30    0     No  
+ 15  STATE                      C       2    0     No  
+ 16  ZIPCODE                    C      10    0     No  
+ 17  FAMILYSI                   N       3    0     No  
+ 18  PREFIX                     C       5    0     No  
+ 19  PHONE                      C      10    0     No  
+ 20  HHMEMBERS                  C      80    0     No  
+ 21  ALLOWED                    N       4    0     No  
+ 22  NOTFISH                    L       1    0     No  
+ 23  NOCATCH                    L       1    0     No  
+ 24  INCOMPL                    L       1    0     No  
+ 25  NOTDELIVER                 L       1    0     No  
+ 26  MAILING                    N       1    0     No  
+                                    -----
+                                      341
+
+
+Additional Field Information:
+
+
+Additional Table Information:
+
+
+
+
+

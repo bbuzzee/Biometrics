@@ -1,0 +1,237 @@
+
+Table and Field Information for Database I:\DP\CISALM01\CISAL_SQL.DBC
+Cook Inlet Personal Use Salmon Permit Process - Corrected and Final Data
+01/23/2002 - kpbrogdon
+
+
+Table:            CISLHV01C
+Number of records:    18465
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  HVRECID                    I       4    0     No  
+  2  PERMITNO                   I       4    0     No  
+  3  NOCATCH                    L       1    0     No  
+  4  NOHRVRPT                   L       1    0     No  
+  5  HARVDATE                   T       8    0    Yes  
+  6  RED                        I       4    0     No  
+  7  KING                       I       4    0     No  
+  8  COHO                       I       4    0     No  
+  9  PINK                       I       4    0     No  
+ 10  CHUM                       I       4    0     No  
+ 11  FISHERY                    C      20    0     No  
+ 12  KEYDATE                    T       8    0     No  
+ 13  KEYID                      C      16    0     No  
+ 14  YEAR                       I       4    0     No  
+ 15  MAILING                    I       4    0     No  
+ 16  EDITED                     L       1    0     No  
+ 17  COMMENTS                   C      20    0    Yes  
+                                    -----
+                                      113
+
+
+Additional Field Information:
+
+HVRECID
+   Comment:    Unique Harvest Record ID as copied from the Raw Harvest
+               Table
+
+PERMITNO
+   Comment:    Permit Holders Permit Number.
+
+NOCATCH
+   Comment:    Flag indicating that an unsuccessful attempt was made on
+               this particular day.
+
+NOHRVRPT
+   Comment:    A date or fishery was indicated but all harvest fields are
+               blank - if zeros or dashes are shown, then this would be a
+               nocatch.
+
+HARVDATE
+   Comment:    Date that the actual Harvest or attempted harvest took
+               place.
+
+RED
+   Comment:    Total Red salmon harvested on this day
+
+KING
+   Comment:    Total King salmon harvested on this day
+
+COHO
+   Comment:    Total Coho salmon harvested on this day
+
+PINK
+   Comment:    Total Pink salmon harvested on this day
+
+CHUM
+   Comment:    Total Chum salmon harvested on this day
+
+FISHERY
+   Comment:    Valid Fishery - Choices are Kenai, Kasilof or Fish Creek.
+               All others are recorded as "Unknown"
+
+KEYDATE
+   Comment:    Date that the Harvest report was keyed by Data Entry
+               
+
+KEYID
+   Comment:    Key ID of Data Entry clerk that enters the Harvest Report.
+
+YEAR
+   Comment:    Fishing Year that the Permit is valid for.
+
+MAILING
+   Comment:    Mailing value of the Harvest Report.  This can be 0, 1 or 2.
+               If harvest data is received on different mailings with
+               identical Harvest 
+
+EDITED
+   Comment:    Extraneous field.  Not used
+
+COMMENTS
+   Comment:    Misc comments from Data Entry - Any comments enclosed in
+               [BRACKETS] are programatic changes made during the
+               conversion process.
+
+
+----------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------
+
+Table:            V_CISLPM01C
+Number of records:    14418
+Num  Field Name               Type  Width  Dec  Nulls  Default
+  1  PMRECID                    I       4    0     No  
+  2  PERMITNO                   I       4    0     No  
+  3  FIRST_NAME                 C      15    0    Yes  
+  4  LAST_NAME                  C      15    0    Yes  
+  5  INITIAL                    C       1    0    Yes  
+  6  ADLNO                      C      10    0    Yes  
+  7  LICENSE_NO                 C       7    0    Yes  
+  8  ADDRESS                    C      30    0    Yes  
+  9  CITY                       C      30    0    Yes  
+ 10  STATE                      C       2    0    Yes  
+ 11  ZIPCODE                    C      10    0    Yes  
+ 12  PHONE                      C      13    0    Yes  
+ 13  HHMEMBERS                  C      50    0    Yes  
+ 14  FAMILYSI                   I       4    0    Yes  
+ 15  ALLOWED                    I       4    0    Yes  
+ 16  BLANKRPT                   L       1    0     No  
+ 17  NOTFISH                    L       1    0     No  
+ 18  OFFICE                     C      20    0    Yes  
+ 19  DUPPREF                    I       4    0    Yes  
+ 20  KEYDATE                    T       8    0    Yes  
+ 21  KEYID                      C      15    0    Yes  
+ 22  DATEISS                    T       8    0    Yes  
+ 23  MAILING                    I       4    0     No  
+ 24  STATUS                     C       3    0     No  
+ 25  COMMENTS                   C      50    0    Yes  
+ 26  YEAR                       I       4    0     No  
+                                    -----
+                                      321
+
+
+Additional Field Information:
+
+PMRECID
+   Comment:    Unique Record ID from the Raw Permit Table
+
+PERMITNO
+   Comment:    Unique Permit Number - Only Permits that responded are
+               included in the table
+
+FIRST_NAME
+   Comment:    Permit Holders First Name
+
+LAST_NAME
+   Comment:    Permit Holders Last Name
+
+INITIAL
+   Comment:    Permit Holders Middle Initial
+
+ADLNO
+   Comment:    Permit Holders Drivers License Number
+
+LICENSE_NO
+   Comment:    Permit Holders Fishing License Number
+
+ADDRESS
+   Comment:    Permit Holders Street Address
+
+CITY
+   Comment:    Permit Holders Resident City
+
+STATE
+   Comment:    Permit Holders Resident State
+
+ZIPCODE
+   Comment:    Permit Holders Resident Zipcode
+
+PHONE
+   Comment:    Permit Holders Resident Phone Number
+
+HHMEMBERS
+   Comment:    All additional Household Members that are eligible to fish
+               under this Permit
+
+FAMILYSI
+   Comment:    Permit Holders Total Family Size - This value can be
+               calculated if it is not filled in by the vendor providing
+               allowable Harvest and/or HHmembers exist.  If not, Family
+               Size and Allowed are set to NULL
+
+ALLOWED
+   Comment:    Permit Holders Allowable Harvest - This value can be
+               calculated if it is not filled in by the vendor providing
+               Family Size and/or HHmembers exist.  If not, Family Size and
+               Allowed are set to NULL
+
+BLANKRPT
+   Comment:    Flag indicating that a Harvest Report was received but was
+               completly blank.  No harvest values and the "Did Not Fish"
+               box was not checked.
+
+NOTFISH
+   Comment:    Flag indicating that a Harvest Report was received and the
+               "Did Not Fish" box was checked.
+
+OFFICE
+   Comment:    Issuing ADFG Office or licensed Vendor
+
+DUPPREF
+   Comment:    Permit numbers that refer to this permit as the master
+
+KEYDATE
+   Comment:    Date that the Permit was originally keyed into the Raw data
+               table.
+
+KEYID
+   Comment:    Keyid of the original data entry clerk that entered the
+               permit into the raw data table.
+
+DATEISS
+   Comment:    Date that the Permit was issued by either an ADFG office or
+               a licensed vendor
+
+MAILING
+   Comment:    Mailing value that the Permit Holder responded to.  Values
+               are "0" for the Original, "1" for the First , "2" for the
+               Second Reminder.  Not necessarily the same as what was
+               physically turned in as an Original will often be sent in
+               after a reminder is recd.
+
+STATUS
+   Comment:    Harvest Report Status for the permit.  "N" indicates Did Not
+               Fish, "U" indicates Unknown (Blank Harvest Report) and "H"
+               indicates actual Harvest data was received
+
+COMMENTS
+   Comment:    Misc Comments.  Any comments inside of [brackets] notate
+               programatic changes from the Raw data to the corrected ( ie:
+               family size and allowable harvest corrections)
+
+YEAR
+   Comment:    Harvest Year that the Permit reflects.
+
+
+----------------------------------------------------------------------------------
+
