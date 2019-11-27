@@ -1,0 +1,368 @@
+---
+title: "Threemile Mark-Recapture Analysis"
+author: "Ben Buzzee, Biometrician, ADFG"
+date: "August 2, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(png)
+
+mr_df <- read.csv("../data/mr_data.csv")
+
+mr_df <- mr_df %>% mutate(diff = ifelse(both_events == 1, recap_len - mark_len, NA)) %>% filter(is.na(diff) | abs(diff) <= 60, is.na(recap_len) | recap_len >= 310)
+#mr_df <- mr_df %>%  filter(is.na(recap_len) | recap_len >= 350,  is.na(mark_len) | mark_len >= 350)
+
+
+table(mr_df$section_mark, mr_df$section_recap)
+table(mr_df$section_mark)
+
+table(mr_df$section_recap)
+```
+
+
+# Background
+
+ADFG and the Tyonek Tribal Conservation District conducted a mark-recapture study on the Threemile Lake complex in Beluga, AK during June of 2018. We are interested in estimating the number of northern pike >= 300mm present at the time of our study. The lake complex was broken down into 6 sections in order to ensure uniform sampling effort and help check the assumptions. Note: Upply Lilly is section 6 in the analysis.
+
+```{r}
+img1_path <- "../pics/threemile.png"
+
+
+knitr::include_graphics(img1_path)
+```
+
+
+# Assumptions
+
+In order to our estimate to be unbiased, certain assumptions must be met:
+
+1) the population is closed (northern pike do not enter the population via growth or immigration, or leave the population via death or emigration during the experiment)
+2) all pike have a similar probability of capture during the first event, or during the second event, or marked and unmarked fish will mix completely between events
+3) marking of pike will not affect the probability of capture during the second event
+4) pike will not lose their marks between events and tagged fish will be correctly identified during the second event
+
+There are no diagnostic tests available for assumptions 1, 3 and 4. We designed the study to ensure those assumptions would be met as best we could and believe they are reasonable to assume going forward.
+
+The relevant aspects of design for assumptions 1, 3, and 4 were:
+
+1. Fyke nets were used to prevent migration at the lake inlet and outlets. We also limited the time between the mark and recapture events to two weeks to minimize the effects of death and growth recruitment.
+
+3. Pike that seemed overly stressed due to marking were culled. Otherwise pike were tagged and released as quickly as possible. We are making the assumption that the fishing techniques used (hook and line, gillets), and the tag itself, did not change the probability of a pike being recaptured.
+
+4. All marked pike were double tagged with a unique tag number and fin clip. Because of this, we know tag loss was minimal. Pike were also tagged in a standard location and thoroughly inspected for both types of tags.
+
+
+# Assumption 2 Diagnostics
+
+Assumption 2 states:  P(capture) is the same for all fish during the first event, OR P(capture) is the same for all fish during the second event, OR fish mix completely between events.
+
+We will check to determine whether P(capture) varies according to size (KS tests), or if P(capture) varies according to location (chi-square tests). For the following hypothesis tests, the null hypothesis will be that the assumption is met. So a small p-value is evidence that the assumption was NOT met. First we will look at the KS tests to check for differences in p(capture) due to length:
+
+```{r}
+
+# limit analysis to fish >= 300mm
+
+M_len <- mr_df %>% filter(mark == 1, !is.na(mark_len)) %>% select(mark_len) %>% pull(mark_len)
+C_len <- mr_df %>% filter(recap == 1, !is.na(recap_len)) %>% select(recap_len) %>% pull(recap_len)
+R_len <- mr_df %>% filter(both_events == 1, !is.na(recap_len)) %>% select(recap_len) %>% pull(recap_len)
+
+```
+
+
+
+### Size Selectivity and Kolmogorov-Smirnov Tests
+$H_0:$ Fish captured during the __first event__ and fish that were __recaptured__ share the same length distribution.
+
+```{r}
+ks.test(M_len, R_len-10)
+```
+$H_0:$ Fish captured during the __second event__ and fish that were __recaptured__ share the same length distribution. 
+
+```{r}
+ks.test(C_len, R_len-10)
+```
+$H_0:$ Fish captured during the __first event__ and fish captured during the __second event__ share the same length distribution. 
+```{r}
+ks.test(C_len, M_len)
+```
+
+
+```{r}
+plot(ecdf(M_len), col = "blue", main = "Empirical Cumulative Distributions", xlab = "Length (mm)")
+lines(ecdf(C_len), col = "red")
+lines(ecdf(R_len-10), col = "green")
+
+legend("bottomright", legend = c("First Event", "Second Event", "Recaptured"), fill = c("blue", "red", "green"))
+
+
+```
+
+### KS Tests Results
+
+From the tests and the graph, we see that recaptured fish had a tendency to be larger than fish capture during either individual event. 
+
+<!-- After consulting our contingency chart (see op plan appendix), we conclude that there was size selectively during both events and we must use a size-stratified estimate of abundance. -->
+
+
+### The Problem of Growth
+
+One issue that could skew the results of our KS tests is fish growth between events. If the fish grew a substantial amount between sampling periods, then there might be fish that were recaptued at 300mm that were not 300mm during the initial mark event. Additionally, the entire population of fish present during the recapture event would be larger than during the initial event.
+
+We can look at differences in the lengths of recaptured fish to determine whether there was significant growth.
+
+```{r}
+size_diff <- mr_df %>% filter(both_events == 1) %>% mutate(diff = recap_len - mark_len) %>% pull(diff)
+
+size_diff[!is.na(size_diff)] %>% median()
+
+
+hist(size_diff, xlab = "Recapture Length - Mark Length (mm)", main = "Length Differences", breaks = seq(from = -50, to = 130, by = 10))
+```
+
+
+
+
+### Spatial Selectivity and Chi-Square Tests
+
+The other way assumption 2 could be violated is if p(capture) varies according to location during each event. We will compare the number of fish caught during both events and the number recaptured across locations to check for this violation. The null hypothesis' are:
+
+
+  * The probability of a fish moving from stratum i to stratum j is the same or all i and j (complete mixing).
+  
+  * The probability of capture was the same for each section during the first event.
+  
+  * The probability of capture was the same for each section during the second event.
+  
+  
+Again, for these tests, a low p-value is evidence that the assumption was NOT met.
+
+```{r, echo = FALSE}
+
+library(recapr)
+
+
+
+n1 <- mr_df %>% filter(mark == 1) %>% group_by(section_mark) %>% summarize(count = n())
+n1 <- n1$count
+
+n2 <- mr_df %>% filter(recap == 1) %>% group_by(section_recap) %>% summarize(count = n())
+n2 <- n2$count
+
+
+m2s1 <- mr_df %>% filter(both_events == 1) %>% select(section_mark)
+m2s1 <- as.integer(m2s1$section_mark)
+
+
+m2s2 <- mr_df %>% filter(both_events == 1) %>% select(section_recap)
+m2s2 <- as.integer(m2s2$section_recap)
+
+
+consistencytest(n1 = n1, n2 = n2, m2strata1 = m2s1, m2strata2 = m2s2)
+
+
+```
+### Chi-Square Test Results
+
+From the above tests, we have good evidence that assumption 2 was not met. But given the layout of the lake, this was to be expected. Some areas of the lake complex are isolated from other areas.
+
+We do know that the main lake complex was comprised of 4 interconnected subsections, so lets test if the probability of capture was similar among the four main sections.
+
+
+```{r, echo = FALSE}
+
+
+library(recapr)
+
+
+sections <- c(1,2,3,4, NA)
+
+n1 <- mr_df %>% filter(mark == 1, section_mark %in% sections, section_recap %in% sections) %>% group_by(section_mark) %>% summarize(count = n())
+n1 <- n1$count
+
+n2 <- mr_df %>% filter(recap == 1, section_mark %in% sections, section_recap %in% sections) %>% group_by(section_recap) %>% summarize(count =n())
+n2 <- n2$count
+
+
+m2s1 <- mr_df %>% filter(both_events == 1, section_mark %in% sections, section_recap %in% sections) %>% select(section_mark)
+m2s1 <- as.integer(m2s1$section_mark)
+
+
+m2s2 <- mr_df %>% filter(both_events == 1, section_mark %in% sections, section_recap %in% sections) %>% select(section_recap)
+m2s2 <- as.integer(m2s2$section_recap)
+
+
+consistencytest(n1 = n1, n2 = n2, m2strata1 = m2s1, m2strata2 = m2s2)
+
+
+
+```
+### Chi-Square Tests for 4 Main Lake Sections
+From the above tests, we could reasonably conclude that the probability of capture was similar among the main 4 sections of the lake during the first sampling event. That leaves size stratification as the only issue.
+
+But if, we limit our focus to the four main sections, is size selectivity still an issue? To find out, we will retest for size selectivity, only looking at pike caught in one of the main 4 sections.
+
+
+```{r}
+# just limit to first 4 sections
+size_strat <- mr_df %>% mutate(diff = recap_len - mark_len) %>%
+  filter(section_mark %in% sections,
+         section_recap %in% sections)
+
+
+
+M_len4 <- size_strat %>% filter(mark == 1, !is.na(mark_len)) %>% select(mark_len) %>% pull(mark_len)
+
+C_len4 <- size_strat %>% filter(recap == 1,
+                          !is.na(recap_len)) %>% select(recap_len) %>% pull(recap_len)
+
+
+R_len4 <- size_strat %>% filter(both_events == 1,
+                          !is.na(recap_len)) %>% select(recap_len) %>% pull(recap_len)
+ks.test(M_len4, R_len4)
+ks.test(C_len4, R_len4)
+```
+So even when looking only at the 4 main sections, there is still an issue of size selectivity.
+
+To solve this issue, we will group fish into three size categories -- small, medium, and large fish. For each of these size groups we will estimate abundance and the variance.
+
+
+
+# APPLY GROWTH CORRECTION to strata (-10mm)
+# Final Estimates
+
+```{r}
+
+
+# group according to size
+
+size_strat <- mr_df %>% mutate(last_length = ifelse(is.na(recap_len), mark_len, recap_len))
+
+size_strat <- mr_df %>% mutate(cat = cut(size_strat$last_length, breaks = c(300, 350, 425, Inf), labels = c("S","M","L")))
+# table(size_strat$cat)  
+
+
+size_strat <- size_strat %>% filter(section_mark %in% sections,
+                                    section_recap %in% sections,
+                                    !is.na(cat))
+
+
+groups <- size_strat %>% group_by(cat) %>% summarize(M = sum(mark), C = sum(recap), R = sum(both_events))
+
+groups <- groups %>% group_by(cat) %>% summarize(N = (M+1)*(C+1)/(R + 1), var = ((M+1)*(C+1)*(M-R)*(C-R)/((R+1)^2*(R + 2))))
+
+
+totals <- groups %>% summarize(N = sum(N), var = sum(var))
+#totals
+
+
+
+
+
+sect5 <- c(5,NA)
+section5 <- mr_df %>% filter(section_mark %in% sect5 & section_recap %in% sect5)
+
+
+M5 <- sum(section5$mark)
+C5 <- sum(section5$recap)
+R5 <- sum(section5$both_events)
+
+N5 <- M5*C5/R5
+var5 <- (C5 + 1)*(M5+1)*(C5-R5)*(M5-R5)/((R5+1)^2*(R5+2))
+
+
+
+sect6 <- c(6,NA)
+section6 <- mr_df %>% filter(section_mark %in% sect6 & section_recap %in% sect6)
+
+M6 <- sum(section6$mark)
+C6 <- sum(section6$recap)
+R6 <- sum(section6$both_events)
+
+
+
+N6 <- M6*C6/R6
+var6 <- (C6 + 1)*(M6+1)*(C6-R6)*(M6-R6)/((R6+1)^2*(R6+2))
+
+out <- data.frame(N = c(N5,N6), var = c(var5,var6))
+
+
+final_results <- rbind(totals, out)
+
+
+final_results$se <- sqrt(final_results$var)
+final_results <- cbind(section = c("1-4", "5", "6"), final_results)
+
+final_results
+
+
+```
+And our final interval estimate for all six sections:
+
+```{r}
+var_final <- sum(final_results$var)
+est_final <- sum(final_results$N)
+se_final <- sqrt(var_final)
+
+c(est_final - 1.96*se_final, est_final + 1.96*se_final)
+```
+
+
+
+# Length Anaylsis
+
+
+
+```{r}
+
+length <- read.csv("../data/dissection_data_raw.csv")
+
+length <- length %>% select(Recap., Section.., Length, Weight..g.) %>% filter(!(Section.. %in% c("Outlet Fyke", "Inlet Fyke", "Lilly Fyke")))
+
+names(length) <- c("recap", "section", "length_mm", "weight_g")
+
+
+
+length %>% ggplot(aes(x = length_mm, fill = as.factor(section))) + geom_histogram() + labs(x = 'Length', 
+                                                                y = 'Count',
+                                                                fill = "Section",
+                                                                title = "Length by Section") + facet_wrap(~section)
+
+
+```
+
+
+Assuming there is a healthy population of fish <200 mm, an interested question is at what size does size-selectivity during sampling start? Are fish in the 200-220 mm range less likely to be caught? Or is 200 mm a hard cuttoff?
+
+```{r}
+length %>% ggplot(aes(x = length_mm, y = weight_g)) + geom_point() + geom_smooth() + labs(title = "Length and Weight")
+
+length2 <- length$length_mm[!is.na(length$length_mm)]
+
+# hist(length$length_mm)
+# 
+# hist(log(length$length_mm))
+# 
+# exp(mean(log(length2)))
+# 
+# mean(length2)
+```
+
+
+# Diet
+
+
+```{r}
+diet <- read.csv("../data/dissection_data_raw.csv")
+
+diet <- diet %>% filter(Stomach. == "Y") %>% select(14:45)
+
+diet_sum <- colSums(!is.na(diet))
+
+diet_df <- data.frame(Species = names(diet_sum), Count = diet_sum, row.names = NULL)
+
+diet_df %>% ggplot(aes(x = Species, y = Count, fill = Species, width = .75)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 60, hjust = 1))
+```

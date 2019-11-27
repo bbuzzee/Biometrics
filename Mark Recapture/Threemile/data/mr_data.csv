@@ -1,0 +1,925 @@
+gear_mark,section_mark,mark_len,tag,section_recap,recap_len,gear_recap,mark,recap,both_events
+Gillnets,1,379,1000,NA,NA,NA,1,0,0
+Gillnets,1,417,1003,NA,NA,NA,1,0,0
+Gillnets,1,476,1004,1,477,Gill Net,1,1,1
+Gillnets,1,355,1005,1,351,Gill Net,1,1,1
+Gillnets,1,336,1006,2,343,Gill Net,1,1,1
+Gillnets,1,413,1007,1,418,Gill Net,1,1,1
+Gillnets,1,380,1008,2,392,Gill Net,1,1,1
+Gillnets,1,333,1009,2,354,Gill Net,1,1,1
+Angling,4,379,1025,NA,NA,NA,1,0,0
+Angling,4,397,1026,4,418,Gill Net,1,1,1
+Angling,5,486,1027,5,498,Gill Net,1,1,1
+Angling,5,565,1028,5,553,Gill Net,1,1,1
+Angling,5,498,1029,NA,NA,NA,1,0,0
+Angling,5,460,1030,NA,NA,NA,1,0,0
+Angling,5,383,1031,5,381,Gill Net,1,1,1
+Angling,5,534,1032,NA,NA,NA,1,0,0
+Angling,5,532,1033,5,543,Angler,1,1,1
+Angling,5,495,1034,NA,NA,NA,1,0,0
+Angling,5,394,1035,5,401,Gill Net,1,1,1
+Angling,1,424,1036,3,510,Gill Net,1,1,1
+Angling,1,393,1037,1,389,Gill Net,1,1,1
+Angling,1,390,1038,1,385,Gill Net,1,1,1
+Angling,1,329,1039,NA,NA,NA,1,0,0
+Angling,1,374,1040,4,393,Gill Net,1,1,1
+Angling,1,354,1041,2,362,Gill Net,1,1,1
+Angling,1,360,1042,2,382,Gill Net,1,1,1
+Angling,3,355,1043,NA,NA,NA,1,0,0
+Angling,3,375,1044,3,399,Angler,1,1,1
+Angling,3,354,1045,3,384,Gill Net,1,1,1
+Angling,3,410,1046,1,430,Gill Net,1,1,1
+Angling,3,348,1047,3,372,Gill Net,1,1,1
+Angling,3,324,1048,NA,NA,NA,1,0,0
+Angling,3,394,1049,3,409,Gill Net,1,1,1
+Angling,4,389,1050,4,404,Angler,1,1,1
+Angling,4,328,1051,4,354,Gill Net,1,1,1
+Angling,4,362,1052,4,373,Angler,1,1,1
+Angling,4,366,1053,NA,NA,NA,1,0,0
+Angling,4,351,1054,NA,NA,NA,1,0,0
+Angling,4,400,1055,4,411,Angler,1,1,1
+Angling,4,334,1056,4,341,Gill Net,1,1,1
+Angling,4,305,1057,NA,NA,NA,1,0,0
+Angling,4,352,1058,NA,NA,NA,1,0,0
+Angling,4,388,1059,NA,NA,NA,1,0,0
+Angling,4,343,1060,4,349,Gill Net,1,1,1
+Angling,4,322,1061,4,325,Gill Net,1,1,1
+Angling,4,365,1062,3,360,Gill Net,1,1,1
+Angling,4,348,1063,4,347,Gill Net,1,1,1
+Angling,4,315,1064,NA,NA,NA,1,0,0
+Angling,4,334,1065,NA,NA,NA,1,0,0
+Angling,4,380,1066,NA,NA,NA,1,0,0
+Angling,4,395,1067,4,405,Angler,1,1,1
+Angling,4,304,1068,NA,NA,NA,1,0,0
+Angling,4,431,1069,NA,NA,NA,1,0,0
+Angling,4,336,1070,NA,NA,NA,1,0,0
+Angling,4,362,1071,NA,NA,NA,1,0,0
+Angling,4,421,1072,4,430,Gill Net,1,1,1
+Angling,4,450,1073,NA,NA,NA,1,0,0
+Angling,4,364,1074,NA,NA,NA,1,0,0
+Angling,4,426,1075,4,433,Gill Net,1,1,1
+Angling,4,314,1077,NA,NA,NA,1,0,0
+Angling,4,680,1078,2,690,Gill Net,1,1,1
+Angling,4,448,1079,4,442,Gill Net,1,1,1
+Angling,4,382,1080,4,385,Angler,1,1,1
+Angling,4,434,1081,NA,NA,NA,1,0,0
+Angling,4,410,1082,1,418,Gill Net,1,1,1
+Angling,4,454,1083,NA,NA,NA,1,0,0
+Angling,4,326,1084,4,330,Gill Net,1,1,1
+Angling,4,461,1085,4,465,Gill Net,1,1,1
+Angling,4,424,1086,NA,NA,NA,1,0,0
+Angling,4,523,1087,4,550,Gill Net,1,1,1
+Angling,4,388,1088,4,386,Gill Net,1,1,1
+Angling,4,390,1089,NA,NA,NA,1,0,0
+Angling,4,392,1090,4,396,Gill Net,1,1,1
+Angling,4,325,1091,4,328,Angler,1,1,1
+Angling,4,422,1092,4,413,Angler,1,1,1
+Angling,4,412,1093,2,432,Gill Net,1,1,1
+Angling,4,433,1094,4,443,Gill Net,1,1,1
+Angling,4,396,1095,4,400,Angler,1,1,1
+Angling,4,445,1096,4,449,Gill Net,1,1,1
+Angling,4,385,1097,NA,NA,NA,1,0,0
+Angling,4,352,1098,NA,NA,NA,1,0,0
+Angling,4,315,1099,4,327,Gill Net,1,1,1
+Angling,2,444,1100,2,460,Gill Net,1,1,1
+Angling,2,354,1101,3,362,Gill Net,1,1,1
+Angling,2,455,1102,2,462,Gill Net,1,1,1
+Angling,2,378,1103,3,395,Gill Net,1,1,1
+Angling,2,369,1104,NA,NA,NA,1,0,0
+Angling,2,425,1105,2,475,Gill Net,1,1,1
+Angling,2,403,1106,2,421,Gill Net,1,1,1
+Angling,2,389,1107,2,426,Gill Net,1,1,1
+Angling,2,402,1108,2,425,Gill Net,1,1,1
+Angling,2,406,1109,3,451,Gill Net,1,1,1
+Angling,2,351,1110,NA,NA,NA,1,0,0
+Angling,2,387,1111,3,435,Gill Net,1,1,1
+Angling,2,440,1114,3,444,Gill Net,1,1,1
+Angling,2,475,1115,NA,NA,NA,1,0,0
+,2,NA,1116,3,410,Gill Net,1,1,1
+Angling,2,378,1117,3,460,Gill Net,1,1,1
+Angling,2,NA,1118,3,440,Gill Net,1,1,1
+Angling,2,442,1119,NA,NA,NA,1,0,0
+Angling,2,425,1120,4,455,Angler,1,1,1
+Angling,2,428,1123,NA,NA,NA,1,0,0
+Angling,2,398,1125,NA,NA,NA,1,0,0
+Angling,2,396,1126,NA,NA,NA,1,0,0
+Angling,2,392,1127,1,418,Gill Net,1,1,1
+Angling,2,435,1128,2,470,Gill Net,1,1,1
+Angling,2,424,1129,2,448,Gill Net,1,1,1
+Angling,2,485,1130,NA,NA,NA,1,0,0
+Angling,2,432,1131,1,466,Gill Net,1,1,1
+Angling,2,408,1132,3,444,Gill Net,1,1,1
+Angling,2,337,1133,NA,NA,NA,1,0,0
+Angling,2,324,1135,NA,NA,NA,1,0,0
+Angling,2,312,1136,3,337,Gill Net,1,1,1
+Angling,2,449,1138,2,463,Gill Net,1,1,1
+Angling,2,386,1139,3,400,Gill Net,1,1,1
+Angling,2,359,1140,2,382,Gill Net,1,1,1
+Angling,2,383,1141,2,405,Gill Net,1,1,1
+Angling,2,362,1142,NA,NA,NA,1,0,0
+Angling,2,358,1143,2,369,Gill Net,1,1,1
+Angling,2,318,1144,NA,NA,NA,1,0,0
+Angling,2,440,1145,2,468,Gill Net,1,1,1
+Angling,2,434,1146,1,460,Gill Net,1,1,1
+Angling,2,504,1147,3,534,Gill Net,1,1,1
+Angling,2,367,1148,1,383,Gill Net,1,1,1
+Angling,3,435,1150,NA,NA,NA,1,0,0
+Angling,3,473,1151,2,481,Gill Net,1,1,1
+Angling,3,433,1152,2,395,Gill Net,1,1,1
+Angling,3,520,1154,2,562,Gill Net,1,1,1
+Angling,3,364,1155,NA,NA,NA,1,0,0
+Angling,3,448,1156,NA,NA,NA,1,0,0
+Angling,3,452,1157,3,463,Angler,1,1,1
+Angling,3,411,1158,3,422,Angler,1,1,1
+Angling,3,601,1159,1,628,Gill Net,1,1,1
+Angling,3,387,1160,NA,NA,NA,1,0,0
+Angling,3,412,1161,2,434,Gill Net,1,1,1
+Angling,3,369,1162,3,399,Gill Net,1,1,1
+Angling,3,460,1164,2,490,Gill Net,1,1,1
+Angling,3,435,1165,1,455,Gill Net,1,1,1
+Angling,2,325,1166,1,346,Gill Net,1,1,1
+Angling,2,374,1167,NA,NA,NA,1,0,0
+Angling,2,478,1168,1,500,Gill Net,1,1,1
+Angling,2,361,1171,NA,NA,NA,1,0,0
+Angling,2,478,1172,2,469,Gill Net,1,1,1
+Angling,2,528,1174,2,556,Gill Net,1,1,1
+Angling,3,302,1175,NA,NA,NA,1,0,0
+Angling,3,318,1177,3,326,Gill Net,1,1,1
+Angling,3,428,1178,3,500,Gill Net,1,1,1
+Angling,3,350,1179,NA,NA,NA,1,0,0
+Angling,3,342,1180,NA,NA,NA,1,0,0
+Angling,3,389,1181,NA,NA,NA,1,0,0
+Angling,3,430,1182,2,550,Gill Net,1,1,1
+Angling,3,485,1184,2,503,Gill Net,1,1,1
+Angling,3,422,1185,3,465,Gill Net,1,1,1
+Angling,3,435,1186,3,466,Gill Net,1,1,1
+Angling,3,300,1187,NA,NA,NA,1,0,0
+Angling,3,381,1188,NA,NA,NA,1,0,0
+Angling,3,484,1189,NA,NA,NA,1,0,0
+Angling,3,390,1190,NA,NA,NA,1,0,0
+Angling,3,304,1191,NA,NA,NA,1,0,0
+Angling,3,332,1192,NA,NA,NA,1,0,0
+Angling,3,347,1193,NA,NA,NA,1,0,0
+Angling,3,300,1194,3,306,Gill Net,1,1,1
+Angling,3,330,1195,3,321,Gill Net,1,1,1
+Angling,3,406,1196,2,430,Gill Net,1,1,1
+Angling,3,306,1197,NA,NA,NA,1,0,0
+Angling,3,421,1199,3,443,Gill Net,1,1,1
+Angling,2,397,1200,2,404,Gill Net,1,1,1
+Angling,2,576,1201,2,564,Gill Net,1,1,1
+Angling,2,390,1202,1,405,Gill Net,1,1,1
+Angling,2,391,1203,2,402,Gill Net,1,1,1
+Angling,2,423,1204,1,418,Gill Net,1,1,1
+Angling,2,510,1205,2,516,Gill Net,1,1,1
+Angling,2,405,1206,3,390,Gill Net,1,1,1
+Angling,2,510,1207,1,535,Gill Net,1,1,1
+Angling,2,495,1208,3,505,Gill Net,1,1,1
+Angling,2,403,1209,1,418,Gill Net,1,1,1
+Angling,2,427,1210,NA,NA,NA,1,0,0
+Angling,2,396,1211,3,414,Gill Net,1,1,1
+Angling,2,455,1212,3,452,Gill Net,1,1,1
+Angling,2,368,1213,2,372,Angler,1,1,1
+Angling,2,325,1214,NA,NA,NA,1,0,0
+Angling,2,335,1215,NA,NA,NA,1,0,0
+Angling,2,372,1216,NA,NA,NA,1,0,0
+Angling,2,390,1217,NA,NA,NA,1,0,0
+Angling,2,419,1218,1,418,Gill Net,1,1,1
+Angling,2,575,1219,4,584,Gill Net,1,1,1
+Angling,2,445,1220,4,444,Gill Net,1,1,1
+Angling,2,430,1221,1,443,Gill Net,1,1,1
+Angling,2,320,1222,2,340,Gill Net,1,1,1
+Angling,2,479,1224,3,452,Angler,1,1,1
+Angling,3,370,1225,NA,NA,NA,1,0,0
+Angling,3,570,1226,4,591,Gill Net,1,1,1
+Angling,3,465,1227,2,477,Gill Net,1,1,1
+Angling,3,365,1228,3,378,Angler,1,1,1
+Angling,3,390,1229,3,394,Gill Net,1,1,1
+Angling,2,310,1230,2,336,Gill Net,1,1,1
+Angling,2,430,1231,3,450,Gill Net,1,1,1
+Angling,2,366,1232,NA,NA,NA,1,0,0
+Angling,2,435,1233,3,444,Gill Net,1,1,1
+Angling,2,502,1234,3,518,Gill Net,1,1,1
+Angling,2,340,1235,NA,NA,NA,1,0,0
+Angling,2,493,1236,4,489,Gill Net,1,1,1
+Angling,2,375,1237,NA,NA,NA,1,0,0
+Angling,2,522,1238,3,529,Gill Net,1,1,1
+Angling,2,480,1239,3,484,Gill Net,1,1,1
+Angling,2,379,1240,3,381,Gill Net,1,1,1
+Angling,2,432,1241,3,435,Gill Net,1,1,1
+Angling,2,410,1243,2,415,Gill Net,1,1,1
+Angling,2,312,1244,2,327,Gill Net,1,1,1
+Angling,2,457,1245,NA,NA,NA,1,0,0
+Angling,2,396,1246,NA,NA,NA,1,0,0
+Angling,2,396,1247,2,408,Gill Net,1,1,1
+Angling,2,492,1248,2,522,Gill Net,1,1,1
+Angling,2,345,1249,NA,NA,NA,1,0,0
+Angling,3,360,1250,NA,NA,NA,1,0,0
+Angling,3,465,1251,3,471,Angler,1,1,1
+Angling,3,392,1252,NA,NA,NA,1,0,0
+Angling,3,575,1253,2,575,Gill Net,1,1,1
+Angling,3,474,1254,3,476,Gill Net,1,1,1
+Angling,3,410,1255,3,408,Gill Net,1,1,1
+Angling,3,351,1256,3,363,Gill Net,1,1,1
+Angling,3,404,1257,NA,NA,NA,1,0,0
+Angling,3,341,1258,3,371,Gill Net,1,1,1
+Angling,3,330,1259,NA,NA,NA,1,0,0
+Angling,3,382,1260,3,395,Gill Net,1,1,1
+Angling,3,460,1261,NA,NA,NA,1,0,0
+Angling,3,351,1262,3,344,Gill Net,1,1,1
+Angling,3,335,1263,3,343,Gill Net,1,1,1
+Angling,3,401,1264,3,401,Gill Net,1,1,1
+Angling,3,352,1265,NA,NA,NA,1,0,0
+Angling,3,443,1267,3,459,Gill Net,1,1,1
+Angling,3,503,1269,1,510,Gill Net,1,1,1
+Angling,3,302,1270,2,312,Gill Net,1,1,1
+Angling,3,458,1271,3,427,Gill Net,1,1,1
+Angling,3,473,1272,2,490,Gill Net,1,1,1
+Angling,3,560,1273,NA,NA,NA,1,0,0
+Angling,3,604,1274,NA,NA,NA,1,0,0
+Angling,3,343,1275,NA,NA,NA,1,0,0
+Angling,3,381,1276,NA,NA,NA,1,0,0
+Angling,3,430,1277,3,450,Gill Net,1,1,1
+Angling,3,419,1278,3,430,Gill Net,1,1,1
+Angling,3,386,1279,NA,NA,NA,1,0,0
+Angling,3,526,1280,3,520,Gill Net,1,1,1
+Angling,3,345,1281,NA,NA,NA,1,0,0
+Angling,3,311,1283,3,312,Gill Net,1,1,1
+Angling,3,635,1284,2,660,Gill Net,1,1,1
+Angling,3,447,1285,NA,NA,NA,1,0,0
+Angling,3,476,1286,3,486,Angler,1,1,1
+Angling,3,356,1287,NA,NA,NA,1,0,0
+Angling,3,410,1288,NA,NA,NA,1,0,0
+Angling,3,446,1290,1,448,Gill Net,1,1,1
+Angling,3,337,1291,NA,NA,NA,1,0,0
+Angling,3,502,1292,NA,NA,NA,1,0,0
+Angling,3,436,1293,NA,NA,NA,1,0,0
+Angling,3,435,1294,2,450,Gill Net,1,1,1
+Angling,3,480,1295,1,486,Gill Net,1,1,1
+Angling,3,580,1296,NA,NA,NA,1,0,0
+Angling,3,416,1297,3,421,Gill Net,1,1,1
+Angling,3,526,1298,3,528,Gill Net,1,1,1
+Angling,3,433,1299,NA,NA,NA,1,0,0
+Gillnets,1,385,1300,NA,NA,NA,1,0,0
+Gillnets,1,337,1301,1,354,Gill Net,1,1,1
+Gillnets,1,320,1302,1,329,Gill Net,1,1,1
+Gillnets,1,395,1303,1,397,Gill Net,1,1,1
+Gillnets,1,332,1304,NA,NA,NA,1,0,0
+Gillnets,1,472,1305,1,477,Gill Net,1,1,1
+Gillnets,1,417,1306,1,426,Gill Net,1,1,1
+Gillnets,1,411,1307,NA,NA,NA,1,0,0
+Gillnets,1,425,1308,1,425,Gill Net,1,1,1
+Gillnets,1,325,1309,1,335,Gill Net,1,1,1
+Gillnets,1,320,1310,1,334,Gill Net,1,1,1
+Gillnets,1,375,1311,NA,NA,NA,1,0,0
+Gillnets,1,367,1312,1,378,Gill Net,1,1,1
+Gillnets,1,413,1313,2,416,Gill Net,1,1,1
+Gillnets,1,390,1314,1,401,Gill Net,1,1,1
+Gillnets,1,610,1315,NA,NA,NA,1,0,0
+Gillnets,1,363,1317,1,375,Gill Net,1,1,1
+Gillnets,1,384,1318,1,387,Gill Net,1,1,1
+Gillnets,1,440,1319,1,440,Gill Net,1,1,1
+Gillnets,1,560,1320,1,561,Gill Net,1,1,1
+Gillnets,1,443,1321,1,440,Gill Net,1,1,1
+Gillnets,1,380,1322,1,389,Gill Net,1,1,1
+Gillnets,1,434,1323,NA,NA,NA,1,0,0
+Gillnets,1,391,1324,1,394,Gill Net,1,1,1
+Gillnets,2,374,1325,NA,NA,NA,1,0,0
+Gillnets,2,381,1326,2,382,Gill Net,1,1,1
+Gillnets,2,439,1328,NA,NA,NA,1,0,0
+Gillnets,2,417,1329,1,419,Gill Net,1,1,1
+Gillnets,2,368,1330,2,386,Gill Net,1,1,1
+Gillnets,2,596,1331,4,611,Angler,1,1,1
+Gillnets,2,435,1332,NA,NA,NA,1,0,0
+Gillnets,2,314,1333,NA,NA,NA,1,0,0
+Gillnets,2,327,1334,NA,NA,NA,1,0,0
+Gillnets,2,598,1335,2,589,Gill Net,1,1,1
+Gillnets,2,497,1336,NA,NA,NA,1,0,0
+Gillnets,2,448,1337,3,456,Gill Net,1,1,1
+Gillnets,2,408,1338,1,419,Angler,1,1,1
+Gillnets,2,348,1339,NA,NA,NA,1,0,0
+Gillnets,2,362,1340,NA,NA,NA,1,0,0
+Gillnets,2,590,1342,4,595,Gill Net,1,1,1
+Gillnets,2,347,1343,1,361,Gill Net,1,1,1
+Gillnets,2,413,1344,2,421,Gill Net,1,1,1
+Gillnets,2,513,1345,2,505,Gill Net,1,1,1
+Gillnets,2,420,1346,3,434,Gill Net,1,1,1
+Gillnets,2,320,1347,NA,NA,NA,1,0,0
+Gillnets,2,425,1348,NA,NA,NA,1,0,0
+Gillnets,4,520,1350,NA,NA,NA,1,0,0
+Gillnets,4,319,1351,NA,NA,NA,1,0,0
+Gillnets,4,440,1352,4,447,Gill Net,1,1,1
+Gillnets,4,450,1353,NA,NA,NA,1,0,0
+Gillnets,4,515,1354,3,519,Gill Net,1,1,1
+Gillnets,4,534,1355,4,549,Gill Net,1,1,1
+Gillnets,4,356,1357,NA,NA,NA,1,0,0
+Gillnets,4,390,1358,4,400,Gill Net,1,1,1
+Gillnets,4,500,1359,2,510,Gill Net,1,1,1
+Gillnets,4,385,1360,NA,NA,NA,1,0,0
+Gillnets,4,364,1361,NA,NA,NA,1,0,0
+Gillnets,5,575,1362,NA,NA,NA,1,0,0
+Gillnets,5,445,1363,NA,NA,NA,1,0,0
+Gillnets,5,653,1364,5,636,Angler,1,1,1
+Gillnets,5,413,1365,NA,NA,NA,1,0,0
+Gillnets,5,539,1366,5,535,Gill Net,1,1,1
+Gillnets,5,511,1367,NA,NA,NA,1,0,0
+Gillnets,5,565,1368,NA,NA,NA,1,0,0
+Gillnets,2,450,1372,2,452,Gill Net,1,1,1
+Gillnets,2,426,1373,2,431,Gill Net,1,1,1
+Gillnets,2,496,1374,2,505,Angler,1,1,1
+Angling,4,507,1375,4,515,Angler,1,1,1
+Angling,4,383,1376,4,394,Gill Net,1,1,1
+Angling,4,370,1377,NA,NA,NA,1,0,0
+Angling,4,382,1378,NA,NA,NA,1,0,0
+Angling,4,430,1379,4,448,Gill Net,1,1,1
+Angling,4,360,1380,NA,NA,NA,1,0,0
+Angling,4,460,1381,NA,NA,NA,1,0,0
+Angling,4,325,1382,NA,NA,NA,1,0,0
+Angling,4,480,1383,4,520,Gill Net,1,1,1
+Angling,4,350,1384,4,358,Gill Net,1,1,1
+Angling,4,342,1385,NA,NA,NA,1,0,0
+Angling,4,380,1386,NA,NA,NA,1,0,0
+Angling,4,435,1387,4,428,Gill Net,1,1,1
+Angling,4,425,1388,4,438,Gill Net,1,1,1
+Angling,4,375,1389,4,365,Angler,1,1,1
+Gillnets,4,458,1390,NA,NA,NA,1,0,0
+Gillnets,4,320,1391,4,343,Gill Net,1,1,1
+Gillnets,4,375,1392,4,384,Angler,1,1,1
+Gillnets,4,365,1393,NA,NA,NA,1,0,0
+Gillnets,4,375,1394,NA,NA,NA,1,0,0
+Gillnets,4,584,1395,NA,NA,NA,1,0,0
+Gillnets,4,326,1396,NA,NA,NA,1,0,0
+Gillnets,4,440,1397,4,446,Gill Net,1,1,1
+Gillnets,4,335,1398,NA,NA,NA,1,0,0
+Gillnets,4,740,1399,4,750,Gill Net,1,1,1
+Angling,4,441,1400,4,454,Gill Net,1,1,1
+Angling,4,382,1401,NA,NA,NA,1,0,0
+Angling,4,358,1402,NA,NA,NA,1,0,0
+Angling,5,472,1403,5,473,Angler,1,1,1
+Angling,5,431,1404,5,418,Gill Net,1,1,1
+Angling,5,548,1405,NA,NA,NA,1,0,0
+Angling,5,410,1406,NA,NA,NA,1,0,0
+Angling,5,501,1407,NA,NA,NA,1,0,0
+Angling,1,342,1408,2,364,Gill Net,1,1,1
+Angling,1,345,1409,NA,NA,NA,1,0,0
+Angling,1,378,1410,1,394,Gill Net,1,1,1
+Angling,1,520,1411,NA,NA,NA,1,0,0
+Angling,3,335,1412,3,345,Gill Net,1,1,1
+Angling,3,540,1413,3,534,Gill Net,1,1,1
+Angling,3,446,1414,NA,NA,NA,1,0,0
+Angling,3,557,1416,2,562,Gill Net,1,1,1
+Angling,3,476,1417,3,474,Gill Net,1,1,1
+Angling,3,429,1418,NA,NA,NA,1,0,0
+Angling,3,523,1420,NA,NA,NA,1,0,0
+Angling,3,412,1421,NA,NA,NA,1,0,0
+Angling,3,427,1422,NA,NA,NA,1,0,0
+Angling,3,323,1423,3,318,Gill Net,1,1,1
+Angling,3,382,1424,NA,NA,NA,1,0,0
+Angling,4,338,1425,4,396,Gill Net,1,1,1
+Angling,4,495,1426,4,510,Gill Net,1,1,1
+Angling,4,492,1427,4,496,Gill Net,1,1,1
+Angling,4,320,1428,4,308,Gill Net,1,1,1
+Angling,4,325,1429,NA,NA,NA,1,0,0
+Angling,4,494,1430,NA,NA,NA,1,0,0
+Angling,4,329,1432,4,360,Angler,1,1,1
+Angling,4,484,1433,4,487,Gill Net,1,1,1
+Angling,4,398,1434,NA,NA,NA,1,0,0
+Angling,4,321,1435,NA,NA,NA,1,0,0
+Angling,4,464,1436,1,463,Gill Net,1,1,1
+Angling,4,339,1437,NA,NA,NA,1,0,0
+Angling,4,484,1438,4,490,Gill Net,1,1,1
+Angling,4,356,1439,NA,NA,NA,1,0,0
+Angling,4,397,1440,NA,NA,NA,1,0,0
+Angling,4,376,1441,NA,NA,NA,1,0,0
+Angling,4,425,1442,NA,NA,NA,1,0,0
+Angling,4,468,1443,4,488,Gill Net,1,1,1
+Angling,4,417,1444,NA,NA,NA,1,0,0
+Angling,4,387,1445,NA,NA,NA,1,0,0
+Angling,4,420,1446,NA,NA,NA,1,0,0
+Angling,4,423,1447,NA,NA,NA,1,0,0
+Angling,4,330,1448,NA,NA,NA,1,0,0
+Angling,4,395,1449,4,406,Angler,1,1,1
+Angling,6,305,1450,NA,NA,NA,1,0,0
+Angling,6,441,1451,6,447,Gill Net,1,1,1
+Angling,6,341,1452,6,355,Gill Net,1,1,1
+Angling,6,383,1453,NA,NA,NA,1,0,0
+Angling,6,367,1454,NA,NA,NA,1,0,0
+Angling,6,339,1455,NA,NA,NA,1,0,0
+Angling,6,453,1456,NA,NA,NA,1,0,0
+Angling,6,450,1457,4,470,Gill Net,1,1,1
+Angling,6,486,1458,4,487,Gill Net,1,1,1
+Angling,6,440,1459,NA,NA,NA,1,0,0
+Angling,6,434,1460,NA,NA,NA,1,0,0
+Angling,5,416,1461,5,415,Gill Net,1,1,1
+Angling,5,605,1462,NA,NA,NA,1,0,0
+Angling,5,440,1463,5,450,Gill Net,1,1,1
+Angling,2,430,1464,2,432,Gill Net,1,1,1
+Angling,2,332,1465,2,353,Gill Net,1,1,1
+Angling,2,364,1466,2,374,Gill Net,1,1,1
+Angling,2,440,1467,1,459,Gill Net,1,1,1
+Angling,2,390,1468,NA,NA,NA,1,0,0
+Angling,2,542,1469,NA,NA,NA,1,0,0
+Angling,4,364,1470,NA,NA,NA,1,0,0
+Angling,4,340,1471,4,348,Angler,1,1,1
+Angling,4,414,1472,4,416,Gill Net,1,1,1
+Angling,4,412,1473,4,425,Gill Net,1,1,1
+Angling,4,442,1474,NA,NA,NA,1,0,0
+Angling,3,488,1500,NA,NA,NA,1,0,0
+Angling,3,445,1501,NA,NA,NA,1,0,0
+Angling,3,428,1502,NA,NA,NA,1,0,0
+Angling,3,443,1504,NA,NA,NA,1,0,0
+Angling,3,390,1505,3,396,Gill Net,1,1,1
+Angling,3,440,1506,1,445,Gill Net,1,1,1
+Angling,3,642,1507,2,663,Gill Net,1,1,1
+Angling,3,408,1508,2,416,Gill Net,1,1,1
+Angling,3,427,1510,NA,NA,NA,1,0,0
+Angling,3,401,1511,NA,NA,NA,1,0,0
+Angling,4,400,1512,3,416,Angler,1,1,1
+Angling,4,385,1513,4,395,Gill Net,1,1,1
+Angling,4,364,1514,NA,NA,NA,1,0,0
+Angling,4,410,1515,NA,NA,NA,1,0,0
+Angling,4,316,1517,NA,NA,NA,1,0,0
+Angling,4,342,1518,NA,NA,NA,1,0,0
+Angling,4,440,1520,NA,NA,NA,1,0,0
+Angling,4,395,1521,4,409,Gill Net,1,1,1
+Angling,4,446,1522,4,425,Gill Net,1,1,1
+Angling,4,399,1523,4,404,Gill Net,1,1,1
+Angling,4,510,1524,NA,NA,NA,1,0,0
+Angling,6,460,1540,6,495,Angler,1,1,1
+Angling,6,330,1541,NA,NA,NA,1,0,0
+Angling,3,414,1542,3,424,Gill Net,1,1,1
+Angling,3,362,1543,NA,NA,NA,1,0,0
+Angling,3,414,1544,3,416,Angler,1,1,1
+Angling,3,401,1545,3,436,Gill Net,1,1,1
+Angling,3,406,1546,NA,NA,NA,1,0,0
+Angling,3,300,1547,NA,NA,NA,1,0,0
+Angling,3,453,1548,NA,NA,NA,1,0,0
+Angling,3,342,1549,NA,NA,NA,1,0,0
+Angling,6,366,1800,6,394,Gill Net,1,1,1
+Angling,6,437,1801,NA,NA,NA,1,0,0
+Angling,6,461,1802,NA,NA,NA,1,0,0
+Angling,6,338,1803,NA,NA,NA,1,0,0
+Angling,4,376,1804,NA,NA,NA,1,0,0
+Angling,4,460,1805,4,465,Gill Net,1,1,1
+Angling,4,355,1806,4,366,Angler,1,1,1
+Angling,4,333,1807,3,333,Gill Net,1,1,1
+Angling,4,327,1808,NA,NA,NA,1,0,0
+Angling,4,328,1809,NA,NA,NA,1,0,0
+Angling,4,359,1810,NA,NA,NA,1,0,0
+Angling,4,393,1811,4,406,Angler,1,1,1
+Angling,4,595,1812,1,600,Gill Net,1,1,1
+Angling,4,365,1813,4,366,Angler,1,1,1
+Angling,4,347,1814,4,344,Gill Net,1,1,1
+Angling,4,322,1815,NA,NA,NA,1,0,0
+Angling,4,337,1816,NA,NA,NA,1,0,0
+Angling,4,304,1817,NA,NA,NA,1,0,0
+Angling,4,415,1818,NA,NA,NA,1,0,0
+Angling,4,442,1819,4,439,Gill Net,1,1,1
+Angling,4,312,1820,4,401,Angler,1,1,1
+Angling,4,391,1821,4,396,Gill Net,1,1,1
+Angling,4,324,1822,NA,NA,NA,1,0,0
+Angling,4,395,1823,NA,NA,NA,1,0,0
+Angling,4,376,1824,4,367,Gill Net,1,1,1
+Angling,6,304,1841,NA,NA,NA,1,0,0
+Angling,6,387,1842,6,380,Gill Net,1,1,1
+Angling,6,338,1843,NA,NA,NA,1,0,0
+Angling,6,372,1844,6,381,Gill Net,1,1,1
+Angling,6,445,1845,NA,NA,NA,1,0,0
+Angling,6,435,1846,NA,NA,NA,1,0,0
+Angling,6,344,1847,6,357,Gill Net,1,1,1
+Angling,6,436,1848,6,465,Gill Net,1,1,1
+Angling,6,332,1849,6,326,Gill Net,1,1,1
+Angling,3,374,1850,NA,NA,NA,1,0,0
+Angling,3,335,1851,NA,NA,NA,1,0,0
+Angling,3,566,1852,2,582,Gill Net,1,1,1
+Angling,3,398,1853,NA,NA,NA,1,0,0
+Angling,3,345,1854,NA,NA,NA,1,0,0
+Angling,3,431,1855,3,430,Angler,1,1,1
+Angling,3,448,1856,NA,NA,NA,1,0,0
+Angling,3,587,1857,3,607,Gill Net,1,1,1
+Angling,3,522,1858,NA,NA,NA,1,0,0
+Angling,3,556,1859,1,570,Gill Net,1,1,1
+Angling,2,438,1861,1,462,Gill Net,1,1,1
+Angling,2,326,1862,NA,NA,NA,1,0,0
+Angling,2,421,1863,1,442,Gill Net,1,1,1
+Angling,2,402,1864,NA,NA,NA,1,0,0
+Angling,2,322,1865,2,345,Gill Net,1,1,1
+Angling,2,368,1866,2,405,Gill Net,1,1,1
+Angling,2,357,1867,2,392,Angler,1,1,1
+Angling,2,371,1868,2,385,Gill Net,1,1,1
+Angling,2,352,1869,NA,NA,NA,1,0,0
+Angling,2,511,1870,1,527,Gill Net,1,1,1
+Angling,2,437,1871,2,445,Gill Net,1,1,1
+Angling,2,341,1872,3,374,Gill Net,1,1,1
+Angling,2,462,1873,3,501,Angler,1,1,1
+Angling,4,382,1875,NA,NA,NA,1,0,0
+Angling,4,437,1876,NA,NA,NA,1,0,0
+Angling,4,353,1877,NA,NA,NA,1,0,0
+Angling,4,358,1878,NA,NA,NA,1,0,0
+Angling,4,300,1879,NA,NA,NA,1,0,0
+Angling,4,339,1880,NA,NA,NA,1,0,0
+Angling,4,336,1881,NA,NA,NA,1,0,0
+Angling,4,338,1882,NA,NA,NA,1,0,0
+Angling,4,305,1883,NA,NA,NA,1,0,0
+Angling,4,409,1884,NA,NA,NA,1,0,0
+Angling,4,315,1885,NA,NA,NA,1,0,0
+Angling,4,452,1887,4,464,Gill Net,1,1,1
+Angling,4,328,1888,NA,NA,NA,1,0,0
+Angling,5,515,1889,5,534,Gill Net,1,1,1
+Angling,5,504,1890,NA,NA,NA,1,0,0
+Angling,1,352,1891,1,394,Gill Net,1,1,1
+Angling,3,452,1892,NA,NA,NA,1,0,0
+Angling,3,312,1893,NA,NA,NA,1,0,0
+Angling,3,445,1894,3,445,Gill Net,1,1,1
+Angling,3,396,1895,3,411,Gill Net,1,1,1
+Angling,3,558,1896,3,576,Gill Net,1,1,1
+Angling,3,446,1897,NA,NA,NA,1,0,0
+Angling,3,457,1898,3,478,Angler,1,1,1
+Angling,3,555,1899,3,550,Angler,1,1,1
+NA,NA,NA,,1,535,Gill Net,0,1,0
+NA,NA,NA,,1,410,Gill Net,0,1,0
+NA,NA,NA,,1,642,Gill Net,0,1,0
+NA,NA,NA,,1,407,Gill Net,0,1,0
+NA,NA,NA,,1,330,Gill Net,0,1,0
+NA,NA,NA,,1,305,Gill Net,0,1,0
+NA,NA,NA,,1,484,Gill Net,0,1,0
+NA,NA,NA,,1,439,Gill Net,0,1,0
+NA,NA,NA,,1,420,Gill Net,0,1,0
+NA,NA,NA,,1,368,Gill Net,0,1,0
+NA,NA,NA,,1,320,Gill Net,0,1,0
+NA,NA,NA,,1,301,Gill Net,0,1,0
+NA,NA,NA,,1,305,Gill Net,0,1,0
+NA,NA,NA,,1,366,Gill Net,0,1,0
+NA,NA,NA,,1,336,Gill Net,0,1,0
+NA,NA,NA,,1,406,Gill Net,0,1,0
+NA,NA,NA,,1,493,Gill Net,0,1,0
+NA,NA,NA,,1,314,Gill Net,0,1,0
+NA,NA,NA,,1,341,Gill Net,0,1,0
+NA,NA,NA,,1,593,Gill Net,0,1,0
+NA,NA,NA,,1,349,Gill Net,0,1,0
+NA,NA,NA,,1,490,Gill Net,0,1,0
+NA,NA,NA,,1,531,Gill Net,0,1,0
+NA,NA,NA,,1,337,Gill Net,0,1,0
+NA,NA,NA,,1,431,Gill Net,0,1,0
+NA,NA,NA,,1,354,Gill Net,0,1,0
+NA,NA,NA,,1,335,Gill Net,0,1,0
+NA,NA,NA,,1,411,Gill Net,0,1,0
+NA,NA,NA,,1,319,Gill Net,0,1,0
+NA,NA,NA,,1,456,Gill Net,0,1,0
+NA,NA,NA,,1,342,Gill Net,0,1,0
+NA,NA,NA,,1,415,Gill Net,0,1,0
+NA,NA,NA,,3,445,Angler,0,1,0
+NA,NA,NA,,3,420,Angler,0,1,0
+NA,NA,NA,,3,416,Angler,0,1,0
+NA,NA,NA,,3,410,Angler,0,1,0
+NA,NA,NA,,3,480,Angler,0,1,0
+NA,NA,NA,,3,398,Angler,0,1,0
+NA,NA,NA,,3,377,Angler,0,1,0
+NA,NA,NA,,3,365,Angler,0,1,0
+NA,NA,NA,,3,346,Angler,0,1,0
+NA,NA,NA,,3,310,Angler,0,1,0
+NA,NA,NA,,3,340,Angler,0,1,0
+NA,NA,NA,,2,591,Gill Net,0,1,0
+NA,NA,NA,,2,562,Gill Net,0,1,0
+NA,NA,NA,,2,425,Gill Net,0,1,0
+NA,NA,NA,,2,463,Gill Net,0,1,0
+NA,NA,NA,,2,455,Gill Net,0,1,0
+NA,NA,NA,,2,455,Gill Net,0,1,0
+NA,NA,NA,,2,510,Gill Net,0,1,0
+NA,NA,NA,,2,390,Gill Net,0,1,0
+NA,NA,NA,,2,370,Gill Net,0,1,0
+NA,NA,NA,,2,518,Gill Net,0,1,0
+NA,NA,NA,,2,373,Gill Net,0,1,0
+NA,NA,NA,,2,355,Gill Net,0,1,0
+NA,NA,NA,,2,419,Gill Net,0,1,0
+NA,NA,NA,,2,414,Gill Net,0,1,0
+NA,NA,NA,,2,395,Gill Net,0,1,0
+NA,NA,NA,,2,330,Gill Net,0,1,0
+NA,NA,NA,,2,408,Gill Net,0,1,0
+NA,NA,NA,,2,325,Gill Net,0,1,0
+NA,NA,NA,,2,316,Gill Net,0,1,0
+NA,NA,NA,,2,322,Gill Net,0,1,0
+NA,NA,NA,,2,345,Gill Net,0,1,0
+NA,NA,NA,,2,342,Gill Net,0,1,0
+NA,NA,NA,,2,319,Gill Net,0,1,0
+NA,NA,NA,,2,362,Gill Net,0,1,0
+NA,NA,NA,,2,336,Gill Net,0,1,0
+NA,NA,NA,,2,303,Gill Net,0,1,0
+NA,NA,NA,,2,301,Gill Net,0,1,0
+NA,NA,NA,,2,307,Gill Net,0,1,0
+NA,NA,NA,,2,300,Gill Net,0,1,0
+NA,NA,NA,,2,301,Gill Net,0,1,0
+NA,NA,NA,,2,306,Gill Net,0,1,0
+NA,NA,NA,,2,310,Gill Net,0,1,0
+NA,NA,NA,,2,NA,Gill Net,0,1,0
+NA,NA,NA,,4,403,Angler,0,1,0
+NA,NA,NA,,4,327,Angler,0,1,0
+NA,NA,NA,,4,409,Angler,0,1,0
+NA,NA,NA,,4,391,Angler,0,1,0
+NA,NA,NA,,4,355,Angler,0,1,0
+NA,NA,NA,,4,416,Angler,0,1,0
+NA,NA,NA,,4,495,Angler,0,1,0
+NA,NA,NA,,4,350,Angler,0,1,0
+NA,NA,NA,,2,727,Gill Net,0,1,0
+NA,NA,NA,,2,821,Gill Net,0,1,0
+NA,NA,NA,,2,305,Gill Net,0,1,0
+NA,NA,NA,,2,317,Gill Net,0,1,0
+NA,NA,NA,,2,470,Gill Net,0,1,0
+NA,NA,NA,,2,353,Gill Net,0,1,0
+NA,NA,NA,,2,363,Gill Net,0,1,0
+NA,NA,NA,,2,381,Gill Net,0,1,0
+NA,NA,NA,,2,346,Gill Net,0,1,0
+NA,NA,NA,,2,450,Gill Net,0,1,0
+NA,NA,NA,,2,310,Gill Net,0,1,0
+NA,NA,NA,,2,356,Gill Net,0,1,0
+NA,NA,NA,,2,550,Gill Net,0,1,0
+NA,NA,NA,,2,334,Gill Net,0,1,0
+NA,NA,NA,,4,390,Angler,0,1,0
+NA,NA,NA,,4,377,Angler,0,1,0
+NA,NA,NA,,4,400,Angler,0,1,0
+NA,NA,NA,,4,424,Angler,0,1,0
+NA,NA,NA,,4,404,Angler,0,1,0
+NA,NA,NA,,4,385,Angler,0,1,0
+NA,NA,NA,,4,360,Angler,0,1,0
+NA,NA,NA,,4,355,Angler,0,1,0
+NA,NA,NA,,3,430,Gill Net,0,1,0
+NA,NA,NA,,3,412,Gill Net,0,1,0
+NA,NA,NA,,3,322,Gill Net,0,1,0
+NA,NA,NA,,3,488,Gill Net,0,1,0
+NA,NA,NA,,3,749,Gill Net,0,1,0
+NA,NA,NA,,3,438,Gill Net,0,1,0
+NA,NA,NA,,3,376,Gill Net,0,1,0
+NA,NA,NA,,3,379,Gill Net,0,1,0
+NA,NA,NA,,3,314,Gill Net,0,1,0
+NA,NA,NA,,3,386,Gill Net,0,1,0
+NA,NA,NA,,3,520,Gill Net,0,1,0
+NA,NA,NA,,3,349,Gill Net,0,1,0
+NA,NA,NA,,3,405,Gill Net,0,1,0
+NA,NA,NA,,3,344,Gill Net,0,1,0
+NA,NA,NA,,3,457,Gill Net,0,1,0
+NA,NA,NA,,3,300,Gill Net,0,1,0
+NA,NA,NA,,3,809,Gill Net,0,1,0
+NA,NA,NA,,3,335,Gill Net,0,1,0
+NA,NA,NA,,3,457,Gill Net,0,1,0
+NA,NA,NA,,3,371,Gill Net,0,1,0
+NA,NA,NA,,3,301,Gill Net,0,1,0
+NA,NA,NA,,3,333,Gill Net,0,1,0
+NA,NA,NA,,3,425,Gill Net,0,1,0
+NA,NA,NA,,3,572,Gill Net,0,1,0
+NA,NA,NA,,3,543,Gill Net,0,1,0
+NA,NA,NA,,3,512,Gill Net,0,1,0
+NA,NA,NA,,3,301,Gill Net,0,1,0
+NA,NA,NA,,3,336,Gill Net,0,1,0
+NA,NA,NA,,3,383,Gill Net,0,1,0
+NA,NA,NA,,3,335,Gill Net,0,1,0
+NA,NA,NA,,3,307,Gill Net,0,1,0
+NA,NA,NA,,3,453,Gill Net,0,1,0
+NA,NA,NA,,3,554,Gill Net,0,1,0
+NA,NA,NA,,3,319,Gill Net,0,1,0
+NA,NA,NA,,3,632,Gill Net,0,1,0
+NA,NA,NA,,3,435,Gill Net,0,1,0
+NA,NA,NA,,3,448,Gill Net,0,1,0
+NA,NA,NA,,3,477,Gill Net,0,1,0
+NA,NA,NA,,3,470,Gill Net,0,1,0
+NA,NA,NA,,3,381,Gill Net,0,1,0
+NA,NA,NA,,3,350,Gill Net,0,1,0
+NA,NA,NA,,3,400,Gill Net,0,1,0
+NA,NA,NA,,3,402,Gill Net,0,1,0
+NA,NA,NA,,3,469,Gill Net,0,1,0
+NA,NA,NA,,3,310,Gill Net,0,1,0
+NA,NA,NA,,3,441,Gill Net,0,1,0
+NA,NA,NA,,3,450,Gill Net,0,1,0
+NA,NA,NA,,3,410,Gill Net,0,1,0
+NA,NA,NA,,3,368,Gill Net,0,1,0
+NA,NA,NA,,3,341,Gill Net,0,1,0
+NA,NA,NA,,3,304,Gill Net,0,1,0
+NA,NA,NA,,3,791,Gill Net,0,1,0
+NA,NA,NA,,3,570,Gill Net,0,1,0
+NA,NA,NA,,3,360,Gill Net,0,1,0
+NA,NA,NA,,3,354,Gill Net,0,1,0
+NA,NA,NA,,3,348,Gill Net,0,1,0
+NA,NA,NA,,3,331,Gill Net,0,1,0
+NA,NA,NA,,3,452,Gill Net,0,1,0
+NA,NA,NA,,5,644,Angler,0,1,0
+NA,NA,NA,,6,417,Angler,0,1,0
+NA,NA,NA,,6,360,Angler,0,1,0
+NA,NA,NA,,6,359,Angler,0,1,0
+NA,NA,NA,,6,365,Angler,0,1,0
+NA,NA,NA,,6,791,Angler,0,1,0
+NA,NA,NA,,4,376,Gill Net,0,1,0
+NA,NA,NA,,4,405,Gill Net,0,1,0
+NA,NA,NA,,4,565,Gill Net,0,1,0
+NA,NA,NA,,4,431,Gill Net,0,1,0
+NA,NA,NA,,4,505,Gill Net,0,1,0
+NA,NA,NA,,4,302,Gill Net,0,1,0
+NA,NA,NA,,4,311,Gill Net,0,1,0
+NA,NA,NA,,4,476,Gill Net,0,1,0
+NA,NA,NA,,4,598,Gill Net,0,1,0
+NA,NA,NA,,4,447,Gill Net,0,1,0
+NA,NA,NA,,4,415,Gill Net,0,1,0
+NA,NA,NA,,4,374,Gill Net,0,1,0
+NA,NA,NA,,4,317,Gill Net,0,1,0
+NA,NA,NA,,4,409,Gill Net,0,1,0
+NA,NA,NA,,4,446,Gill Net,0,1,0
+NA,NA,NA,,4,397,Gill Net,0,1,0
+NA,NA,NA,,4,420,Gill Net,0,1,0
+NA,NA,NA,,4,363,Gill Net,0,1,0
+NA,NA,NA,,4,499,Gill Net,0,1,0
+NA,NA,NA,,4,426,Gill Net,0,1,0
+NA,NA,NA,,4,620,Gill Net,0,1,0
+NA,NA,NA,,4,305,Gill Net,0,1,0
+NA,NA,NA,,4,341,Gill Net,0,1,0
+NA,NA,NA,,4,424,Gill Net,0,1,0
+NA,NA,NA,,4,301,Gill Net,0,1,0
+NA,NA,NA,,4,375,Gill Net,0,1,0
+NA,NA,NA,,4,581,Gill Net,0,1,0
+NA,NA,NA,,4,368,Gill Net,0,1,0
+NA,NA,NA,,4,312,Gill Net,0,1,0
+NA,NA,NA,,4,335,Gill Net,0,1,0
+NA,NA,NA,,4,397,Gill Net,0,1,0
+NA,NA,NA,,4,463,Gill Net,0,1,0
+NA,NA,NA,,4,337,Gill Net,0,1,0
+NA,NA,NA,,4,389,Gill Net,0,1,0
+NA,NA,NA,,4,395,Gill Net,0,1,0
+NA,NA,NA,,4,378,Gill Net,0,1,0
+NA,NA,NA,,6,364,Gill Net,0,1,0
+NA,NA,NA,,6,383,Gill Net,0,1,0
+NA,NA,NA,,6,379,Gill Net,0,1,0
+NA,NA,NA,,6,333,Gill Net,0,1,0
+NA,NA,NA,,6,339,Gill Net,0,1,0
+NA,NA,NA,,6,346,Gill Net,0,1,0
+NA,NA,NA,,6,328,Gill Net,0,1,0
+NA,NA,NA,,6,353,Gill Net,0,1,0
+NA,NA,NA,,6,343,Gill Net,0,1,0
+NA,NA,NA,,6,324,Gill Net,0,1,0
+NA,NA,NA,,6,366,Gill Net,0,1,0
+NA,NA,NA,,6,395,Gill Net,0,1,0
+NA,NA,NA,,6,302,Gill Net,0,1,0
+NA,NA,NA,,6,330,Gill Net,0,1,0
+NA,NA,NA,,6,392,Gill Net,0,1,0
+NA,NA,NA,,6,445,Gill Net,0,1,0
+NA,NA,NA,,6,321,Gill Net,0,1,0
+NA,NA,NA,,6,323,Gill Net,0,1,0
+NA,NA,NA,,6,327,Gill Net,0,1,0
+NA,NA,NA,,6,320,Gill Net,0,1,0
+NA,NA,NA,,6,331,Gill Net,0,1,0
+NA,NA,NA,,6,369,Gill Net,0,1,0
+NA,NA,NA,,6,300,Gill Net,0,1,0
+NA,NA,NA,,6,310,Gill Net,0,1,0
+NA,NA,NA,,6,304,Gill Net,0,1,0
+NA,NA,NA,,6,330,Gill Net,0,1,0
+NA,NA,NA,,6,326,Gill Net,0,1,0
+NA,NA,NA,,6,305,Gill Net,0,1,0
+NA,NA,NA,,6,340,Gill Net,0,1,0
+NA,NA,NA,,6,322,Gill Net,0,1,0
+NA,NA,NA,,6,310,Gill Net,0,1,0
+NA,NA,NA,,6,300,Gill Net,0,1,0
+NA,NA,NA,,6,320,Gill Net,0,1,0
+NA,NA,NA,,6,333,Gill Net,0,1,0
+NA,NA,NA,,6,305,Gill Net,0,1,0
+NA,NA,NA,,5,501,Gill Net,0,1,0
+NA,NA,NA,,5,316,Gill Net,0,1,0
+NA,NA,NA,,5,306,Gill Net,0,1,0
+NA,NA,NA,,5,543,Gill Net,0,1,0
+NA,NA,NA,,2,370,Angler,0,1,0
+NA,NA,NA,,1,324,Gill Net,0,1,0
+NA,NA,NA,,1,308,Gill Net,0,1,0
+NA,NA,NA,,1,446,Gill Net,0,1,0
+NA,NA,NA,,1,314,Gill Net,0,1,0
+NA,NA,NA,,1,340,Gill Net,0,1,0
+NA,NA,NA,,1,301,Gill Net,0,1,0
+NA,NA,NA,,1,355,Gill Net,0,1,0
+NA,NA,NA,,1,323,Gill Net,0,1,0
+NA,NA,NA,,1,321,Gill Net,0,1,0
+NA,NA,NA,,1,331,Gill Net,0,1,0
+NA,NA,NA,,1,329,Gill Net,0,1,0
+NA,NA,NA,,2,375,Gill Net,0,1,0
+NA,NA,NA,,2,332,Gill Net,0,1,0
+NA,NA,NA,,2,335,Gill Net,0,1,0
+NA,NA,NA,,2,305,Gill Net,0,1,0
+NA,NA,NA,,2,344,Gill Net,0,1,0
+NA,NA,NA,,2,435,Gill Net,0,1,0
+NA,NA,NA,,2,443,Gill Net,0,1,0
+NA,NA,NA,,2,423,Gill Net,0,1,0
+NA,NA,NA,,2,383,Gill Net,0,1,0
+NA,NA,NA,,2,439,Gill Net,0,1,0
+NA,NA,NA,,2,527,Gill Net,0,1,0
+NA,NA,NA,,2,365,Gill Net,0,1,0
+NA,NA,NA,,2,312,Gill Net,0,1,0
+NA,NA,NA,,2,318,Gill Net,0,1,0
+NA,NA,NA,,2,306,Gill Net,0,1,0
+NA,NA,NA,,2,313,Gill Net,0,1,0
+NA,NA,NA,,2,363,Gill Net,0,1,0
+NA,NA,NA,,2,332,Gill Net,0,1,0
+NA,NA,NA,,2,314,Gill Net,0,1,0
+NA,NA,NA,,2,313,Gill Net,0,1,0
+NA,NA,NA,,2,320,Gill Net,0,1,0
+NA,NA,NA,,2,772,Gill Net,0,1,0
+NA,NA,NA,,2,320,Gill Net,0,1,0
+NA,NA,NA,,2,303,Gill Net,0,1,0
+NA,NA,NA,,2,326,Gill Net,0,1,0
+NA,NA,NA,,4,376,Angler,0,1,0
+NA,NA,NA,,4,464,Angler,0,1,0
+NA,NA,NA,,4,334,Angler,0,1,0
+NA,NA,NA,,4,497,Angler,0,1,0
+NA,NA,NA,,4,314,Angler,0,1,0
+NA,NA,NA,,4,383,Angler,0,1,0
+NA,NA,NA,,4,375,Angler,0,1,0
+NA,NA,NA,,4,344,Angler,0,1,0
+NA,NA,NA,,4,321,Angler,0,1,0
+NA,NA,NA,,4,353,Angler,0,1,0
+NA,NA,NA,,4,367,Angler,0,1,0
+NA,NA,NA,,4,344,Angler,0,1,0
+NA,NA,NA,,4,343,Angler,0,1,0
+NA,NA,NA,,4,380,Angler,0,1,0
+NA,NA,NA,,4,377,Angler,0,1,0
+NA,NA,NA,,4,384,Angler,0,1,0
+NA,NA,NA,,4,317,Angler,0,1,0
+NA,NA,NA,,3,316,Gill Net,0,1,0
+NA,NA,NA,,3,474,Gill Net,0,1,0
+NA,NA,NA,,3,333,Gill Net,0,1,0
+NA,NA,NA,,3,390,Gill Net,0,1,0
+NA,NA,NA,,3,454,Gill Net,0,1,0
+NA,NA,NA,,3,423,Gill Net,0,1,0
+NA,NA,NA,,3,403,Gill Net,0,1,0
+NA,NA,NA,,3,380,Gill Net,0,1,0
+NA,NA,NA,,3,343,Gill Net,0,1,0
+NA,NA,NA,,3,320,Gill Net,0,1,0
+NA,NA,NA,,3,384,Gill Net,0,1,0
+NA,NA,NA,,3,395,Gill Net,0,1,0
+NA,NA,NA,,3,430,Gill Net,0,1,0
+NA,NA,NA,,3,362,Gill Net,0,1,0
+NA,NA,NA,,3,375,Gill Net,0,1,0
+NA,NA,NA,,3,375,Gill Net,0,1,0
+NA,NA,NA,,3,427,Gill Net,0,1,0
+NA,NA,NA,,3,369,Gill Net,0,1,0
+NA,NA,NA,,3,398,Gill Net,0,1,0
+NA,NA,NA,,3,362,Gill Net,0,1,0
+NA,NA,NA,,3,325,Gill Net,0,1,0
+NA,NA,NA,,3,305,Gill Net,0,1,0
+NA,NA,NA,,3,302,Gill Net,0,1,0
+NA,NA,NA,,3,368,Gill Net,0,1,0
+NA,NA,NA,,3,340,Gill Net,0,1,0
+NA,NA,NA,,3,315,Gill Net,0,1,0
+NA,NA,NA,,3,321,Gill Net,0,1,0
+NA,NA,NA,,3,301,Gill Net,0,1,0
+NA,NA,NA,,4,405,Gill Net,0,1,0
+NA,NA,NA,,4,409,Gill Net,0,1,0
+NA,NA,NA,,4,416,Gill Net,0,1,0
+NA,NA,NA,,4,360,Gill Net,0,1,0
+NA,NA,NA,,4,392,Gill Net,0,1,0
+NA,NA,NA,,4,340,Gill Net,0,1,0
+NA,NA,NA,,4,327,Gill Net,0,1,0
+NA,NA,NA,,4,327,Gill Net,0,1,0
+NA,NA,NA,,4,340,Gill Net,0,1,0
+NA,NA,NA,,4,308,Gill Net,0,1,0
+NA,NA,NA,,4,409,Gill Net,0,1,0
+NA,NA,NA,,4,418,Gill Net,0,1,0
+NA,NA,NA,,4,317,Gill Net,0,1,0
+NA,NA,NA,,4,320,Gill Net,0,1,0
+NA,NA,NA,,4,457,Gill Net,0,1,0
+NA,NA,NA,,4,330,Gill Net,0,1,0
+NA,NA,NA,,4,392,Gill Net,0,1,0
+NA,NA,NA,,4,323,Gill Net,0,1,0
+NA,NA,NA,,4,322,Gill Net,0,1,0
+NA,NA,NA,,4,373,Gill Net,0,1,0
+NA,NA,NA,,4,419,Gill Net,0,1,0
+NA,NA,NA,,4,335,Gill Net,0,1,0
+NA,NA,NA,,4,327,Gill Net,0,1,0
+NA,NA,NA,,4,333,Gill Net,0,1,0
+NA,NA,NA,,4,444,Gill Net,0,1,0
+NA,NA,NA,,4,309,Gill Net,0,1,0
+NA,NA,NA,,4,397,Gill Net,0,1,0
+NA,NA,NA,,4,363,Gill Net,0,1,0
+NA,NA,NA,,6,323,Gill Net,0,1,0
+NA,NA,NA,,6,341,Gill Net,0,1,0
+NA,NA,NA,,6,304,Gill Net,0,1,0
+NA,NA,NA,,6,345,Gill Net,0,1,0
+NA,NA,NA,,6,310,Gill Net,0,1,0
+NA,NA,NA,,6,360,Gill Net,0,1,0
+NA,NA,NA,,6,346,Gill Net,0,1,0
+NA,NA,NA,,6,304,Gill Net,0,1,0
+NA,NA,NA,,6,305,Gill Net,0,1,0
+NA,NA,NA,,6,317,Gill Net,0,1,0
+NA,NA,NA,,6,357,Gill Net,0,1,0
+NA,NA,NA,,6,309,Gill Net,0,1,0
+NA,NA,NA,,6,350,Gill Net,0,1,0
+NA,NA,NA,,6,326,Gill Net,0,1,0
+NA,NA,NA,,6,326,Gill Net,0,1,0
+NA,NA,NA,,6,301,Gill Net,0,1,0
+NA,NA,NA,,6,316,Gill Net,0,1,0
+NA,NA,NA,,6,325,Gill Net,0,1,0
+NA,NA,NA,,6,346,Gill Net,0,1,0
+NA,NA,NA,,6,321,Gill Net,0,1,0
+NA,NA,NA,,6,315,Gill Net,0,1,0
+NA,NA,NA,,6,341,Gill Net,0,1,0
+NA,NA,NA,,6,312,Gill Net,0,1,0
+NA,NA,NA,,6,323,Gill Net,0,1,0
+NA,NA,NA,,6,300,Gill Net,0,1,0
+NA,NA,NA,,6,323,Gill Net,0,1,0
+NA,NA,NA,,6,325,Gill Net,0,1,0
+NA,NA,NA,,6,325,Gill Net,0,1,0
+NA,NA,NA,,5,474,Gill Net,0,1,0
+NA,NA,NA,,5,397,Gill Net,0,1,0
+NA,NA,NA,,5,383,Gill Net,0,1,0
+NA,NA,NA,,5,319,Gill Net,0,1,0
+NA,NA,NA,,5,366,Gill Net,0,1,0

@@ -17,8 +17,10 @@ mark_fish <- function(N, bias = "random", bias_amt = c(.5,.2)){
 
   x <- runif(n=N, min = 0, max = 1)
   y <- runif(n=N, min = 0, max = 1)
-  lengths <- rgamma(n = N, shape = 5, scale = 50)
   
+  # Distribution of lengths shouldn't matter too much
+  # lengths <- rgamma(n = N, shape = 5, scale = 50)
+  lengths <- runif(n = N, min = 200, max = 800)
   
   # each row in fish_pop is a fish in the lake
 

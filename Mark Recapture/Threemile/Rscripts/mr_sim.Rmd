@@ -1,0 +1,114 @@
+---
+title: "Mark Recapture MC Simulation"
+author: "Ben Buzzee"
+date: "November 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Mark Recapture Studies
+
+At the Alaska Department of Fish and Game we often perform mark-recapture studies to estimate the number of individuals in local populations of fish. During these studies we go to a location and catch and tag as many fish as possible during a "mark" event. After the fish have recovered, we revisit the location and conduct a "recapture" event. If several key assumptions hold, we can use the proportion of recaught fish with tags to estimate the total number of fish in the system.
+
+The problem, of course, is that the assumptions are always violated to some degree. This project will attempt to determine how far these assumptions can be stretched before a significant amount of bias appears in the population estimate. Further, this analysis will be motivated by a mark recapture study performed in Beluga, AK to estimate the number of invasive Northern Pike in the Threemile lake complex.
+
+# Assumptions
+
+To arrive at an unbiased estimate of the population size, the following assumptions must be met:
+
+1) the population is closed (northern pike do not enter the population via growth or immigration, or leave the population via death or emigration during the experiment)
+2) all pike have the same probability of capture during the first event, or during the second event, or marked and unmarked fish will mix completely between events
+3) marking of pike will not affect the probability of capture during the second event
+4) pike will not lose their marks between events and tagged fish will be correctly identified during the second event
+
+In this study we will focus on assumption 2, which is perhaps the most unrealistic assumption. To keep it simple, we will study bias as it relates to length.
+
+
+# Three KS tests:
+
+After we collected the data, we conduct three KS tests to see if the probability of capturing a fish of a particular length is the same for each sampling event. In each test the null hypothesis is that the two CDF's are the same. So if we fail to reject the null hypothesis we assume our assumption has been met.
+
+Test 1: Marked vs Recaptured Fish
+If no significant difference in lengths is found between fish that were initially marked and those with tags that were recaptured, the probability of capture is similar for all fish during the SECOND event.
+
+Test 2: Unmarked vs Recaptured
+If no significant difference in lengths is found between fish that were NOT marked during the first event and fish that were recaptured, then the probability of capture was similar for the FIRST event.
+
+
+```{r data}
+mr_df <- read.csv("../data/mr_data.csv")
+
+mark <- mr_df %>% filter(mark == 1, !is.na(mark_len))
+cap <- mr_df %>% filter(recap == 1, !is.na(recap_len)) 
+recap <- mr_df %>% filter(both_events == 1, !is.na(recap_len))
+
+
+
+
+
+
+plot(ecdf(mark$mark_len), col = "blue", main = "Empirical Cumulative Distributions", xlab = "Length (mm)")
+lines(ecdf(cap$recap_len), col = "red")
+lines(ecdf(recap$recap_len), col = "green")
+legend("bottomright", legend = c("First Event", "Second Event", "Recaptured"), fill = c("blue", "red", "green"))
+```
+
+
+```{r}
+
+M <- sum(mr_df$mark)
+C <- sum(mr_df$recap)
+R <- sum(mr_df$both_events)
+
+N_hat <- M*C/R
+
+
+B <- 1000
+
+df <- data.frame(bias = NA, KS1 = NA, KS2 = NA)
+
+
+for (i in 1:B){
+  
+  # Rsample new mark event data
+  mark_new <- sample_n(mr_df, size = nrow(mr_df), replace = TRUE)
+  # if mark is NA that means we didn't catch that fish this time
+  mark_new <- mark_new[!is.na(mark_new$mark_len),]
+  
+  cap_new <- sample_n(mr_df, size = nrow(mr_df), replace = TRUE)
+  cap_new <- cap_new[!is.na(cap_new$recap_len),]
+  
+
+  recap_new <- cap_new[!is.na(cap_new$mark_len),]
+  
+  
+  M_new <- sum(mark_new$mark)
+  C_new <- sum(cap_new$recap)
+  R_new <- sum(recap_new$both_events)
+  
+  
+  test1 <- ks.test(mark_new$mark_len, recap_new$recap_len)$p.value
+  test2 <- ks.test(cap_new$recap_len, recap_new$recap_len)$p.value
+  
+  # bias
+  df[i,1] <- M_new*C_new/R_new - N_hat
+  df[i,2] <- test1 < .05
+  df[i,3] <- test2 < .05
+}
+
+
+head(df)
+
+
+sum(df$KS1/1000)
+sum(df$KS2/1000)
+mean(df$bias)
+
+
+```
+
+
