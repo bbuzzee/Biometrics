@@ -1,0 +1,212 @@
+---
+title: "Mark Recapture MC Simulation"
+author: "Ben Buzzee"
+date: "November 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Mark Recapture Studies
+
+At the Alaska Department of Fish and Game we often perform mark-recapture studies to estimate the number of individuals in local populations of fish. During these studies we go to a location and catch and tag as many fish as possible during a "mark" event. After the fish have recovered, we revisit the location and conduct a "recapture" event. If several key assumptions hold, we can use the proportion of recaught fish with tags to estimate the total number of fish in the system.
+
+The problem, of course, is that the assumptions are always violated to some degree. This project will attempt to determine how far these assumptions can be stretched before a significant amount of bias appears in the population estimate. Further, this analysis will be motivated by a mark recapture study performed in Beluga, AK to estimate the number of invasive Northern Pike in the Threemile lake complex.
+
+# Assumptions
+
+To arrive at an unbiased estimate of the population size, the following assumptions must be met:
+
+1) the population is closed (northern pike do not enter the population via growth or immigration, or leave the population via death or emigration during the experiment)
+2) all pike have the same probability of capture during the first event, or during the second event, or marked and unmarked fish will mix completely between events
+3) marking (or tagging) will not affect the probability of capture during the second event
+4) pike will not lose their tags between events and tagged fish will be correctly identified during the second event
+
+In this study we will focus on assumption 2, which is perhaps the most unrealistic assumption. To keep it simple, we will study bias as it relates to the location of the fish.
+
+
+# Chi-square test:
+
+Before we conduct a typical mark-recapture study, we will stratify the lake/stream into distinct regions (usually between 2 and 4 regions). After the data is collected we can then compare recapture rates across regions to determine whether the probability of capture was similar. More formally, we can conduct a chi-square test with the null hypothesis that the probability of capture is equal in each region. In the case where the chi-square test rejects the null hypothesis, it is recommended to estimate the population size in each region separately and then add those estimates together. We will look at both estimators.
+
+At Beluga Lake we saw an example of unequal capture probabilities. There was one region with a shallow outlet to cook inlet and the pike aggregated in this area. Catching pike in that region was almost as easy as shooting fish in a barrel. In other regions, however, the waters were much deeper and it was very difficult to catch anything.
+
+
+# Mark Event Simluation
+
+First we will initialize our "population" and assign each fish a location in a simplified square lake.
+
+```{r mark}
+mark_fish <- function(N,  bias = c(.5,.2)){
+  
+  # bias[1] is the probability of capture in region 1
+  # bias[2] is the probability of capture in region 2
+
+  x <- runif(n=N, min = 0, max = 1)
+  y <- runif(n=N, min = 0, max = 1)
+  
+  # each row in fish_pop is a fish in the lake
+  fish_pop <- data.frame(x, y, region1_prob = bias[1], region2_prob = bias[2])
+  
+  fish_pop$region <- ifelse(y >= .5, yes = 1, no = 2)
+  
+  num_region1 <- sum(fish_pop$y >= .5)
+  num_region2 <- N-num_region1
+  
+  # each "fish" is a bernoulli trial with a certain probability of "success" or being caught
+  # if a fish is in region 1, the probability of capture is bias[1]
+  # otherwise the probability of capture is bias[2]
+  fish_pop$M <- ifelse(test = fish_pop$y >= .5,
+                              yes = rbinom(n = num_region1, size = 1,p = bias[1]),
+                              no = rbinom(n = num_region2, size = 1, p = bias[2]))
+  
+  return(fish_pop)
+  
+  }
+```
+
+
+
+
+After our "Mark" event our population of fish looks like the following:
+```{r graph1}
+mr_df <- mark_fish(N = 150)
+
+mr_df %>% ggplot(aes(x = mr_df$x, y = mr_df$y, col = as.factor(mr_df$M))) +
+  geom_hline(yintercept = .5) +
+  geom_point() +
+  scale_colour_discrete(name ="Status", labels=c("Not Tagged", "Tagged")) +
+  annotate(geom = "text", x = .5, y = .75, label = "Region 1", size = 5) +
+  annotate(geom = "text", x = .5, y = .25, label = "Region 2", size = 5) +
+  ggtitle(label = "Simulated Lake")
+```
+
+Next we will conduct the "recapture" event and note whether the fish was also caught during the "mark" event.
+```{r recap}
+recap_fish <- function(marked_pop, bias = c(.5,.2)){
+  
+    N <- length(marked_pop$y)
+    num_region1 <- sum(marked_pop$y >= .5)
+    num_region2 <- N-num_region1
+    
+    # repeat same process as above
+    marked_pop$C <- ifelse(test = marked_pop$y >= .5,
+                               yes = rbinom(n = num_region1, size = 1, p = bias[1]),
+                               no = rbinom(n = num_region2, size = 1, p = bias[2]))
+    
+    
+    marked_pop$R <- ((marked_pop$M == 1) & (marked_pop$C == 1))
+  
+    return(marked_pop)
+}
+```
+
+And after the recapture event we have a population of fish that looks like the following:
+
+```{r graph2}
+mr_df <- mr_df %>% recap_fish
+
+mr_df$outcome <- ifelse(mr_df$M==1 & mr_df$C == 1, "R",
+                    ifelse(mr_df$M == 1, "M",
+                           ifelse(mr_df$C==1, "C", "NC")))
+  
+mr_df %>% ggplot(aes(x = mr_df$x, y = mr_df$y, col = as.factor(outcome)), size = 50) +    
+  geom_hline(yintercept = .5) +
+  geom_point() +
+  scale_colour_discrete(name = "Outcomes", labels=c("Second Event Capture Only",
+                                                   "First Event Capture Only",
+                                                   "Never Captured",
+                                                   "Caught in Both Events")) +
+  ggtitle(label = "Final Outcomes")
+
+```
+
+As we can see in this example, fish in region 1 are caught with a much higher probability. Nearly all our initial tags and recaptures are in region 1. So how does this affect our population estimate?
+
+
+```{r}
+calc_results <- function(mr_df){
+  
+  # Null hypothesis: proportion of tagged fish is independent of region
+  # or probability of capturing a tagged fish is equal in each region
+  chi1 <- chisq.test(x = mr_df$R, y = as.factor(mr_df$region))
+  p1 <- chi1$p.value
+  
+  
+  # Unadjusted population estimate
+  # if all the assumptions are met, our unbiased estimate would be Marks*Captures/Recaptures
+  M <- sum(mr_df$M)
+  C <- sum(mr_df$C)
+  R <- sum(mr_df$R)
+  
+  raw_est <- M*C/R
+  
+  # Stratified estimate
+  # region 1
+  mr_df1 <- mr_df %>% filter(region == 1)
+  M1 <- sum(mr_df1$M)
+  C1 <- sum(mr_df1$C)
+  R1 <- sum(mr_df1$R)
+  region1_est<- M1*C1/R1
+
+  # region 2
+  mr_df2 <- mr_df %>% filter(region == 2)
+  M2 <- sum(mr_df2$M)
+  C2 <- sum(mr_df2$C)
+  R2 <- sum(mr_df2$R)
+  region2_est<- M2*C2/R2
+  
+  # then add
+  stratified_est <- region1_est + region2_est
+  
+  
+  results <- data.frame(region1_prob = unique(mr_df$region1_prob),
+                        region2_prob = unique(mr_df$region2_prob),
+                        reject_equal_p = p1 < .05,
+                        bias_raw = raw_est - length(mr_df$M),
+                        bias_stratified = stratified_est - length(mr_df$M),
+                        true_N = length(mr_df$M))
+  return(results)
+}
+```
+
+
+Now lets put all the code together to perform a single complete simulation:
+
+```{r}
+out <- mark_fish(1000) %>% recap_fish() %>% calc_results()
+
+knitr::kable(out)
+```
+
+# MC Simulation
+Finally, lets repeat the process 1000 times for a variety of different capture probabilities and population sizes.
+
+```{r, cache=T}
+# Initialize parameters
+probs <- list(c(.5,.5), c(.5, .3), c(.5, .2))
+pop_size <- c(500, 1000, 2000)
+B <- 1000
+results <- data.frame()
+
+
+for (i in 1:length(probs)){
+  for (j in 1:length(pop_size)){
+    for (k in 1:B){
+    out <- mark_fish(pop_size[j], bias = probs[[i]]) %>% recap_fish(bias = probs[[i]]) %>% calc_results()
+    results <- rbind(results, out)
+    }
+  }
+}
+  
+results %>% group_by(true_N, region1_prob, region2_prob) %>% summarize(chisq_power = sum(reject_equal_p)/n(),
+                                                               avg_bias_raw = mean(bias_raw),
+                                                               avg_bias_stratified = mean(bias_stratified)
+                                                               ) %>% knitr::kable()
+
+```
+
+So does it matter if the probability of capture is different in different regions? I would say yes, but only in extreme situations. When the probability of capture differs by .2 our chi-square test will almost always tell us we have violated our assumptions, but, on average, our population estimate is only wrong by less than 10% of the true value. If our capture probabilities differ more than that, our estimate veers off course by 15-20%, which is "significantly" different in the scientific sense. It is also worth noting that even when there is no difference we incorrectly reject the null hypothesis almost 10% of the time at the .05 level.

@@ -1,0 +1,20 @@
+From Parker:
+
+"Dissection data which has 4 tabs (Chuit Mark, Threemile, Chuit Recap, then Chuit mark/recap combined).  
+Next is the catch data from Chuit (separate tables for event type and gear type).
+Finally, the catch data from Threemile (Two tabs for gear type). 
+
+As you can imagine, the totals don’t completely jive between the catch data and the dissection data.  It appears anglers kids didn’t do so well filling out catch forms, 
+so the dissectors have a couple more fish than the “catch” that some days for both Threemile and Chuit.  Also, there was a couple days where a couple extra fish were caught in nets and not dissected, 
+or a couple more dissected than caught in nets in Threemile, but it’s just a few, and overall totals match up, so forget I said anything with that.  Chuit gillnet catch data and dissections match up good.
+
+I’ve included a few notes at the top in some of the sheets, should be pretty self explanatory.
+
+Ben, for the Chuit Pop estimate, I would use the data in the file “2019 Chuit catch data” under the tabs “Gillnets Mark Chuit” and “Angling Mark Chuit” for mark data.
+For recap data, I would use the file “2019 Dissection Data”, then use tab “Chuit Recap”.  However, I did do quite a bit of comparison between the dissection data and the catch data during the recap event,
+and noticed that there was a tag loss noted in the Chuit recap event that was not noted in the dissections that day, but I’ve made a note of that in one of the tabs."
+
+
+=================================
+
+I saved the sheets Parker mentioned in the last paragraph above ('gillnet mark chuit', 'angling mark chut', and 'chuit recap') as csv files so they can be easily read into R.

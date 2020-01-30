@@ -1,0 +1,167 @@
+---
+title: "Tanner Expansion 2017"
+author: "Ben Buzzee"
+date: "November 21, 2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+
+
+harvest <- read.csv("harvest_records_17.csv", header = T, stringsAsFactors = F, nrows = 3300)
+permits <- read_csv("permit_records_17.csv", n_max = 1931)
+
+
+
+# change all variable names to lower (personal preference)
+names(harvest) <- tolower(names(harvest))
+names(permits) <- tolower(names(permits))
+
+
+
+harvest <- harvest %>% select(permitno = permit, areacode = location, harvestcount = tanner, type  = use, reportdate = harvdate)
+permits <- permits %>% select(permitno = permit, reported = responded, status, type = use)
+
+
+
+
+# replace with yes/no
+permits$reported<- gsub(".*N.*", "no", permits$reported)
+permits$reported<- gsub(".*Y.*", "yes", permits$reported)
+
+
+# determine whether mailed in reports were late (old mailing = 2)
+harvest$reportdate <- as.Date(harvest$reportdate, format = "%m/%d/%Y")
+harvest$late <- ifelse(harvest$reportdate < as.Date("2017-3-1"), "yes", "no")
+harvest$areacode <- ifelse(harvest$areacode == "", NA, ifelse(harvest$areacode %in% c("A", "B", "C"), "ABC", harvest$areacode))
+
+```
+
+
+Total reported harvest by permit type and area:
+```{r}
+
+master_df <- left_join(harvest, permits, by = c("permitno", "type")) %>% filter(status != "DID NOT FISH")
+total <- master_df %>% group_by(areacode, type) %>% summarize(crab_count = sum(harvestcount, na.rm = T))
+
+
+knitr::kable(total)
+
+```
+
+
+
+
+
+
+Total number of non-respondents:
+
+```{r}
+permits %>% group_by(type, reported) %>% summarize(count = n()) %>% knitr::kable()
+```
+
+
+So we see that `r 64` people failed to respond. 
+
+
+```{r}
+
+# non-responding households that reported fishing
+non_rspd_sport <- 59
+
+# total nonresponding households
+non_rspd_sub <- 5 
+
+N <-non_rspd_sport + non_rspd_sub
+```
+
+
+Next, we will estimate the number of non-respondents that fished:
+
+First we need to find the proportion of late responders that fished in each area:
+```{r}
+late_harv <- left_join(harvest, permits, by = "permitno") %>% filter(status != "DID NOT FISH")
+late_harv <- late_harv %>% group_by(areacode, late) %>% summarize(count= n())
+
+late_harv
+
+
+```
+
+
+So we will assume the proportion of non-responders that fished in each area is the same as the proportion of late responders that fished in each area.
+
+```{r}
+
+# late responders in each area that did report fishing
+ndf_E <- 1033
+
+ndf_D <- 24
+
+ndf_ABC <- 37
+
+ndf_NA <- 17
+
+ndf <- c(ndf_ABC, ndf_D, ndf_E, ndf_NA)
+# total late responders
+nd <- 1033 + 24 + 37 +17
+
+
+w_hat_E <- ndf_E/nd
+w_hat_D <- ndf_D/nd
+w_hat_ABC <- ndf_ABC/nd
+w_hat_NA <- ndf_NA/nd
+prop_non_rspd_fished = c(w_hat_ABC,w_hat_D, w_hat_E, w_hat_NA)
+
+proportions <- data.frame(area = c("ABC", "D", "E", "NA"), prop_non_rspd_fished)
+
+
+knitr::kable(proportions)
+
+```
+
+
+
+Next, we'll find the mean harvest per area:
+
+```{r}
+mean_catches <- harvest %>% filter(late == "yes") %>% group_by(areacode) %>% summarize(mean = mean(harvestcount, na.rm = T))
+mean_catches
+
+
+```
+
+Finally, to find our expanded harvest numbers, we will multiply total non-respondents (sport or subsistence) by the porportion we expected to fish in each area times the average catch. So for example, $\hat{N}_{sport} = N_{sport} \hat{p} \bar{x}$.
+
+
+
+```{r}
+knitr::kable(cbind(areacode = c("ABC", "D", "E", "NA"),
+                   crab_count_sport = round(non_rspd_sport*proportions$prop_non_rspd_fished*mean_catches$mean, 0),
+                   crab_count_sub = round(non_rspd_sub*proportions$prop_non_rspd_fished*mean_catches$mean, 0)))
+```
+
+Next we'll estimate standard errors for the above estimates:
+
+```{r}
+var_xhat <- harvest %>% filter(late == "yes") %>% group_by(areacode) %>% summarize(var(harvestcount, na.rm = T))
+
+
+
+var_phat <- prop_non_rspd_fished*(1 - prop_non_rspd_fished)/nd
+
+
+
+
+SE_sport <- sqrt(non_rspd_sport^2*(prop_non_rspd_fished^2*var_xhat$`var(harvestcount, na.rm = T)` + mean_catches$mean^2*var_phat))
+SE_sub <-  sqrt(non_rspd_sub^2*(prop_non_rspd_fished^2*var_xhat$`var(harvestcount, na.rm = T)` + mean_catches$mean^2*var_phat))
+
+se_df <- data.frame(cbind(areacode = c("ABC", "D", "E", "NA"),
+                          stderr_sport = round(SE_sport, 0),
+                          stderr_sub = round(SE_sub, 0)))
+
+knitr::kable(se_df)
+```

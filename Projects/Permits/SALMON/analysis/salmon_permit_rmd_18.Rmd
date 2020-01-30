@@ -79,6 +79,8 @@ N_hat <- o*(1/p) + M
 non_respond <- N_hat - sum(as.numeric(mail_counts$count[1:3]))
 
 N_hat
+
+23734 + 973
 ```
 
 
@@ -120,6 +122,8 @@ For all of those that had mailing = 2 and reported their harvest, I found the av
 ```{r}
 
 master_df <- left_join(harvest, permits, by = c("permit")) %>% select(1:8, mailing, status, city)
+
+# write.csv(master_df, "../data/master_df_18.csv")
 # FIND AVG HARVEST FOR NONCOMPLIANTS THAT REPORTED FISHING ====================================
 
 noncompl_sum <- master_df %>% filter(mailing %in% c(1,2)) %>% group_by(permit, fishery) %>% summarise(red = sum(red), king = sum(king), coho = sum(coho), pink = sum(pink), chum = sum(chum), flounder = sum(flounder))
@@ -222,7 +226,7 @@ issued <- permits %>% group_by(city) %>% summarize(permits_issued = n(),
                                          no_return_but_fished = round(permits_not_returned*w_hat, 2))
 
 # calculate reported totals
-reported <- master_df %>% group_by(city) %>% summarise(red = sum(red),
+reported <- master_df %>% group_by(city, fishery) %>% summarise(red = sum(red),
                                                        king = sum(king),
                                                        coho = sum(coho),
                                                        pink = sum(pink), 
@@ -247,5 +251,17 @@ subsistence_master[,12:18] <- round(subsistence_master[,12:18], 0)
 subsistence_master
 
 write.csv(subsistence_master, file = "PU By city.csv", na = "0")
+```
+
+```{r}
+regions_key <- read.csv("../data/city_region_key.csv")
+
+region_df <- left_join(subsistence_master, regions_key, by = "city") %>% select(7, 14:18, 20)
+
+
+
+total_salmon_region <- region_df %>% group_by(region_number, fishery) %>% summarize_all(sum) %>% mutate(total_salmon = exp_reds + exp_kings + exp_coho + exp_pink + exp_chum) %>% select(1,2,8)
+
+
 ```
 

@@ -2,7 +2,7 @@
 title: "Tanner Expansion 2019"
 author: "Ben Buzzee"
 date: "August 23, 2019"
-output: odt_document
+output: word_document
 ---
 
 ```{r setup, include=FALSE}
@@ -22,10 +22,10 @@ names(permits) <- tolower(names(permits))
 
 
 harvest <- harvest %>% select(harvestpersonalinfoid, ontimereport, reportdate, permitno, permittypeid, harvestcount, didyoufish, mailing, harvestcount, areacode)
-permits <- permits %>% select(permittypeid, `reported?`, name_combi)
+permits <- permits %>% select(permittypeid, `reported?`, name_combi, permitno)
 
 
-names(permits) <- c("type", "reported", "name")
+names(permits) <- c("type", "reported", "name", "permitno")
 
 # replace with yes/no
 permits$reported <- gsub(".*no.*", "no", permits$reported)
@@ -37,15 +37,14 @@ harvest$reportdate <- as.Date(harvest$reportdate, format = "%m/%d/%y")
 harvest$late <- ifelse(harvest$reportdate < as.Date("2019-3-1"), "yes", "no")
 harvest$areacode <- ifelse(harvest$areacode == "", NA, ifelse(harvest$areacode %in% c("A", "B", "C"), "ABC", harvest$areacode))
 
-harvest$effort_days <- 1
-
-
 ```
 
 
 Total reported harvest by permit type and area:
 ```{r}
-total <- harvest %>% group_by(areacode) %>% summarize(crab_count = sum(harvestcount, na.rm = T), days = sum(effort_days))
+
+master_df <- left_join(harvest, permits, by = "permitno") %>% filter(didyoufish == "TRUE")
+total <- master_df %>% group_by(areacode, type) %>% summarize(crab_count = sum(harvestcount, na.rm = T))
 
 
 knitr::kable(total)
@@ -60,7 +59,7 @@ knitr::kable(total)
 Total number of non-respondents:
 
 ```{r}
-permits %>% group_by(type, reported) %>% summarize(count = n())
+permits %>% group_by(type, reported) %>% summarize(count = n()) %>% knitr::kable()
 ```
 
 
@@ -75,7 +74,7 @@ non_rspd_sport <- 139 + 6
 # total nonresponding households
 non_rspd_sub <- 21 + 6 
 
-N <-non_rspd_sport+ non_rspd_sub
+N <-non_rspd_sport + non_rspd_sub
 ```
 
 
@@ -83,7 +82,7 @@ Next, we will estimate the number of non-respondents that fished:
 
 First we need to find the proportion of late responders that fished in each area:
 ```{r}
-harvest_days <- harvest
+
 harvest <- harvest %>% filter(didyoufish == TRUE)
 
 late_harv <- harvest %>% group_by(areacode, late) %>% summarize(count= n())
@@ -129,15 +128,16 @@ mean_catches <- harvest %>% filter(late == "yes") %>% group_by(areacode) %>% sum
 mean_catches
 
 
-
 ```
 
-Finally, to find our expanded harvest numbers, we will multiply total non-respondents, by the porportion we expected to fish in each area, times the average catch
+Finally, to find our expanded harvest numbers, we will multiply total non-respondents (sport or subsistence) by the porportion we expected to fish in each area times the average catch. So for example, $\hat{N}_{sport} = N_{sport} \hat{p} \bar{x}$.
 
 
 
 ```{r}
-knitr::kable(cbind(areacode = c("ABC", "D", "E"), crab_count = round(172*proportions$prop_non_rspd_fished*mean_catches$mean, 0), days = round(172*proportions$prop_non_rspd_fished, 0)))
+knitr::kable(cbind(areacode = c("ABC", "D", "E"),
+                   crab_count_sport = round(non_rspd_sport*proportions$prop_non_rspd_fished*mean_catches$mean, 0),
+                   crab_count_sub = round(non_rspd_sub*proportions$prop_non_rspd_fished*mean_catches$mean, 0)))
 ```
 
 Next we'll estimate standard errors for the above estimates:
@@ -149,14 +149,15 @@ var_xhat <- harvest %>% filter(late == "yes") %>% group_by(areacode) %>% summari
 
 var_phat <- prop_non_rspd_fished*(1 - prop_non_rspd_fished)/nd
 
-N <- 172
 
 
-SE_catch <- sqrt(N^2*(prop_non_rspd_fished^2*var_xhat$`var(harvestcount, na.rm = T)` + mean_catches$mean^2*var_phat))
 
+SE_sport <- sqrt(non_rspd_sport^2*(prop_non_rspd_fished^2*var_xhat$`var(harvestcount, na.rm = T)` + mean_catches$mean^2*var_phat))
+SE_sub <-  sqrt(non_rspd_sub^2*(prop_non_rspd_fished^2*var_xhat$`var(harvestcount, na.rm = T)` + mean_catches$mean^2*var_phat))
 
-SE_days <- sqrt(N^2*var_phat)
-se_df <- data.frame(cbind(areacode = c("ABC", "D", "E"), se_counts = round(SE_catch, 0)), se_days = round(SE_days, 1))
+se_df <- data.frame(cbind(areacode = c("ABC", "D", "E"),
+                          stderr_sport = round(SE_sport, 0),
+                          stderr_sub = round(SE_sub, 0)))
 
 knitr::kable(se_df)
 ```

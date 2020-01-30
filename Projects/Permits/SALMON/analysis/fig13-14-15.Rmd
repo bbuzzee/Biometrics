@@ -1,0 +1,115 @@
+---
+title: "Figures 13 and 14"
+author: "Ben Buzzee"
+date: "December 4, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+
+```{r cars}
+master_df_18 <- read.csv("master_df_18.csv")
+master_df_18$year <- 2018
+
+
+master_df_17 <- read.csv("master_df_17.csv")
+master_df_17$year <- 2017
+
+master_df_16 <- read.csv("master_df_16.csv")
+master_df_16$year <- 2016
+
+master_df <- rbind(master_df_18, master_df_17, master_df_16)
+```
+
+
+
+# Figure 13
+
+```{r}
+master_df1 <- master_df %>% mutate(total_salmon = red + king + pink + coho + chum)
+master_df1 <- master_df1 %>% group_by(permit, year, allowed, familysi, fishery) %>% summarize(total_salmon = sum(total_salmon),
+                                                                           num_fisheries = length(unique(fishery)),
+                                                                           days = sum(effort_days))
+
+master_df1 <- master_df1 %>% mutate(perc_bag = total_salmon/allowed) %>% ungroup()
+```
+
+### Permit Counts (divide by row sums to get percents?)
+
+```{r}
+master_df1 %>% group_by(familysi, fishery) %>% summarize(count = n()) %>%
+  pivot_wider(names_from = familysi, values_from = count) %>% knitr::kable()
+```
+
+### Harvest
+```{r}
+master_df1 %>% group_by(familysi, fishery) %>% summarize(harvest = sum(total_salmon)) %>% pivot_wider(names_from = familysi, values_from = harvest) %>% knitr::kable()
+```
+
+### Average % Bag Limit
+```{r}
+master_df1 %>% group_by(familysi, fishery) %>% summarize(perc_bag_lim = round(mean(perc_bag),3)) %>% pivot_wider(names_from = familysi, values_from = perc_bag_lim) %>% knitr::kable()
+```
+
+
+# Figure 14 Data
+
+
+### Mean Harvest per Person
+
+* Only includes people that fished
+
+```{r}
+# NOTE: This is includes ALL salmon. 
+master_df1 <- master_df %>% group_by(year, permit, familysi) %>% summarize(total_catch_per_permit = sum(c(red, king, coho, pink, chum))) %>% mutate(catch_per_person = total_catch_per_permit/familysi)
+
+
+master_df1 %>% group_by(year) %>% summarize(avg_catch_per_person = mean(catch_per_person)) %>% knitr::kable()
+```
+
+### Mean Harvest per person and fishery
+
+* Includes families that fished at multiple fisheries
+
+```{r}
+master_df1 <- master_df %>% group_by(year, permit, fishery, familysi) %>% summarize(total_catch_per_permit = sum(c(red, king, coho, pink, chum))) %>% mutate(catch_per_person = total_catch_per_permit/familysi)
+
+
+master_df1 %>% group_by(year, fishery) %>% summarize(avg_catch_per_person = mean(catch_per_person)) %>% pivot_wider(names_from = year, values_from = avg_catch_per_person) %>%   knitr::kable() 
+```
+
+
+# Figure 15
+
+
+
+
+```{r}
+master_df1 <- master_df %>% mutate(total_salmon = red + king + pink + coho + chum)
+master_df1 <- master_df1 %>% group_by(permit, year, allowed, familysi, fishery) %>% summarize(total_salmon = sum(total_salmon),
+                                                                           num_fisheries = length(unique(fishery)),
+                                                                           days = sum(effort_days))
+
+master_df1 <- master_df1 %>% mutate(perc_bag = total_salmon/allowed) %>% ungroup()
+```
+
+### Permit Counts by Days Fished
+
+```{r}
+master_df1 %>% group_by(days, fishery) %>% summarize(count = n()) %>%
+  pivot_wider(names_from = days, values_from = count) %>% knitr::kable()
+```
+
+### Harvest by Days Fished
+```{r}
+master_df1 %>% group_by(days, fishery) %>% summarize(harvest = sum(total_salmon)) %>% pivot_wider(names_from = days, values_from = harvest) %>% knitr::kable()
+```
+
+### Average % Bag Limit by Days Fished
+```{r}
+master_df1 %>% group_by(days, fishery) %>% summarize(perc_bag_lim = round(mean(perc_bag),3)) %>% pivot_wider(names_from = days, values_from = perc_bag_lim) %>% knitr::kable()
+```

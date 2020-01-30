@@ -1,0 +1,97 @@
+---
+title: "Fig9"
+author: "Ben Buzzee"
+date: "November 18, 2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+
+```{r cars}
+master_df_18 <- read.csv("master_df_18.csv")
+master_df_18$year <- 2018
+
+
+master_df_17 <- read.csv("master_df_17.csv")
+master_df_17$year <- 2017
+
+master_df_16 <- read.csv("master_df_16.csv")
+master_df_16$year <- 2016
+
+master_df <- rbind(master_df_18, master_df_17, master_df_16)
+```
+
+
+
+# Figure 9
+
+Counts by percent of bag limit caught
+
+```{r}
+master_df1 <- master_df %>% mutate(total_salmon = red + king + pink + coho + chum)
+master_df1 <- master_df1 %>% group_by(permit, year, allowed, familysi, fishery) %>% summarize(total_salmon = sum(total_salmon),
+                                                                           num_fisheries = length(unique(fishery)),
+                                                                           days = sum(effort_days))
+
+master_df1 <- master_df1 %>% mutate(perc_bag = total_salmon/allowed) %>% ungroup()
+```
+
+
+```{r}
+master_df2 <- master_df1 %>% mutate(bag_limit = ifelse(perc_bag == 0, "0",
+                                         ifelse(between(perc_bag, .01, .2), "1-20%",
+                                                ifelse(between(perc_bag, .21, .4), "21-40%",
+                                                       ifelse(between(perc_bag, .41, .6), "41-60%",
+                                                              ifelse(between(perc_bag, .61, .8), "61-80%",
+                                                                     ifelse(between(perc_bag, .81, 1), "81-100%", "Over Limit"
+                                                                            )
+                                                                     )
+                                                              )
+                                                       )
+                                                )
+                                        )
+)
+   
+
+
+master_df2 <- master_df2 %>% group_by(year, bag_limit) %>% summarize(count = n())                                               
+master_df2 <- master_df2 %>% pivot_wider(names_from = year, values_from = count)
+```
+
+```{r}
+# Next we need to add the people who did not fish to the list
+
+
+permits16 <- read.csv("../data/permit_records_16.csv") %>% filter(STATUS == "DID NOT FISH") %>% summarize(n()) %>% as.integer()
+permits17 <- read.csv("../data/permit_records_17.csv") %>% filter(STATUS == "DID NOT FISH") %>% summarize(n()) %>% as.integer()
+permits18 <- read.csv("../data/permit_records_18.csv") %>% filter(STATUS == "DID NOT FISH") %>% summarize(n()) %>% as.integer()
+
+
+master_df2[1,2] <- master_df2[1,2] + permits16
+master_df2[1,3] <- master_df2[1,3] + permits17
+master_df2[1,4] <- master_df2[1,4] + permits18
+
+
+knitr::kable(master_df2)
+```
+
+# Figure 10 
+Average percent of bag limit reached by fishery
+
+```{r}
+
+master_df1 %>% group_by(fishery, year) %>% summarize(mean_perc_bag = mean(perc_bag)) %>% pivot_wider(names_from = year, values_from = mean_perc_bag) %>% knitr::kable()
+```
+
+
+# Figure 12
+
+Count of permit holders who fished at each fishery
+
+```{r}
+master_df1 %>% group_by(fishery, year) %>% summarize(permit_count = n()) %>%  pivot_wider(names_from = year, values_from = permit_count) %>% knitr::kable()
+```
+

@@ -1,0 +1,113 @@
+---
+title: "Table 6"
+author: "Ben Buzzee"
+date: "October 28, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+library(tidyverse)
+```
+
+
+
+```{r}
+gen_table6 <- function(permits, regions_key){
+  
+  names(permits) <- tolower(names(permits))
+  master_permit <- left_join(permits, regions_key, by = c("city"))
+  
+  
+  #=== TABLE 1 # Percent of total by Region Number ===#
+  
+  # Assume the total number of permits is the number of rows in the permits sheet
+  num_permits <- dim(permits)[1]
+  tab1 <- master_permit %>% group_by(region_number) %>% 
+    summarize(percent = round(n()/num_permits, 4)*100) %>%
+    knitr::kable(col.names = c("Area of Residence", "Percent"))
+    
+  
+  #=== TABLE 2 - Percent Within Region 2 ===#
+  
+  permits_region_2 <- master_permit %>% filter(region_number == 2)
+  num_2 <- dim(permits_region_2)[1]
+  tab2 <- permits_region_2 %>% summarize(Anchorage_Area = sum(region_code == "L")/num_2,
+                               Kenai_Peninsula = sum(region_code == "P")/num_2,
+                               MatSu_Valley = sum(region_code == "K")/num_2,
+                               Other = sum(!(region_code %in% c("L", "P", "K")))/num_2) %>% round(3) %>% t()
+
+
+  tab2 <- knitr::kable(tab2*100, col.names = c("Percent"))
+  
+  return(list(table1 = tab1, table2 = tab2))
+}
+```
+
+
+
+```{r}
+regions_key <- read.csv("../data/city_region_key.csv")
+permits <- read.csv("../data/permit_records_18.csv", nrow = 23734)
+
+```
+
+
+# 2018
+
+```{r}
+tabs2018 <- gen_table6(permits, regions_key)
+
+
+tabs2018$table1
+tabs2018$table2
+```
+
+
+# 2017
+
+
+
+```{r}
+regions_key <- read.csv("../data/city_region_key.csv")
+permits <- read.csv("../data/permit_records_17.csv", nrow = 29584)
+names(permits) <- tolower(names(permits))
+
+
+```
+
+```{r}
+tabs2017 <- gen_table6(permits, regions_key)
+
+
+tabs2017$table1
+tabs2017$table2
+```
+
+
+# 2016
+
+
+```{r}
+regions_key <- read.csv("../data/city_region_key.csv")
+permits <- read.csv("../data/permit_records_16.csv", nrow = 30490)
+```
+
+```{r}
+tabs2016 <- gen_table6(permits, regions_key)
+
+
+tabs2016$table1
+tabs2016$table2
+```
+
+
+
+
+# Table 7
+
+```{r}
+master_harv <- read.csv("master_df_18.csv")
+master_harv <- left_join(master_harv, regions_key, by = c("city"))
+```
+

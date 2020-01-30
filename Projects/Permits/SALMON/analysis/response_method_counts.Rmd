@@ -1,0 +1,25 @@
+---
+title: "ResponseMethod"
+author: "Ben Buzzee"
+date: "December 5, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+
+master_df_18 <- read.csv("master_df_18.csv")
+master_df_17 <- read.csv("master_df_17.csv")
+master_df_16 <- read.csv("master_df_16.csv")
+
+
+master_df <- rbind(master_df_18, master_df_17, master_df_16)
+```
+
+# Reporting Method
+
+```{r cars}
+master_df %>% group_by(year, response_method) %>% summarize(count = n()) %>% pivot_wider(values_from = count,names_from = year) %>% knitr::kable()
+```
+

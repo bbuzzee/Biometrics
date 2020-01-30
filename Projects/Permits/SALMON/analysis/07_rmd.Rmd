@@ -1,0 +1,79 @@
+---
+title: "Table 7"
+author: "Ben Buzzee"
+date: "November 6, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+
+
+```{r}
+create_07 <- function(master_df){
+  
+  region_fishery <- master_df %>% group_by(region_number, fishery) %>% summarize(days = sum(effort_days), salmon = sum(red + king + coho + pink + chum))
+  region_2 <- master_df %>% filter(region_code %in% c("L", "P", "K")) %>% group_by(area_name, fishery) %>% summarize(days = sum(effort_days), salmon = sum(red + king + coho + pink + chum))
+  
+  return(list(region_fishery = knitr::kable(region_fishery), region_2 = knitr::kable(region_2)))
+}
+
+
+master_df_18 <- read.csv("master_df_18.csv")
+tab7_18 <- create_07(master_df_18)
+
+
+master_df_17 <- read.csv("master_df_17.csv")
+tab7_17 <- create_07(master_df_17)
+
+master_df_16 <- read.csv("master_df_16.csv")
+tab7_16 <- create_07(master_df_16)
+```
+
+# 2018
+
+### By Region
+```{r}
+tab7_18$region_fishery
+```
+
+### Within Region 2
+```{r}
+tab7_18$region_2
+```
+
+
+
+# 2017
+
+### By Region
+```{r}
+tab7_17$region_fishery
+```
+
+### Within Region 2
+```{r}
+tab7_17$region_2
+```
+
+
+
+
+# 2016
+
+### By Region
+```{r}
+tab7_16$region_fishery
+```
+
+### Within Region 2
+```{r}
+tab7_16$region_2
+```
+
+
+
+

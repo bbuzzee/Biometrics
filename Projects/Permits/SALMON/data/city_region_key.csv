@@ -1,0 +1,153 @@
+region_number,region_code,area_name,city
+1,F,Haines-Skagway,SKAGWAY
+1,G,Glacier Bay,HOONAH
+1,H,Yakutat,YAKUTAT
+2,J,North Gulf Coast/Prince William Sound,CORDOVA
+2,J,North Gulf Coast/Prince William Sound,SEWARD
+2,J,North Gulf Coast/Prince William Sound,TATITLEK
+2,J,North Gulf Coast/Prince William Sound,VALDEZ
+2,J,North Gulf Coast/Prince William Sound,WHITTIER
+2,K,Knik Arm Drainage,BIG LAKE
+2,K,Knik Arm Drainage,CHICKALOON
+2,K,Knik Arm Drainage,HOUSTON
+2,K,Knik Arm Drainage,KNIK
+2,K,Knik Arm Drainage,PALMER
+2,K,Knik Arm Drainage,SUTTON
+2,K,Knik Arm Drainage,WASILLA
+2,L,Anchorage,ANCHORAGE
+2,L,Anchorage,BIRD CREEK
+2,L,Anchorage,CHUGIAK
+2,L,Anchorage,EAGLE RIVER
+2,L,Anchorage,EKLUTNA
+2,L,Anchorage,ELMENDORF AFB
+2,L,Anchorage,FORT RICHARDSON
+2,L,Anchorage,GIRDWOOD
+2,L,Anchorage,INDIAN
+2,L,Anchorage,PETERS CREEK
+2,M,East-Side Sustina Drainage,TALKEETNA
+2,M,East-Side Sustina Drainage,WILLOW
+2,N,West-Side Cook Inlet West-Side Susitna Drainage,BELUGA
+2,N,West-Side Cook Inlet West-Side Susitna Drainage,SKWENTNA
+2,N,West-Side Cook Inlet West-Side Susitna Drainage,TRAPPER CREEK
+2,N,West-Side Cook Inlet West-Side Susitna Drainage,TYONEK
+2,P,Kenai Peninsula,ANCHOR POINT
+2,P,Kenai Peninsula,CLAM GULCH
+2,P,Kenai Peninsula,COOPER LANDING
+2,P,Kenai Peninsula,FRITZ CREEK
+2,P,Kenai Peninsula,HALIBUT COVE
+2,P,Kenai Peninsula,HOMER
+2,P,Kenai Peninsula,HOPE
+2,P,Kenai Peninsula,KASILOF
+2,P,Kenai Peninsula,KENAI
+2,P,Kenai Peninsula,MOOSE PASS
+2,P,Kenai Peninsula,NIKISKI
+2,P,Kenai Peninsula,NIKOLAEVSK
+2,P,Kenai Peninsula,NINILCHIK
+2,P,Kenai Peninsula,SELDOVIA
+2,P,Kenai Peninsula,SOLDOTNA
+2,P,Kenai Peninsula,STERLING
+2,Q,Kodiak,CHINIAK
+2,Q,Kodiak,KODIAK
+2,Q,Kodiak,LARSEN BAY
+2,Q,Kodiak,OLD HARBOR
+2,Q,Kodiak,OUZINKIE
+2,R,Naknek Drainages Alaska Peninsula,ADAK
+2,R,Naknek Drainages Alaska Peninsula,CHIGNIK LAGOON
+2,R,Naknek Drainages Alaska Peninsula,COLD BAY
+2,R,Naknek Drainages Alaska Peninsula,DUTCH HARBOR
+2,R,Naknek Drainages Alaska Peninsula,FALSE PASS
+2,R,Naknek Drainages Alaska Peninsula,KING COVE
+2,R,Naknek Drainages Alaska Peninsula,KING SALMON
+2,R,Naknek Drainages Alaska Peninsula,NAKNEK
+2,R,Naknek Drainages Alaska Peninsula,PERRYVILLE
+2,R,Naknek Drainages Alaska Peninsula,SAINT PAUL ISLAND
+2,R,Naknek Drainages Alaska Peninsula,SAND POINT
+2,R,Naknek Drainages Alaska Peninsula,SOUTH NAKNEK
+2,R,Naknek Drainages Alaska Peninsula,UNALASKA
+2,S,Kvichak River Drainage,ILIAMNA
+2,S,Kvichak River Drainage,KOKHANOK
+2,S,Kvichak River Drainage,LEVELOCK
+2,S,Kvichak River Drainage,NONDALTON
+2,S,Kvichak River Drainage,PORT ALSWORTH
+2,T,Nushagak Area,ALEKNAGIK
+2,T,Nushagak Area,CLARKS POINT
+2,T,Nushagak Area,DILLINGHAM
+2,T,Nushagak Area,NEW STUYAHOK
+2,T,Nushagak Area,TOGIAK
+3,I,Upper Copper-Upper Susitna Drainages,CHITINA
+3,I,Upper Copper-Upper Susitna Drainages,COPPER CENTER
+3,I,Upper Copper-Upper Susitna Drainages,GAKONA
+3,I,Upper Copper-Upper Susitna Drainages,GLENNALLEN
+3,I,Upper Copper-Upper Susitna Drainages,PAXSON
+3,I,Upper Copper-Upper Susitna Drainages,SLANA
+3,U,Tanana River Drainages,ANDERSON
+3,U,Tanana River Drainages,CANTWELL
+3,U,Tanana River Drainages,CLEAR
+3,U,Tanana River Drainages,DELTA JUNCTION
+3,U,Tanana River Drainages,DENALI NATIONAL PARK
+3,U,Tanana River Drainages,EIELSON AFB
+3,U,Tanana River Drainages,ESTER
+3,U,Tanana River Drainages,FAIRBANKS
+3,U,Tanana River Drainages,FORT WAINWRIGHT
+3,U,Tanana River Drainages,HEALY
+3,U,Tanana River Drainages,LAKE MINCHUMINA
+3,U,Tanana River Drainages,MINTO
+3,U,Tanana River Drainages,NENANA
+3,U,Tanana River Drainages,NORTH POLE
+3,U,Tanana River Drainages,NORTHWAY
+3,U,Tanana River Drainages,RICHARDSON
+3,U,Tanana River Drainages,SALCHA
+3,U,Tanana River Drainages,TOK
+3,U,Tanana River Drainages,TWO RIVERS
+3,V,Kukokwim River-Kuskokwim Bay Drainages,AKIAK
+3,V,Kukokwim River-Kuskokwim Bay Drainages,ANIAK
+3,V,Kukokwim River-Kuskokwim Bay Drainages,BETHEL
+3,V,Kukokwim River-Kuskokwim Bay Drainages,MC GRATH
+3,V,Kukokwim River-Kuskokwim Bay Drainages,MEKORYUK
+3,V,Kukokwim River-Kuskokwim Bay Drainages,NEWTOK
+3,V,Kukokwim River-Kuskokwim Bay Drainages,NIKOLAI
+3,V,Kukokwim River-Kuskokwim Bay Drainages,QUINHAGAK
+3,V,Kukokwim River-Kuskokwim Bay Drainages,RED DEVIL
+3,V,Kukokwim River-Kuskokwim Bay Drainages,SLEETMUTE
+3,V,Kukokwim River-Kuskokwim Bay Drainages,TOKSOOK BAY
+3,V,Kukokwim River-Kuskokwim Bay Drainages,TUNUNAK
+3,W,Seward Peninsula-Norton Sound,BUCKLAND
+3,W,Seward Peninsula-Norton Sound,DEERING
+3,W,Seward Peninsula-Norton Sound,ELIM
+3,W,Seward Peninsula-Norton Sound,GAMBELL
+3,W,Seward Peninsula-Norton Sound,NOME
+3,W,Seward Peninsula-Norton Sound,SAVOONGA
+3,W,Seward Peninsula-Norton Sound,SHAKTOOLIK
+3,W,Seward Peninsula-Norton Sound,SHISHMAREF
+3,W,Seward Peninsula-Norton Sound,TELLER
+3,W,Seward Peninsula-Norton Sound,UNALAKLEET
+3,W,Seward Peninsula-Norton Sound,WHITE MOUNTAIN
+3,X,Northwest Alaska Drainages,KIANA
+3,X,Northwest Alaska Drainages,KIVALINA
+3,X,Northwest Alaska Drainages,KOTZEBUE
+3,X,Northwest Alaska Drainages,NOORVIK
+3,X,Northwest Alaska Drainages,POINT HOPE
+3,X,Northwest Alaska Drainages,SELAWIK
+3,Y,Yukon River Drainages,ALAKANUK
+3,Y,Yukon River Drainages,ANAKTUVUK PASS
+3,Y,Yukon River Drainages,ANVIK
+3,Y,Yukon River Drainages,CENTRAL
+3,Y,Yukon River Drainages,CHEVAK
+3,Y,Yukon River Drainages,CHICKEN
+3,Y,Yukon River Drainages,EAGLE
+3,Y,Yukon River Drainages,FORT YUKON
+3,Y,Yukon River Drainages,GALENA
+3,Y,Yukon River Drainages,HOLY CROSS
+3,Y,Yukon River Drainages,HOOPER BAY
+3,Y,Yukon River Drainages,MOUNTAIN VILLAGE
+3,Y,Yukon River Drainages,NULATO
+3,Y,Yukon River Drainages,RUBY
+3,Y,Yukon River Drainages,SHAGELUK
+3,Y,Yukon River Drainages,TANANA
+3,Z,North Slope Brooks Range Drainages,ATQASUK
+3,Z,North Slope Brooks Range Drainages,BARROW
+3,Z,North Slope Brooks Range Drainages,DEADHORSE
+3,Z,North Slope Brooks Range Drainages,NUIQSUT
+3,Z,North Slope Brooks Range Drainages,POINT LAY
+3,Z,North Slope Brooks Range Drainages,PRUDHOE BAY
+3,Z,North Slope Brooks Range Drainages,WAINWRIGHT
