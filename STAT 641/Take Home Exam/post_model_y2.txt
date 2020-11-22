@@ -1,0 +1,26 @@
+model{
+ # likelilhood
+	for(i in 1:N){
+		y[i,1:2] ~ dmnorm(mu[], Sigma.inv[,])
+}
+
+# mu prior
+mu[1:2] ~ dmnorm(mu0[], Lambda0.inv[,])
+
+#sigma prior
+Sigma.inv[1:2, 1:2] ~ dwish(S0[,], nu0)
+
+#sigma for output
+Sigma[1:2, 1:2] <-inverse(Sigma.inv[1:2, 1:2])
+
+#predictions 
+ypred[1:2] ~ dmnorm(mu[], Sigma.inv[,]) 
+
+	sig1 <- sqrt( Sigma[1,1] )
+	sig2 <- sqrt( Sigma[2,2] )
+	rho <- Sigma[1,2] / (sig1*sig2)
+	fac <- 1-rho*rho
+	mustar1 <- mu[1] + rho*(sig1/sig2)*(y2 - mu[2])
+	prec1 <- 1/( sig1*sig1*fac )
+	y1 ~ dnorm(mustar1, prec1)
+}

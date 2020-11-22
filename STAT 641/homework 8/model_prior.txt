@@ -1,0 +1,10 @@
+model
+{
+theta.A[1:K] ~ ddirch(alpha[])
+theta.B[1:K] ~ ddirch(alpha[])
+
+alpha1  <- theta.A[1]/(theta.A[1] + theta.A[2])
+alpha2 <- theta.B[1]/(theta.B[1] + theta.B[2])
+D <-  alpha2 - alpha1
+shift <- step(alpha2 - alpha1)
+}

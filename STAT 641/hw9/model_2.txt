@@ -1,0 +1,8 @@
+model {
+  for( i in 1:N ) {
+    disasters[i] ~ dpois( lambda[ idx[i] ] )
+    idx[i] <- 1+step( i-k-0.5 )
+  }
+  lambda[1] ~ dexp(1)
+  lambda[2] ~ dexp(1)
+}

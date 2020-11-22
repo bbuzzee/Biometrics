@@ -1,0 +1,4 @@
+model{
+ foo ~ dcat( probs[] )
+ k <- values[foo]
+}

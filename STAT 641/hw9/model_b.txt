@@ -1,0 +1,4 @@
+model{
+ foo ~ dgamma(3,5)
+ theta <- 1/foo
+}

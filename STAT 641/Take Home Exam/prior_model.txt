@@ -1,0 +1,11 @@
+model{
+  # (Note: I removed the likelihood statement here, so I'd be
+  # sampling from the prior predictive distribution for ypred below)
+  mu[1:2] ~ dmnorm( mu0[], Lambda0.inv[,])
+  # (And I allow for a correlated prior distribution by using
+  # dmnorm instead of two dnorm statements.)
+
+  Sigma.inv[1:2,1:2] ~ dwish( S0[,], nu0 )
+  Sigma[1:2,1:2] <- inverse( Sigma.inv[1:2,1:2] )
+  ypred[1:2] ~ dmnorm(mu[], Sigma.inv[,] )
+}

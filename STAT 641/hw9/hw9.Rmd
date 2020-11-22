@@ -1,0 +1,245 @@
+---
+title: "Homework 9"
+author: "Ben Buzzee"
+date: "November 22, 2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=  FALSE, warning = FALSE)
+set.seed(1729)
+setwd("~/UAF COURSES/STAT 641/hw9")
+library(rjags)
+```
+
+# 1a
+## Sample from a dgamma(3,5) prior
+
+```{r, include=T}
+
+    my.data <- list()
+    my.fname <- "model_a.txt"
+    my.jags.model <- jags.model(
+      file = my.fname, data = my.data,
+      n.chains = 1, n.adapt = 1000, quiet = FALSE )
+    my.variables <- c("theta")
+    my.coda.samples <- coda.samples(
+      my.jags.model,my.variables,10000,thin=1)
+    #plot(my.coda.samples)
+
+```
+
+```{r, include= F}
+summary(my.coda.samples)
+```
+
+After sampling from the prior using the code above, we see that the estimated mean and standard deviation for theta are .598 and .346 respectively. We also know alpha = 3 and beta = 5. So it is clear the mean is $\frac{\alpha}{\beta}$ and variance is $\frac{\alpha}{\beta^2}$
+
+# 1b
+## 1/theta
+
+
+```{r, include = FALSE}
+    my.data <- list()
+    my.fname <- "model_b.txt"
+    my.jags.model <- jags.model(
+      file = my.fname, data = my.data,
+      n.chains = 1, n.adapt = 1000, quiet = FALSE )
+    my.variables <- c("theta")
+    my.coda.samples <- coda.samples(
+      my.jags.model,my.variables,10000,thin=1)
+    #plot(my.coda.samples)
+```
+
+
+```{r, echo = FALSE, include= FALSE}
+summary(my.coda.samples)
+```
+
+Here we again know alpha = 3 and beta = 5. After sampling we find that we have a mean for theta of 2.5 and standard deviation of 2.6 (variance = 6.76). This is roughly what we would expect if the mean were $\frac{\beta}{\alpha - 1}$ and the variance were $\frac{\beta^2}{(\alpha - 1)^2(\alpha - 1)}$.
+
+
+# 1c
+## dcat[]
+
+
+```{r, include = FALSE}
+    my.data <- list( probs = 0.1*rep(1,10) )
+    my.inits1 <- list(k = 1)
+    my.inits <- list( my.inits1 )
+    my.fname <- "model_c.txt"
+    my.jags.model <- jags.model(
+      file = my.fname, data = my.data, inits = my.inits,
+      n.chains = 1, n.adapt = 1000, quiet = FALSE )
+    my.variables <- c("k")
+    my.coda.samples <- coda.samples(
+      my.jags.model,my.variables,100000,thin=1)
+    summary(my.coda.samples)
+    k.samples <- my.coda.samples[[1]][,"k"]
+    unique( k.samples )
+    #plot(my.coda.samples)
+```
+
+```{r}
+    hist(k.samples, prob=TRUE, main="")
+    lines(density(k.samples))
+    
+    table(k.samples)
+```
+
+K appears to follow a multinomial distribution with 10 categories, each category having a .1 probability of "success." The values it can take on are 1-10. Out of 100,000 samples, approximately 10,000 occurrences of each level is simulated.
+
+#1c (iii)
+
+```{r, include = FALSE}
+    my.data <- list( probs = (1:8)/sum(1:8) )
+    my.inits1 <- list(k = 1)
+    my.inits <- list( my.inits1 )
+    my.fname <- "model_c.txt"
+    my.jags.model <- jags.model(
+      file = my.fname, data = my.data, inits = my.inits,
+      n.chains = 1, n.adapt = 1000, quiet = FALSE )
+    my.variables <- c("k")
+    my.coda.samples <- coda.samples(
+    my.jags.model,my.variables,100000,thin=1)
+    summary(my.coda.samples)
+    k.samples <- my.coda.samples[[1]][,"k"]
+    #unique( k.samples )
+    #plot(my.coda.samples)
+```
+
+
+```{r}
+    hist(k.samples, prob=TRUE, main="")
+    lines(density(k.samples))
+    
+    table(k.samples)
+```
+
+Here the distribution is still multinomial, except with 8 categories instead of 10. The values k can take on are 1-8. The probability of an outcome occurring in each category is 1/36, 2/36 ... 8/36 for each of the respective categories.
+
+# 1d
+
+```{r, include=FALSE}
+probs <- c(1,2,3)/6
+values <- c( 1, 42, 17 )
+my.data <- list( probs = probs, values = values )
+my.inits1 <- list( foo = 1 )
+my.inits <- list( my.inits1 )
+my.fname <- "model_d.txt"
+my.jags.model <- jags.model(
+  file = my.fname, data = my.data, inits = my.inits,
+  n.chains = 1, n.adapt = 1000, quiet = FALSE )
+my.variables <- c("k")
+my.coda.samples <- coda.samples(
+  my.jags.model,my.variables,100000,thin=1)
+summary(my.coda.samples)
+k.samples <- my.coda.samples[[1]][,"k"]
+#plot(my.coda.samples)
+```
+```{r}
+unique( k.samples )
+hist(k.samples, prob=TRUE, main="")
+lines(density(k.samples))
+```
+
+Here we are again dealing with a multinomial distribution. K can take on the values 1, 17, and 42. The probability of each value occuring is 1/6, 3/6 and 2/6 respectively.
+
+
+# 2a
+
+```{r}
+my.data <- read.table("data.txt",header=TRUE)
+names(my.data)
+disasters <- my.data$disasters
+year <- my.data$year
+N <- length(disasters); N
+plot(year,disasters, type='l')
+```
+
+I would say there does appear to be a change in the rate of disasters. From 1851 to the 1890s there appears to be roughly 2-3 disasters a year on average. Then after 1900 it seems that average declines to about 1 disaster a year, with many years having zero disasters.
+
+
+# 2b
+
+For k=40, it is implied a change in the rate of disaster occurred starting in year 41. Since our time series starts at 1851, this would indicate a change in the disaster rate in 1892.
+
+
+#2c
+
+The posterior distribution would be Poisson($\lambda_1 + 1$) for i = 1, 2, ... 40 and Poisson($\lambda_2 + 1$) for i = 41, 42, ... 112.
+
+
+# 2d
+
+
+idx[i] <- 1+step(i-k-0.5)
+
+whenever the step function is negative, it will return a zero, resulting in idx[i] being equal to one. For k = 40, it will be zero until i = 41. Then from 41 forward it will start to return a 1, resulting in idx[i] = 2. It should always result in either a zero or a one.
+
+
+# 2e
+## Fit the model
+
+```{r, include = FALSE}
+my.data <- list( disasters = disasters, N = N, k = 40 )
+
+my.inits1 <- list( lambda = c(40,40) )
+my.inits2 <- list( lambda = c(20,20) )
+my.inits3 <- list( lambda = c(100,10) )
+my.inits <- list( my.inits1, my.inits2, my.inits3 )
+
+my.model.1.fname <- "model_2.txt"
+my.jags.model <- jags.model(
+  file = my.model.1.fname, data = my.data, inits = my.inits,
+  n.chains = 3, n.adapt = 1000, quiet = FALSE )
+
+dic.samples(my.jags.model, n.iter=10000, thin=1, type="pD")
+my.variables <- c("lambda" )
+
+my.coda.samples <- coda.samples(my.jags.model,
+                                my.variables,10000, thin=1)
+lambda1.samples <- my.coda.samples[[1]][,"lambda[1]"]
+lambda2.samples <- my.coda.samples[[1]][,"lambda[2]"]
+n.samples <- length(lambda1.samples); n.samples
+which.ones <- seq(1,n.samples, length=500)
+some.lam1.samples <- lambda1.samples[which.ones]
+some.lam2.samples <- lambda2.samples[which.ones]
+
+
+```
+
+#2f
+Results
+
+```{r}
+par(mfrow = c(2,1))
+plot( which.ones, some.lam1.samples, type='l',
+      xlab="iteration", ylab="lambda[1]")
+plot( which.ones, some.lam2.samples, type='l',
+      xlab="iteration", ylab="lambda[2]")
+
+
+hist(lambda1.samples, prob=TRUE, main="")
+lines(density(lambda1.samples))
+hist(lambda2.samples, prob=TRUE, main="")
+lines(density(lambda2.samples))
+```
+
+```{r, include = FALSE}
+#summary(my.coda.samples)
+#effectiveSize(my.coda.samples)
+#rejectionRate(my.coda.samples)
+
+
+df = data.frame(title = c("Lambda 1", "Lambda 2"),
+                post_mean = c(3.07, .91),
+                standard_dev = c(.27, .11),
+                lower_95_credible_bound =  c(2.56, .71),
+                upper_95_credible_bound = c(3.6, 1.15),
+                mc_error = c(.001, .0006))
+knitr::kable(df)
+```
+
+
+The effective sample size for each parameter is approximately 30,000. The rejection rate is zero, which implies a gibbs sampler is being used with a 100% success rate.
