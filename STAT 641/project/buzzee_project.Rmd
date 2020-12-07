@@ -1,0 +1,42 @@
+---
+title: "Comparing Bayesian vs Frequentist Predictive Performance"
+author: "Ben Buzzee"
+date: "December 7, 2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
+setwd("~/UAF COURSES/STAT 641/project")
+library(tidyverse)
+library(rjags)
+```
+
+# Abstract
+
+Supervised learning is a branch of machine learning where an algorithm is trained on a dataset containing known outcomes then used to predict future events where the predictors are known but the outcomes are not. A classic dataset used to practice supervised learning is the Titanic dataset, provided by Kaggle. This dataset provides the outcome survival (0 or 1) and nine potential predictor variables for each passenger aboard the Titanic. The whole dataset is spit into two subsets, one for training the model and one for testing the model. In this project we will compare a bayesian logistic regression that performs model selection via DIC to a standard frequentist logistic regression that performs model selection via AIC. The measure of interest will be the accuracy of the final model (proportion of correct survival predictions on the test dataset).
+
+# Data
+
+The source of the data for this project are the records of the passengers of the famous Titanic voyage. Of the 2224 Passengers that embarked on the journey, only 722 survived. Let's first read in our data and take a look at what we've got:
+```{r cars}
+test <- read.csv(file = "test.csv")
+train <- read.csv("train.csv")
+
+vars <- names(train)
+desc <- c("Unique Identifier", "Outcome - 0 or 1", "Ticket Class",
+          "Name", "Gender", "Age", "Num Siblings/Spouses Aboard",
+          "Num Parents/Children Aboard", "Ticket Number", "Fare",
+          "Cabin Number", "Point Embarked From")
+
+knitr::kable(data.frame(Variable = vars, Description = desc))
+```
+
+
+# Models
+
+## Bayesian Model
+
+https://stats.stackexchange.com/questions/28609/regularized-bayesian-logistic-regression-in-jags
+
+
